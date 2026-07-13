@@ -116,9 +116,9 @@ potchi-potchi-business-intelligence
 | Phase | Status |
 |--------|--------|
 | ✅ Market Research | Completed |
-| 🟡 Business Requirements Document | In Progress |
-| ⬜ Data Requirements Document | Pending |
-| ⬜ Data Modelling | Pending |
+| ✅ Business Requirements Document | Completed |
+| ✅ Data Requirements Document | Completed |
+| 🟡 Data Modelling | In Progress |
 | ⬜ Dataset Creation | Pending |
 | ⬜ Power Query | Pending |
 | ⬜ Power BI Data Model | Pending |
@@ -130,13 +130,13 @@ potchi-potchi-business-intelligence
 
 # Documentation
 
-| Document | Description |
-|----------|-------------|
-| Market Research | Evaluates the UK designer collectibles market, industry trends, competitors and business viability. |
-| Business Requirements Document (BRD) | Defines business objectives, stakeholders, scope and business requirements. |
-| Data Requirements Document (DRD) | Defines the data required to answer the identified business questions. |
-| Data Dictionary | Documents every table, column and data type used throughout the project. |
-| Business Presentation | Executive presentation summarising key findings and recommendations. |
+| Document | Description | Version | Status
+|----------|-------------| --------- | ---------
+| Market Research | Evaluates the UK designer collectibles market, industry trends, competitors and business viability. | v0.1.0 | ✅ Completed
+| Business Requirements Document (BRD) | Defines business objectives, stakeholders, scope and business requirements. | v0.1.0 | ✅ Completed
+| Data Requirements Document (DRD) | Defines the data required to answer the identified business questions. | v0.1.0 | ✅ Completed
+| Data Dictionary | Documents every table, column and data type used throughout the project. | Planned | ⬜ Pending
+| Business Presentation | Executive presentation summarising key findings and recommendations. | Planned | ⬜ Pending
 
 ---
 
