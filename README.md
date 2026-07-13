@@ -118,8 +118,9 @@ potchi-potchi-business-intelligence
 | ✅ Market Research | Completed |
 | ✅ Business Requirements Document | Completed |
 | ✅ Data Requirements Document | Completed |
-| 🟡 Data Modelling | In Progress |
-| ⬜ Dataset Creation | Pending |
+| ✅ Data Modelling | Completed |
+| ✅ Business Financial Assumptions | Completed |
+| 🟡 Dataset Creation | Pending |
 | ⬜ Power Query | Pending |
 | ⬜ Power BI Data Model | Pending |
 | ⬜ DAX Measures | Pending |
@@ -135,6 +136,7 @@ potchi-potchi-business-intelligence
 | Market Research | Evaluates the UK designer collectibles market, industry trends, competitors and business viability. | v0.1.0 | ✅ Completed
 | Business Requirements Document (BRD) | Defines business objectives, stakeholders, scope and business requirements. | v0.1.0 | ✅ Completed
 | Data Requirements Document (DRD) | Defines the data required to answer the identified business questions. | v0.1.0 | ✅ Completed
+| Business Financial Assumptions | Defines the financial assumptions that guide dataset generation and support realistic business simulation throughout the project. | v0.1.0 | ✅ Completed
 | Data Dictionary | Documents every table, column and data type used throughout the project. | Planned | ⬜ Pending
 | Business Presentation | Executive presentation summarising key findings and recommendations. | Planned | ⬜ Pending
 
