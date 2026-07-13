@@ -179,8 +179,8 @@ potchi-potchi-business-intelligence
 
 | Document | Version | Status | Description |
 |----------|---------|--------|-------------|
-| 06 - Dataset Design Specification | v0.1.0 | 🟡 In Progress | Defines the structure, purpose, expected volume and technical design of each dataset before implementation. |
-| 07 - Data Dictionary | Planned | ⏳ Pending | Documents every field, data type, business definition and validation rule used throughout the project. |
+| 06 - Dataset Design Specification | v0.1.0 | ✅ Completed | Defines the structure, purpose, expected volume and technical design of each dataset before implementation. |
+| 07 - Data Dictionary | Planned | 🟡 In Progress | Documents every field, data type, business definition and validation rule used throughout the project. |
 | 08 - Power Query Transformations | Planned | ⏳ Pending | Documents all ETL steps, data cleaning and transformation logic implemented in Power Query. |
 | 09 - DAX Documentation | Planned | ⏳ Pending | Documents calculated columns, measures and business logic implemented using DAX. |
 | 10 - Dashboard Specification | Planned | ⏳ Pending | Defines the dashboard layout, KPIs, visualisations and user experience before implementation. |
