@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Business Financial Assumptions  
-**Version:** v0.1.0  
+**Version:** v0.1.1  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -21,10 +21,11 @@
 8. Profitability Assumptions
 9. Business Scenarios
 10. Growth Assumptions
-11. Expansion Strategy
-12. Financial Risks
-13. Future Improvements
-14. Appendix
+11. Strategic Business Rules
+12. Expansion Strategy
+13. Financial Risks
+14. Future Improvements
+15. Appendix
 
 ---
 
@@ -133,6 +134,12 @@ The following costs are expected throughout business operations.
 | Payment Processing Fees | 2.5% of Revenue |
 | Marketing Spend | £150 per month |
 
+> **Accounting and Data Modelling Note**
+>
+> Inventory acquisition is treated separately from operating expenses. Product purchases, freight, import duties and other directly attributable landed costs will be recorded within the Purchases dataset.
+>
+> The Expenses dataset will contain only non-inventory operating costs such as marketing, software, storage, accounting and utilities.
+
 ---
 
 # 8. Profitability Assumptions
@@ -235,7 +242,19 @@ Seasonal fluctuations will be incorporated into future datasets.
 
 ---
 
-# 11. Expansion Strategy
+# 11. Strategic Business Rules
+
+## Market Expansion
+
+Business expansion decisions must be supported by measurable performance indicators rather than assumptions.
+
+The company adopts a phased growth strategy, expanding only after achieving predefined financial and operational targets.
+
+This approach minimises operational risk while supporting sustainable growth.
+
+---
+
+# 12. Expansion Strategy
 
 ## Warehouse Expansion
 
@@ -247,6 +266,22 @@ The business should evaluate renting external warehouse space when one or more o
 - Inventory value exceeds **£25,000**
 
 For this project, warehouse expansion will be represented using **Shurgard Self Storage – Deptford**.
+
+### Geographic Scope
+
+Potchi Potchi will initially operate exclusively within the United Kingdom.
+
+The company follows a phased expansion strategy driven by measurable business performance rather than predetermined timelines.
+
+The planned expansion path is:
+
+1. United Kingdom
+2. Ireland
+3. Selected European markets
+
+Each expansion phase will only be considered after predefined financial and operational objectives have been consistently achieved.
+
+Expansion decisions will be supported by Business Intelligence dashboards and key performance indicators, including revenue growth, customer acquisition, inventory turnover, profitability and operational capacity.
 
 ---
 
@@ -264,7 +299,7 @@ Expansion indicators include:
 
 ---
 
-# 12. Financial Risks
+# 13. Financial Risks
 
 Potential financial risks include:
 
@@ -280,7 +315,7 @@ These risks should be monitored continuously through the Business Intelligence d
 
 ---
 
-# 13. Future Improvements
+# 14. Future Improvements
 
 Future versions of this project may include:
 
@@ -295,7 +330,7 @@ Future versions of this project may include:
 
 ---
 
-# 14. Appendix
+# 15. Appendix
 
 ## Related Documents
 
@@ -314,4 +349,5 @@ Future versions of this project may include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.1.1 | 13 July 2026 | Alyssa Ribeiro | Clarified the separation between inventory acquisition and operating expenses. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |

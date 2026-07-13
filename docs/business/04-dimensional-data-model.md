@@ -43,6 +43,7 @@ This architecture was selected because the business contains multiple independen
 - Sales
 - Orders
 - Inventory
+- Product Purchasing
 - Operating Expenses
 
 Separating these processes into individual fact tables preserves the correct level of granularity while avoiding duplicated information.
@@ -91,6 +92,13 @@ flowchart TB
         FE --> DD4[DimDate]
     end
 
+    subgraph Purchasing["Purchasing Analysis"]
+        FP[FactPurchases]
+        FP --> DP3[DimProduct]
+        FP --> DS3[DimSupplier]
+        FP --> DD5[DimDate]
+    end
+
     DP1 --> DS2[DimSupplier]
     DP2 --> DS2
 ```
@@ -132,6 +140,10 @@ erDiagram
     DimSalesChannel ||--o{ FactOrders : "receives"
 
     DimExpenseCategory ||--o{ FactExpenses : "classifies"
+
+    DimDate ||--o{ FactPurchases : "filters"
+    DimProduct ||--o{ FactPurchases : "is purchased in"
+    DimSupplier ||--o{ FactPurchases : "supplies"
 ```
 
 ### Relationship Conventions
@@ -180,12 +192,15 @@ Product sales.
 ### Measures
 
 - Quantity Sold
-- Unit Price
-- Unit Cost
+- List Unit Price
+- Unit Discount Amount
+- Net Unit Price
+- Unit Cost at Sale
 - Sales Amount
-- Cost Amount
+- Cost of Goods Sold
 - Gross Profit
-- Discount Amount
+
+`UnitCostAtSale` represents the historical inventory valuation assigned to the sale. It is derived from purchasing data and preserved within FactSales so that historical gross profit remains stable even when supplier costs change.
 
 ### Foreign Keys
 
@@ -222,6 +237,40 @@ Customer orders.
 - DateKey
 - CustomerKey
 - SalesChannelKey
+
+---
+
+## FactPurchases
+
+### Business Process
+
+Product acquisition from suppliers.
+
+### Granularity
+
+**One row per product purchased within a supplier purchase order.**
+
+### Measures
+
+- Quantity Purchased
+- Unit Cost in Original Currency
+- Unit Cost in GBP
+- Freight Cost Allocated
+- Import Duty Allocated
+- Other Landed Costs
+- Total Landed Cost
+
+### Foreign Keys
+
+- DateKey
+- ProductKey
+- SupplierKey
+
+### Degenerate Dimension
+
+- PurchaseOrderID
+
+FactPurchases preserves historical acquisition costs and supports procurement, supplier, currency and landed-cost analysis.
 
 ---
 
@@ -429,6 +478,9 @@ DimSupplier         DimSalesChannel
 | DimSupplier | DimProduct | One-to-Many |
 | DimExpenseCategory | FactExpenses | One-to-Many |
 | DimSalesChannel | FactOrders | One-to-Many |
+| DimDate | FactPurchases | One-to-Many |
+| DimProduct | FactPurchases | One-to-Many |
+| DimSupplier | FactPurchases | One-to-Many |
 
 ---
 
@@ -480,6 +532,16 @@ This preserves historical financial accuracy even when product prices change ove
 Supplier information is maintained in a dedicated dimension linked to DimProduct.
 
 Although this introduces a small Snowflake structure, it reduces redundancy and supports supplier performance analysis.
+
+---
+
+### Separation of Product Attributes and Acquisition Costs
+
+DimProduct contains descriptive product attributes only.
+
+Supplier costs, exchange rates, freight charges and import duties belong to product acquisition events and are therefore stored within FactPurchases.
+
+Historical sales prices and the cost assigned at the time of sale remain within FactSales. This separation preserves analytical depth without treating changing financial values as permanent product attributes.
 
 ---
 

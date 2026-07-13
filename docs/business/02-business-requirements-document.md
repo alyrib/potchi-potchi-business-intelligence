@@ -154,6 +154,12 @@ Business readiness indicators for:
 - Future hiring
 - International expansion
 
+### Geographic Scope
+
+The initial scope of this project supports business operations within the United Kingdom only.
+
+Future business expansion into Ireland and other European markets is considered out of scope for the initial implementation but has been taken into account during the solution design.
+
 ---
 
 # 6. Stakeholders

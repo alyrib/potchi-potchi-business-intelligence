@@ -61,6 +61,7 @@ The Business Intelligence solution will require the following datasets.
 | Products | Product catalogue |
 | Orders | Order header information |
 | Order Items | Individual products sold within each order |
+| Purchases | Product acquisition and landed-cost transactions |
 | Inventory | Inventory management |
 | Expenses | Business operating expenses |
 | Suppliers | Supplier information |
@@ -114,37 +115,46 @@ Stores all products available for sale.
 ### Required Fields
 
 | Field | Data Type | Required |
-|---------|-----------|----------|
+|-------|-----------|----------|
 | ProductID | Integer | Yes |
 | ProductName | Text | Yes |
 | Brand | Text | Yes |
 | Collection | Text | Yes |
+| Character | Text | Yes |
 | Category | Text | Yes |
-| CurrentRetailPrice | Decimal | Yes |
-| CurrentCostPrice | Decimal | Yes |
+| MSRP | Decimal | No |
+| ReleaseYear | Integer | No |
+| Rarity | Text | Yes |
+| Material | Text | No |
+| RecommendedAge | Text | No |
+| IsBlindBox | Boolean | Yes |
+| ProductStatus | Text | Yes |
+| IsExclusive | Boolean | Yes |
+| IsLimitedEdition | Boolean | Yes |
 | SupplierID | Integer | Yes |
 
 ---
 
-## Orders
+## Order Items
 
 ### Purpose
 
-Stores information related to each customer order.
+Stores each product sold within an order.
 
-One row represents one order.
+One row represents one product line within one customer order. Historical transaction values are preserved to ensure that price changes and discounts do not alter previous sales results.
 
 ### Required Fields
 
 | Field | Data Type | Required |
-|---------|-----------|----------|
+|-------|-----------|----------|
+| OrderItemID | Integer | Yes |
 | OrderID | Integer | Yes |
-| CustomerID | Integer | Yes |
-| OrderDate | Date | Yes |
-| ShippingCost | Decimal | Yes |
-| Discount | Decimal | No |
-| PaymentMethod | Text | Yes |
-| OrderStatus | Text | Yes |
+| ProductID | Integer | Yes |
+| Quantity | Integer | Yes |
+| ListUnitPrice | Decimal | Yes |
+| UnitDiscountAmount | Decimal | Yes |
+| NetUnitPrice | Decimal | Yes |
+| UnitCostAtSale | Decimal | Yes |
 
 ---
 
@@ -167,6 +177,35 @@ Historical transaction values are preserved within this dataset to ensure accura
 | ProductID | Integer | Yes |
 | Quantity | Integer | Yes |
 | UnitPrice | Decimal | Yes |
+
+---
+
+## Purchases
+
+### Purpose
+
+Stores product acquisition transactions from suppliers.
+
+One row represents one product purchased within a supplier purchase order. This dataset preserves historical acquisition costs, exchange rates, freight charges and import-related costs.
+
+### Required Fields
+
+| Field | Data Type | Required |
+|-------|-----------|----------|
+| PurchaseLineID | Integer | Yes |
+| PurchaseOrderID | Integer | Yes |
+| PurchaseDate | Date | Yes |
+| SupplierID | Integer | Yes |
+| ProductID | Integer | Yes |
+| QuantityPurchased | Integer | Yes |
+| UnitCostOriginalCurrency | Decimal | Yes |
+| CurrencyCode | Text | Yes |
+| ExchangeRateToGBP | Decimal | Yes |
+| UnitCostGBP | Decimal | Yes |
+| FreightCostAllocated | Decimal | Yes |
+| ImportDutyAllocated | Decimal | Yes |
+| OtherLandedCostAllocated | Decimal | No |
+| TotalLandedCost | Decimal | Yes |
 
 ---
 
@@ -203,6 +242,8 @@ Stores business operating expenses.
 | Category | Text | Yes |
 | Description | Text | Yes |
 | Amount | Decimal | Yes |
+
+Note: Inventory acquisition costs must not be recorded within Expenses, as they are captured separately within the Purchases dataset. Expenses contains only non-inventory operating costs.
 
 ---
 
@@ -255,6 +296,7 @@ Establishing the correct level of granularity is essential to ensure accurate re
 | Products | One row per product | Each record represents a unique product available for sale. |
 | Orders | One row per order | Each record represents a completed customer order. |
 | Order Items | One row per product sold | Each record represents a single product included within an order. Multiple records may belong to the same order. |
+| Purchases | One row per product purchased within a supplier purchase order | Each record represents one product acquisition line with its historical purchase and landed costs. |
 | Inventory | One row per product | Each record represents the current inventory status of a product. |
 | Expenses | One row per expense transaction | Each record represents a single business expense. |
 | Suppliers | One row per supplier | Each record represents a supplier providing products to the business. |
@@ -290,6 +332,13 @@ The following business rules must always be respected.
 - Dates cannot be empty.
 - Every OrderItem must reference an existing Order.
 - Every Product must reference an existing Supplier.
+- QuantityPurchased must be greater than zero.
+- UnitCostGBP cannot be negative.
+- ExchangeRateToGBP must be greater than zero.
+- TotalLandedCost cannot be negative.
+- Every purchase must reference an existing Product and Supplier.
+- Inventory purchases must not also be recorded as operating expenses.
+- NetUnitPrice must equal ListUnitPrice minus UnitDiscountAmount.
 
 ---
 
@@ -319,6 +368,9 @@ The datasets will be connected using the following primary relationships.
 | Suppliers | Products | SupplierID |
 | Products | Inventory | ProductID |
 | Calendar | Orders | OrderDate |
+| Suppliers | Purchases | SupplierID |
+| Products | Purchases | ProductID |
+| Calendar | Purchases | PurchaseDate |
 
 These relationships will later be implemented within the Power BI semantic model.
 

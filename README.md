@@ -14,6 +14,40 @@ To support these decisions, this project develops a complete Business Intelligen
 
 ---
 
+## Project Development Lifecycle
+
+The project follows a structured Business Intelligence lifecycle inspired by real-world consulting and analytics projects.
+
+```text
+Market Research
+      ↓
+Business Requirements
+      ↓
+Data Requirements
+      ↓
+Dimensional Data Model
+      ↓
+Business Financial Assumptions
+      ↓
+Dataset Design
+      ↓
+Data Dictionary
+      ↓
+Dataset Creation
+      ↓
+Power Query
+      ↓
+Power BI Semantic Model
+      ↓
+DAX
+      ↓
+Dashboard Development
+      ↓
+Executive Presentation
+```
+
+---
+
 ## Company Profile
 
 **Potchi Potchi** is a fictional UK-based online retailer specialising in designer collectibles, blind boxes and art toys from leading Asian brands.
@@ -131,14 +165,25 @@ potchi-potchi-business-intelligence
 
 # Documentation
 
-| Document | Description | Version | Status
-|----------|-------------| --------- | ---------
-| Market Research | Evaluates the UK designer collectibles market, industry trends, competitors and business viability. | v0.1.0 | ✅ Completed
-| Business Requirements Document (BRD) | Defines business objectives, stakeholders, scope and business requirements. | v0.1.0 | ✅ Completed
-| Data Requirements Document (DRD) | Defines the data required to answer the identified business questions. | v0.1.0 | ✅ Completed
-| Business Financial Assumptions | Defines the financial assumptions that guide dataset generation and support realistic business simulation throughout the project. | v0.1.0 | ✅ Completed
-| Data Dictionary | Documents every table, column and data type used throughout the project. | Planned | ⬜ Pending
-| Business Presentation | Executive presentation summarising key findings and recommendations. | Planned | ⬜ Pending
+## Business Documentation
+
+| Document | Version | Status | Description |
+|----------|---------|--------|-------------|
+| 01 - Market Research | v0.1.0 | ✅ Completed | Analyses the UK collectibles market, competitors, customer trends and business viability. |
+| 02 - Business Requirements Document (BRD) | v0.1.0 | ✅ Completed | Defines the business objectives, scope, stakeholders and functional requirements for the project. |
+| 03 - Data Requirements Document (DRD) | v0.1.0 | ✅ Completed | Identifies the datasets, data sources, quality requirements and business questions the solution must answer. |
+| 04 - Dimensional Data Model | v0.1.0 | ✅ Completed | Documents the analytical data model, including fact tables, dimensions, relationships and modelling decisions. |
+| 05 - Business Financial Assumptions | v0.1.0 | ✅ Completed | Defines the financial assumptions that drive the business simulation, including investment, operating costs, growth and expansion scenarios. |
+
+## Technical Documentation
+
+| Document | Version | Status | Description |
+|----------|---------|--------|-------------|
+| 06 - Dataset Design Specification | v0.1.0 | 🟡 In Progress | Defines the structure, purpose, expected volume and technical design of each dataset before implementation. |
+| 07 - Data Dictionary | Planned | ⏳ Pending | Documents every field, data type, business definition and validation rule used throughout the project. |
+| 08 - Power Query Transformations | Planned | ⏳ Pending | Documents all ETL steps, data cleaning and transformation logic implemented in Power Query. |
+| 09 - DAX Documentation | Planned | ⏳ Pending | Documents calculated columns, measures and business logic implemented using DAX. |
+| 10 - Dashboard Specification | Planned | ⏳ Pending | Defines the dashboard layout, KPIs, visualisations and user experience before implementation. |
 
 ---
 
