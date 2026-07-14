@@ -597,6 +597,134 @@ The following values should be calculated rather than stored directly in `FactOr
 
 ---
 
+# 10. FactSales
+
+## Description
+
+Stores product-level sales transactions completed through Potchi Potchi customer orders.
+
+The table contains one row per product line sold within an order.
+
+`FactSales` preserves the historical selling price, product-level discount, cost assigned at the time of sale, platform fee and VAT amount associated with each transaction.
+
+Order-level information such as customer, sales channel, shipping, payment method and order-wide discounts is stored separately within `FactOrders`.
+
+For sealed blind boxes, the table records the commercial SKU purchased by the customer. It does not assume or infer which hidden variant was received.
+
+## Granularity
+
+**One row per product sold within a customer order.**
+
+A single order may therefore contain multiple `FactSales` records.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| OrderItemID | Integer | No | Unique identifier for the product line within an order. | 900001 | Primary key and sales-line counting |
+| OrderID | Integer | No | Identifier of the customer order containing the product line. | 500001 | Links the sales line to `FactOrders` |
+| ProductID | Integer | No | Identifier of the commercial product or SKU sold. | 2001 | Relationship with `DimProduct` |
+| Quantity | Integer | No | Number of units sold within the order line. | 2 | Units-sold and revenue calculations |
+| UnitRetailPrice | Decimal | No | Listed selling price per unit at the time of the transaction, before product-level discount. | 18.00 | Historical pricing and discount analysis |
+| UnitDiscountAmount | Decimal | No | Product-level discount applied to each unit. | 2.00 | Promotion and discount analysis |
+| NetUnitPrice | Decimal | No | Final selling price per unit after the product-level discount. | 16.00 | Net sales and revenue calculations |
+| UnitCostAtSale | Decimal | No | Historical inventory cost assigned to each unit at the time of sale. | 7.50 | Cost of Goods Sold and gross-profit calculations |
+| PlatformFeeAmount | Decimal | No | Actual sales-channel fee allocated to the order line. | 1.60 | Channel cost and profitability analysis |
+| VATAmount | Decimal | No | VAT amount associated with the sales line. | 5.33 | Tax and net-revenue analysis |
+
+## Pricing Definitions
+
+The monetary fields represent different stages of the transaction.
+
+| Field | Meaning |
+|---|---|
+| `UnitRetailPrice` | Price advertised by Potchi Potchi at the time of sale |
+| `UnitDiscountAmount` | Discount applied to one unit of the product |
+| `NetUnitPrice` | Amount charged per unit after the product-level discount |
+| `UnitCostAtSale` | Historical cost assigned to one unit when it was sold |
+| `PlatformFeeAmount` | Sales-channel fee charged for the completed transaction |
+| `VATAmount` | VAT included in or attributable to the sales line |
+
+`MSRP` remains within `DimProduct` as the manufacturer’s suggested retail-price reference and must not replace the historical transaction price.
+
+## Calculated Values
+
+The following financial values should be calculated rather than stored directly.
+
+| Calculated Value | Calculation | Purpose |
+|---|---|---|
+| Gross Line Revenue | `Quantity × UnitRetailPrice` | Revenue before product-level discount |
+| Line Discount Amount | `Quantity × UnitDiscountAmount` | Total product discount for the sales line |
+| Net Sales Amount | `Quantity × NetUnitPrice` | Revenue after product-level discount |
+| Cost of Goods Sold | `Quantity × UnitCostAtSale` | Historical inventory cost of units sold |
+| Gross Profit | `Net Sales Amount − Cost of Goods Sold` | Product-level profitability |
+| Gross Margin | `Gross Profit ÷ Net Sales Amount` | Product-level margin percentage |
+| Net Revenue Before Other Order Costs | `Net Sales Amount − VATAmount − PlatformFeeAmount` | Revenue after tax and platform fee |
+| Average Selling Price | `Net Sales Amount ÷ Quantity` | Average realised selling price |
+
+Order-level discounts, shipping revenue and shipping costs remain within `FactOrders` and must not be duplicated within `FactSales`.
+
+## Blind Box Treatment
+
+For sealed blind-box products, `ProductID` represents the commercial SKU purchased by the customer.
+
+Example:
+
+```text
+DIMOO Aquarium Blind Box
+```
+
+The transaction must not be recorded as a specific hidden variant unless the customer later provides that information through a separate service such as the Potchi Passport or Swap Club.
+
+### Blind Box Rules
+
+- `FactSales` records the SKU sold by Potchi Potchi.
+- The hidden character or variant received by the customer must not be inferred.
+- Batch numbers, box positions, weights or unofficial identification methods must not be treated as reliable variant data.
+- Customer-submitted variant information, when available, must be stored in a separate future dataset.
+- A duplicate hidden character does not alter the original sales transaction.
+
+## Historical Cost Treatment
+
+`UnitCostAtSale` preserves the cost assigned to inventory when the product was sold.
+
+The value is derived from purchasing and inventory valuation records and is stored within `FactSales` to ensure that historical profit remains stable when supplier prices, exchange rates, freight charges or import duties change.
+
+The current or most recent acquisition cost must not overwrite historical values.
+
+## Platform Fee Treatment
+
+The current platform fee rate is stored within `DimSalesChannel`.
+
+The actual platform fee charged on each completed transaction is preserved within `FactSales[PlatformFeeAmount]`.
+
+This separation ensures that historical channel profitability does not change when a platform updates its fee structure.
+
+## Business Rules
+
+- `OrderItemID` must be unique.
+- Every sales record must reference an existing order.
+- Every sales record must reference an existing product.
+- `Quantity` must be greater than zero.
+- `UnitRetailPrice` cannot be negative.
+- `UnitDiscountAmount` cannot be negative.
+- `UnitDiscountAmount` cannot exceed `UnitRetailPrice`.
+- `NetUnitPrice` must equal `UnitRetailPrice − UnitDiscountAmount`.
+- `NetUnitPrice` cannot be negative.
+- `UnitCostAtSale` cannot be negative.
+- `PlatformFeeAmount` cannot be negative.
+- `VATAmount` cannot be negative.
+- A completed order must contain at least one `FactSales` record.
+- Product-level discounts must be stored within `FactSales`.
+- Order-level discounts must remain within `FactOrders`.
+- Shipping revenue and shipping costs must remain within `FactOrders`.
+- Return and refund transactions must be recorded separately within `FactReturns`.
+- Product acquisition transactions must be recorded separately within `FactPurchases`.
+- `ProductID` must represent the commercial SKU sold rather than an unknown blind-box variant.
+- Historical prices and costs must never be overwritten by current catalogue or supplier values.
+
+---
+
 # Appendix
 
 ## Related Documents
