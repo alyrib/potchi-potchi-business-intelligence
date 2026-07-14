@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Data Requirements Document (DRD)  
-**Version:** v0.2.0  
+**Version:** v0.4.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -67,6 +67,8 @@ The Business Intelligence solution will require the following datasets.
 | Suppliers | Supplier information |
 | Sales Channels | Sales-channel attributes, ownership and platform fee rules |
 | Calendar | Date dimension |
+| Vendors | Service providers and non-inventory business payees |
+| Expense Categories | Standardised operating-expense classifications |
 
 ---
 
@@ -232,17 +234,27 @@ Stores inventory information.
 
 ### Purpose
 
-Stores business operating expenses.
+Stores non-inventory operating-expense transactions.
+
+One row represents one business expense transaction.
+
+Product purchases, freight, import duties and other directly attributable inventory-acquisition costs must not be recorded within this dataset, as they belong to the Purchases dataset.
 
 ### Required Fields
 
 | Field | Data Type | Required |
-|---------|-----------|----------|
+|-------|-----------|----------|
 | ExpenseID | Integer | Yes |
 | ExpenseDate | Date | Yes |
-| Category | Text | Yes |
-| Description | Text | Yes |
-| Amount | Decimal | Yes |
+| ExpenseCategoryID | Integer | Yes |
+| VendorID | Integer | Yes |
+| ExpenseDescription | Text | Yes |
+| ExpenseAmountOriginalCurrency | Decimal | Yes |
+| CurrencyCode | Text | Yes |
+| ExchangeRateToGBPAtPayment | Decimal | Yes |
+| ExpenseAmountGBP | Decimal | Yes |
+| PaymentMethod | Text | Yes |
+| ExpenseStatus | Text | Yes |
 
 Note: Inventory acquisition costs must not be recorded within Expenses, as they are captured separately within the Purchases dataset. Expenses contains only non-inventory operating costs.
 
@@ -288,6 +300,50 @@ One row represents one approved sales channel. The dataset centralises channel a
 
 ---
 
+## Vendors
+
+### Purpose
+
+Stores information about service providers and non-inventory business payees.
+
+Vendors provide operational services to Potchi Potchi but do not supply products intended for resale.
+
+Examples include Shopify, Meta, Shurgard, Canva and utility providers.
+
+### Required Fields
+
+| Field | Data Type | Required |
+|-------|-----------|----------|
+| VendorID | Integer | Yes |
+| VendorName | Text | Yes |
+| VendorCategory | Text | Yes |
+| Country | Text | Yes |
+| DefaultCurrencyCode | Text | Yes |
+| VendorStatus | Text | Yes |
+
+---
+
+## Expense Categories
+
+### Purpose
+
+Stores standardised business-expense classifications.
+
+Each category describes the nature, behaviour and recurrence of an operating expense.
+
+### Required Fields
+
+| Field | Data Type | Required |
+|-------|-----------|----------|
+| ExpenseCategoryID | Integer | Yes |
+| ExpenseCategoryName | Text | Yes |
+| ExpenseType | Text | Yes |
+| IsFixed | Boolean | Yes |
+| IsRecurring | Boolean | Yes |
+| IsDiscretionary | Boolean | Yes |
+
+---
+
 ## Calendar
 
 ### Purpose
@@ -322,10 +378,12 @@ Establishing the correct level of granularity is essential to ensure accurate re
 | Order Items | One row per product sold | Each record represents a single product included within an order. Multiple records may belong to the same order. |
 | Purchases | One row per product purchased within a supplier purchase order | Each record represents one product acquisition line with its historical purchase and landed costs. |
 | Inventory | One row per product | Each record represents the current inventory status of a product. |
-| Expenses | One row per expense transaction | Each record represents a single business expense. |
+| Expenses | One row per operating-expense transaction | Each record represents one non-inventory business expense paid or planned by Potchi Potchi. |
 | Suppliers | One row per supplier | Each record represents a supplier providing products to the business. |
 | Sales Channels | One row per sales channel | Each record represents one approved channel through which orders may be placed. |
 | Calendar | One row per calendar date | Each record represents a unique calendar day used for time intelligence calculations. |
+| Vendors | One row per vendor | Each record represents one operational service provider or non-inventory payee. |
+| Expense Categories | One row per expense category | Each record represents one standardised operating-expense classification. |
 
 ---
 
@@ -369,6 +427,16 @@ The following business rules must always be respected.
 - Every order must reference an existing sales channel.
 - Inventory purchases must not also be recorded as operating expenses.
 - NetUnitPrice must equal ListUnitPrice minus UnitDiscountAmount.
+- VendorID must be unique.
+- VendorName cannot be empty.
+- VendorStatus must be Active, On Hold or Inactive.
+- ExpenseCategoryID must be unique.
+- ExpenseCategoryName cannot be empty.
+- Every expense must reference an existing Vendor and Expense Category.
+- ExpenseAmountOriginalCurrency cannot be negative.
+- ExchangeRateToGBPAtPayment must be greater than zero.
+- ExpenseAmountGBP cannot be negative.
+- Inventory-acquisition costs must not be recorded within Expenses.
 
 ---
 
@@ -391,17 +459,19 @@ The following business rules must always be respected.
 The datasets will be connected using the following primary relationships.
 
 | Parent Table | Child Table | Key |
-|--------------|------------|-----|
+|---|---|---|
 | Customers | Orders | CustomerID |
 | Orders | Order Items | OrderID |
 | Products | Order Items | ProductID |
 | Suppliers | Products | SupplierID |
-| Products | Inventory | ProductID |
-| Calendar | Orders | OrderDate |
+| Products | Inventory Snapshot | ProductID |
+| Calendar | Orders | OrderDateKey |
 | Suppliers | Purchases | SupplierID |
 | Sales Channels | Orders | SalesChannelID |
 | Products | Purchases | ProductID |
-| Calendar | Purchases | PurchaseDate |
+| Calendar | Purchases | PurchaseDateKey |
+| Vendors | Expenses | VendorID |
+| Expense Categories | Expenses | ExpenseCategoryID |
 
 These relationships will later be implemented within the Power BI semantic model.
 
@@ -437,6 +507,8 @@ The following assumptions apply.
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.4.0 | 14 July 2026 | Alyssa Ribeiro | Added Vendors and Expense Categories datasets and revised the expense architecture. |
+| v0.3.0 | 14 July 2026 | Alyssa Ribeiro | Added the Sales Channels dataset and platform-fee requirements. |
 | v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |
 

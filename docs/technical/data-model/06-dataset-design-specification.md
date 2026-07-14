@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Dataset Design Specification  
-**Version:** v0.3.0  
+**Version:** v0.4.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -57,11 +57,13 @@ The project will contain eight primary datasets.
 | Customers | Dimension | 1,500 |
 | Products | Dimension | 120 |
 | Suppliers | Dimension | 12 |
+| Sales Channels | Dimension | 3–5 |
+| Vendors | Dimension | 10–20 |
+| Expense Categories | Dimension | 8–15 |
 | Orders | Fact | 6,000 |
 | Order Items / FactSales | Fact | 15,000–18,000 |
 | Purchases | Fact | 500–800 |
-| Sales Channels | Dimension | 3–5 |
-| Inventory Snapshot | Fact | 1,440 |
+| Inventory Snapshot | Fact | 1,440+ |
 | Expenses | Fact | 250 |
 
 The expected dataset volume represents approximately two years of business activity.
@@ -136,6 +138,50 @@ Stores supplier information.
 | Refresh | Monthly |
 | Primary Key | SupplierID |
 | Used By | Products, Expenses |
+
+---
+
+## Vendors.csv
+
+**Purpose**
+
+Stores operational service providers and non-inventory business payees.
+
+| Property | Value |
+|----------|-------|
+| Table Type | Dimension |
+| Granularity | One row per vendor |
+| Expected Rows | 10–20 |
+| Refresh | When a vendor is added or updated |
+| Primary Key | VendorID |
+| Used By | FactExpenses |
+
+### Notes
+
+Vendors must not include merchandise suppliers.
+
+Examples include Shopify, Meta, Canva, Shurgard and utility providers.
+
+---
+
+## ExpenseCategories.csv
+
+**Purpose**
+
+Stores standardised classifications for non-inventory operating expenses.
+
+| Property | Value |
+|----------|-------|
+| Table Type | Dimension |
+| Granularity | One row per expense category |
+| Expected Rows | 8–15 |
+| Refresh | When expense classifications change |
+| Primary Key | ExpenseCategoryID |
+| Used By | FactExpenses |
+
+### Notes
+
+The dataset distinguishes fixed, variable, recurring and discretionary operating costs.
 
 ---
 
@@ -244,16 +290,21 @@ Stores historical inventory levels.
 
 **Purpose**
 
-Stores operating expenses.
+Stores non-inventory operating-expense transactions.
 
 | Property | Value |
 |----------|-------|
 | Table Type | Fact |
-| Granularity | One row per expense transaction |
-| Expected Rows | 250 |
-| Refresh | Monthly |
+| Granularity | One row per operating-expense transaction |
+| Expected Rows | Approximately 250 |
+| Refresh | Monthly or per transaction |
 | Primary Key | ExpenseID |
-| Used By | Financial Dashboard |
+| Foreign Keys | DateKey, VendorID, ExpenseCategoryID |
+| Used By | Financial and profitability analysis |
+
+### Notes
+
+Inventory purchases and directly attributable landed costs must not be recorded within this dataset.
 
 ---
 
@@ -274,6 +325,8 @@ The datasets are connected through primary and foreign keys.
 | Products | Purchases | ProductID |
 | Suppliers | Purchases | SupplierID |
 | Sales Channels | Orders | SalesChannelID |
+| Vendors | Expenses | VendorID |
+| Expense Categories | Expenses | ExpenseCategoryID |
 
 Referential integrity should always be maintained.
 
@@ -346,6 +399,7 @@ Future enhancements may include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.4.0 | 14 July 2026 | Alyssa Ribeiro | Added Vendors and Expense Categories datasets and revised the expense architecture. |
 | v0.3.0 | 14 July 2026 | Alyssa Ribeiro | Added the Sales Channels dataset and channel-fee design. |
 | v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |
