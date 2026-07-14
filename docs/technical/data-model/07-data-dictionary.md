@@ -458,6 +458,7 @@ TikTok Shop
 Instagram
 Amazon Marketplace
 ```
+
 ## Potential ChannelType values include
 
 - Owned E-commerce
@@ -467,16 +468,16 @@ Amazon Marketplace
 
 ## Business Rules
 
-- SalesChannelID must be unique.
-- SalesChannelName cannot be empty.
-- PlatformFeeRate must be between 0 and 1.
-- LaunchDate cannot occur after the date of an order using that channel.
-- ChannelStatus must be Active, Planned or Inactive.
+- `SalesChannelID` must be unique.
+- `SalesChannelName` cannot be empty.
+- `PlatformFeeRate` must be between 0 and 1.
+- `LaunchDate` cannot occur after the date of an order using that channel.
+- `ChannelStatus` must be Active, Planned or Inactive.
 - FactOrders[SalesChannelID] must reference an existing sales channel.
-- PreferredChannel in DimCustomer represents customer preference and must not replace the transactional sales channel.
-- The current platform fee rate is stored within DimSalesChannel.
-- The historical platform fee amount charged on a completed sale must be preserved within FactSales.
-- 
+- `PreferredChannel` in `DimCustomer` represents customer preference and must not replace the transactional sales channel.
+- The current platform fee rate is stored within `DimSalesChannel`.
+- The historical platform fee amount charged on a completed sale must be preserved within `FactSales`.
+
 ---
 
 # 9. FactOrders
@@ -979,6 +980,240 @@ International sales expansion must not automatically be interpreted as internati
 - Customer sales must be recorded within `FactSales`.
 - Damaged inventory must remain included in physical stock but excluded from available-to-sell calculations.
 - Storage location is excluded from version 1 because inventory is assumed to be held in one active location at a time.
+
+---
+
+# 13. DimVendor
+
+## Description
+
+Stores descriptive attributes for operational service providers and non-inventory business payees.
+
+The table contains one row per vendor.
+
+Vendors differ from suppliers because they provide business services rather than merchandise intended for resale.
+
+Examples include Shopify, Meta, Canva, Shurgard and utility providers.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| VendorID | Integer | No | Unique vendor identifier. | 1 | Primary key and relationship with `FactExpenses` |
+| VendorName | Text | No | Vendor or service-provider name. | Shopify | Vendor-level expense analysis |
+| VendorCategory | Text | No | High-level vendor classification. | E-commerce Platform | Vendor segmentation |
+| Country | Text | No | Country in which the vendor operates or invoices Potchi Potchi. | United Kingdom | Geographic and currency-risk analysis |
+| DefaultCurrencyCode | Text | No | Default three-letter invoicing currency. | GBP | Currency analysis |
+| VendorStatus | Text | No | Current vendor status. | Active | Vendor filtering and operational analysis |
+
+## Business Rules
+
+- `VendorID` must be unique.
+- `VendorName` cannot be empty.
+- `DefaultCurrencyCode` must use a valid three-letter currency code.
+- `VendorStatus` must be `Active`, `On Hold` or `Inactive`.
+- Vendors must not include organisations that provide merchandise intended for resale.
+- Every expense must reference an existing vendor.
+- Vendor spending totals must be calculated from `FactExpenses`.
+
+---
+
+# 14. DimExpenseCategory
+
+## Description
+
+Stores standardised classifications for non-inventory operating expenses.
+
+The table contains one row per expense category.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| ExpenseCategoryID | Integer | No | Unique expense-category identifier. | 3 | Primary key and relationship with `FactExpenses` |
+| ExpenseCategoryName | Text | No | Standardised expense classification. | Marketing | Expense-category analysis |
+| ExpenseType | Text | No | High-level accounting or operational classification. | Operating Expense | Expense-type analysis |
+| IsFixed | Boolean | No | Indicates whether the expense is generally fixed. | False | Fixed versus variable cost analysis |
+| IsRecurring | Boolean | No | Indicates whether the expense normally repeats. | True | Recurring-cost analysis |
+| IsDiscretionary | Boolean | No | Indicates whether the expense can generally be reduced or postponed. | True | Cost-reduction and scenario analysis |
+
+## Initial Expense Categories
+
+Potential values include:
+
+```text
+Marketing
+Software
+Website and Domain
+Storage
+Packaging
+Accounting
+Insurance
+Utilities
+Professional Services
+```
+
+## Business Rules
+
+- `ExpenseCategoryID` must be unique.
+- `ExpenseCategoryName` cannot be empty.
+- Every expense must reference an existing expense category.
+- Inventory purchases must not be classified as operating expenses.
+- Platform fees must not be classified as operating expenses because they are transaction-level selling costs.
+
+---
+
+# 15. FactExpenses
+
+## Description
+
+Stores non-inventory operating expense transactions incurred by Potchi Potchi during business operations.
+
+The table contains one row per expense transaction.
+
+`FactExpenses` records historical operating costs such as marketing, software subscriptions, storage, website hosting, professional services, insurance and utilities.
+
+Inventory acquisition costs, freight, import duties and other directly attributable landed costs must not be stored within this table, as they belong to `FactPurchases`.
+
+## Granularity
+
+**One row per business expense transaction.**
+
+Each record represents a single operating expense paid or planned by Potchi Potchi.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| ExpenseID | Integer | No | Unique expense transaction identifier. | 100001 | Primary key |
+| ExpenseDateKey | Integer | No | Date on which the expense occurred, stored in `YYYYMMDD` format. | 20260714 | Relationship with `DimDate` |
+| ExpenseCategoryID | Integer | No | Expense classification. | 3 | Relationship with `DimExpenseCategory` |
+| VendorID | Integer | No | Service provider receiving the payment. | 7 | Relationship with `DimVendor` |
+| ExpenseDescription | Text | No | Short description of the expense. | July Instagram Campaign | Expense review and auditing |
+| ExpenseAmountOriginalCurrency | Decimal | No | Amount paid in the vendor's invoicing currency. | 120.00 | Historical expense analysis |
+| CurrencyCode | Text | No | Three-letter ISO currency code. | GBP | Currency reporting |
+| ExchangeRateToGBPAtPayment | Decimal | No | Historical exchange rate used for GBP conversion. | 1.000 | Currency conversion |
+| ExpenseAmountGBP | Decimal | No | Historical expense value converted into GBP. | 120.00 | Financial reporting |
+| PaymentMethod | Text | No | Method used to settle the expense. | Business Debit Card | Cash-flow analysis |
+| ExpenseStatus | Text | No | Current expense status. | Paid | Outstanding-expense monitoring |
+
+---
+
+## Expense Categories
+
+Examples include:
+
+```text
+Marketing
+Software
+Website and Domain
+Storage
+Packaging
+Accounting
+Insurance
+Utilities
+Professional Services
+```
+
+---
+
+## Expense Status Values
+
+Approved values may include:
+
+```text
+Planned
+Approved
+Paid
+Cancelled
+```
+
+---
+
+## Payment Method Values
+
+Initial approved values may include:
+
+```text
+Business Debit Card
+Business Credit Card
+Bank Transfer
+PayPal
+Direct Debit
+```
+
+---
+
+## Calculated Values
+
+The following values should be calculated rather than stored directly.
+
+| Calculated Value | Calculation | Purpose |
+|---|---|---|
+| Monthly Operating Expenses | Sum of `ExpenseAmountGBP` | Monthly financial reporting |
+| Annual Operating Expenses | Sum of `ExpenseAmountGBP` | Annual financial reporting |
+| Expense by Vendor | Sum of `ExpenseAmountGBP` grouped by Vendor | Vendor-spend analysis |
+| Expense by Category | Sum of `ExpenseAmountGBP` grouped by Expense Category | Operating-cost analysis |
+| Fixed Operating Costs | Sum where `IsFixed = True` | Fixed-cost analysis |
+| Variable Operating Costs | Sum where `IsFixed = False` | Variable-cost analysis |
+| Recurring Expenses | Sum where `IsRecurring = True` | Subscription and recurring-cost analysis |
+| Discretionary Spending | Sum where `IsDiscretionary = True` | Scenario planning and cost optimisation |
+
+---
+
+## Historical Currency Treatment
+
+All expense values represent historical financial transactions.
+
+Historical exchange rates are preserved to ensure that financial reporting remains consistent even when future currency fluctuations occur.
+
+Current exchange rates must never overwrite historical expense records.
+
+---
+
+## Expense Scope
+
+`FactExpenses` stores only operational expenditure.
+
+Examples include:
+
+- Website hosting
+- Shopify subscription
+- Marketing campaigns
+- Storage rental
+- Accounting services
+- Business insurance
+- Utilities
+- Software subscriptions
+
+The following must **not** be stored within `FactExpenses`:
+
+- Product purchases
+- Freight associated with inventory acquisition
+- Import duties
+- Customs charges
+- Other landed inventory costs
+- Platform fees charged per customer sale
+
+These belong to `FactPurchases` or `FactSales`, depending on the business process.
+
+---
+
+## Business Rules
+
+- `ExpenseID` must be unique.
+- Every expense must reference an existing vendor.
+- Every expense must reference an existing expense category.
+- `ExpenseDateKey` is mandatory.
+- `ExpenseAmountOriginalCurrency` cannot be negative.
+- `ExchangeRateToGBPAtPayment` must be greater than zero.
+- `ExpenseAmountGBP` cannot be negative.
+- `CurrencyCode` must use a valid three-letter ISO currency code.
+- `ExpenseStatus` must use an approved expense status.
+- Inventory acquisition costs must never be recorded within `FactExpenses`.
+- Platform fees charged on customer sales must remain within `FactSales`.
+- Product purchases must remain within `FactPurchases`.
+- Historical expense values must never be overwritten by current exchange rates.
 
 ---
 
