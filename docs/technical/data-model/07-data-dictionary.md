@@ -456,6 +456,7 @@ The first implementation may include:
 Website
 TikTok Shop
 Instagram
+Amazon Marketplace
 ```
 ## Potential ChannelType values include
 
@@ -478,6 +479,124 @@ Instagram
 - 
 ---
 
+# 9. FactOrders
+
+## Description
+
+Stores order-level transactional information for customer purchases placed through Potchi Potchi sales channels.
+
+The table contains one row per customer order.
+
+`FactOrders` records information that applies to the order as a whole, including customer, order dates, sales channel, payment method, shipping details, order-level discounts and gift-wrapping selection.
+
+Product-level sales values are stored separately within `FactSales`.
+
+Returns and refunds are stored separately within `FactReturns`.
+
+## Granularity
+
+**One row per customer order.**
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| OrderID | Integer | No | Unique order identifier. | 500001 | Primary key, order counting and order-level analysis |
+| CustomerID | Integer | No | Identifier of the customer who placed the order. | 1001 | Relationship with `DimCustomer` |
+| OrderDateKey | Integer | No | Date on which the order was placed, stored in `YYYYMMDD` format. | 20260714 | Active relationship with `DimDate` and order-date analysis |
+| ShippedDateKey | Integer | Yes | Date on which the order was dispatched, stored in `YYYYMMDD` format. | 20260716 | Processing-time and fulfilment analysis |
+| DeliveredDateKey | Integer | Yes | Date on which the order was delivered, stored in `YYYYMMDD` format. | 20260718 | Delivery-time and logistics analysis |
+| SalesChannelID | Integer | No | Identifier of the sales channel through which the order was placed. | 2 | Relationship with `DimSalesChannel` |
+| OrderStatus | Text | No | Current order lifecycle status. | Delivered | Order fulfilment and cancellation analysis |
+| PaymentMethod | Text | No | Payment method selected by the customer. | PayPal | Payment-method analysis |
+| ShippingMethod | Text | No | Delivery service or shipping option used for the order. | Royal Mail Tracked 48 | Shipping and carrier analysis |
+| DiscountCode | Text | Yes | Promotional code applied to the order, when applicable. | WELCOME10 | Promotion and campaign analysis |
+| OrderDiscountAmount | Decimal | No | Total discount applied at order level, excluding line-level product discounts. | 5.00 | Order-level discount and profitability calculations |
+| ShippingRevenue | Decimal | No | Amount charged to the customer for shipping. | 3.99 | Shipping revenue and order-profitability analysis |
+| ShippingCost | Decimal | No | Actual shipping amount paid by Potchi Potchi. | 4.65 | Shipping-cost and fulfilment-margin analysis |
+| GiftWrapping | Boolean | No | Indicates whether the customer requested gift wrapping. | True | Gift-service demand analysis |
+| OrderCurrency | Text | No | Three-letter currency code used for the transaction. | GBP | Currency filtering and future international expansion |
+
+## Date Relationships
+
+`OrderDateKey` will be the primary active relationship between `FactOrders` and `DimDate`.
+
+`ShippedDateKey` and `DeliveredDateKey` may be implemented as inactive relationships within the Power BI semantic model and activated within specific DAX measures when analysing fulfilment and delivery timelines.
+
+## Order Status Values
+
+Approved `OrderStatus` values may include:
+
+```text
+Pending
+Processing
+Shipped
+Delivered
+Cancelled
+```
+
+Returns should not be represented through `OrderStatus`, because return requests and refunds belong to the separate `FactReturns` business process.
+
+## Payment Method Values
+
+Initial approved values may include:
+
+```text
+Visa
+Mastercard
+PayPal
+Apple Pay
+Google Pay
+```
+
+## Shipping Method Values
+
+Initial approved values may include:
+
+```text
+Royal Mail Tracked 24
+Royal Mail Tracked 48
+DPD Next Day
+Evri Standard
+```
+
+## Derived Measures and Attributes
+
+The following values should be calculated rather than stored directly in `FactOrders`:
+
+| Derived Value | Calculation Source | Purpose |
+|---|---|---|
+| Total Orders | Count of `OrderID` | Order-volume analysis |
+| Order Revenue | Related `FactSales` records plus shipping revenue and order-level adjustments | Revenue analysis |
+| Average Order Value | Total order revenue divided by total orders | Customer-spend analysis |
+| Processing Days | Difference between `OrderDateKey` and `ShippedDateKey` | Fulfilment performance |
+| Delivery Days | Difference between `ShippedDateKey` and `DeliveredDateKey` | Carrier and delivery performance |
+| IsFirstOrder | Earliest order placed by each customer | New-customer analysis |
+| Shipping Margin | `ShippingRevenue` minus `ShippingCost` | Shipping profitability |
+
+## Business Rules
+
+- `OrderID` must be unique.
+- Every order must reference an existing customer.
+- Every order must reference an existing sales channel.
+- `OrderDateKey` is mandatory.
+- `ShippedDateKey` cannot occur before `OrderDateKey`.
+- `DeliveredDateKey` cannot occur before `ShippedDateKey`.
+- Orders with a status of `Pending`, `Processing` or `Cancelled` may have blank shipping and delivery dates.
+- `OrderDiscountAmount` cannot be negative.
+- `ShippingRevenue` cannot be negative.
+- `ShippingCost` cannot be negative.
+- `OrderCurrency` must use a valid three-letter currency code.
+- `DiscountCode` may be blank when no order-level promotion was applied.
+- Every completed order must contain at least one related record in `FactSales`.
+- Product-level discounts must not be stored within `OrderDiscountAmount`.
+- Product-level selling prices and quantities must be stored within `FactSales`.
+- Platform fee amounts must be stored within `FactSales`.
+- Returns and refunds must be recorded separately within `FactReturns`.
+- `PreferredChannel` in `DimCustomer` must not replace the transactional `SalesChannelID`.
+
+---
+
 # Appendix
 
 ## Related Documents
@@ -498,5 +617,6 @@ Instagram
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.1.0 | 14 July 2026 | Alyssa Ribeiro | Initial draft containing FactOrders definitions. |
 | v0.1.0 | 14 July 2026 | Alyssa Ribeiro | Initial draft containing dimension definitions, including DimSalesChannel. |
 | v0.1.0 | 13 July 2026 | Alyssa Ribeiro | Initial draft containing dimension tables and field definitions. |
