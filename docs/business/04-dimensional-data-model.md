@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Dimensional Data Model  
-**Version:** v0.1.0  
+**Version:** v0.3.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -199,8 +199,11 @@ Product sales.
 - Sales Amount
 - Cost of Goods Sold
 - Gross Profit
+- Platform Fee Amount
 
 `UnitCostAtSale` represents the historical inventory valuation assigned to the sale. It is derived from purchasing data and preserved within FactSales so that historical gross profit remains stable even when supplier costs change.
+
+`PlatformFeeAmount` preserves the transaction-level fee charged by the sales channel. This ensures that historical channel profitability remains accurate if platform fee rates change over time.
 
 ### Foreign Keys
 
@@ -391,15 +394,31 @@ The dimension supports future analysis including:
 
 ## DimSalesChannel
 
-Stores customer purchasing channels.
+Stores descriptive and commercial attributes for each approved sales channel.
 
-### Examples
+### Granularity
 
-- Website
-- Instagram
-- TikTok Shop
-- Marketplace
-- Collector Event
+One row per sales channel.
+
+The dimension supports analysis of:
+
+- Revenue by channel
+- Marketplace versus owned-channel performance
+- Platform fee rates
+- Channel profitability
+- Channel launch and operational status
+
+### Key Attributes
+
+- SalesChannelKey
+- SalesChannelID
+- SalesChannelName
+- ChannelType
+- IsOwnedChannel
+- IsMarketplace
+- PlatformFeeRate
+- LaunchDate
+- ChannelStatus
 
 ---
 
@@ -535,6 +554,14 @@ Although this introduces a small Snowflake structure, it reduces redundancy and 
 
 ---
 
+### Sales Channel Dimension
+
+Sales channels are maintained in a dedicated dimension because each channel has its own commercial and operational attributes, including ownership type, marketplace classification, launch date and platform fee rate.
+
+The current rate is stored in `DimSalesChannel`, while the fee amount charged on each historical transaction is preserved within `FactSales`.
+
+---
+
 ### Separation of Product Attributes and Acquisition Costs
 
 DimProduct contains descriptive product attributes only.
@@ -578,6 +605,8 @@ Potential future enhancements include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.3.0 | 14 July 2026 | Alyssa Ribeiro | Expanded DimSalesChannel and introduced transaction-level platform fee tracking. |
+| v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |
 
 ---

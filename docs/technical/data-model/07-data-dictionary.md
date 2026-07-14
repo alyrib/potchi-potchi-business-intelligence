@@ -425,6 +425,59 @@ The initial synthetic dataset will use plausible supplier ratings. A future vers
 
 ---
 
+# 8. DimSalesChannel
+
+## Description
+
+Stores descriptive and commercial attributes for the channels through which Potchi Potchi receives customer orders.
+
+The table contains one row per approved sales channel.
+
+A dedicated dimension is required because sales channels have their own attributes, including platform fees, ownership type, marketplace classification, launch dates and operational status.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| SalesChannelID | Integer | No | Unique sales-channel identifier. | 1 | Primary key and `FactOrders` relationship |
+| SalesChannelName | Text | No | Commercial channel name. | TikTok Shop | Channel-level analysis |
+| ChannelType | Text | No | High-level channel classification. | Social Commerce | Channel segmentation |
+| IsOwnedChannel | Boolean | No | Indicates whether Potchi Potchi directly owns and controls the channel. | False | Owned versus third-party analysis |
+| IsMarketplace | Boolean | No | Indicates whether the channel operates as a third-party marketplace. | True | Marketplace performance analysis |
+| PlatformFeeRate | Decimal | No | Current proportional platform fee charged on eligible sales. | 0.05 | Channel-cost planning |
+| LaunchDate | Date | No | Date on which the channel became available to customers. | 1 March 2026 | Channel adoption analysis |
+| ChannelStatus | Text | No | Current operational status. | Active | Active and planned channel filtering |
+
+## Initial Channel Values
+
+The first implementation may include:
+
+```text
+Website
+TikTok Shop
+Instagram
+```
+## Potential ChannelType values include
+
+- Owned E-commerce
+- Social Commerce
+- Social Referral
+- Marketplace
+
+## Business Rules
+
+- SalesChannelID must be unique.
+- SalesChannelName cannot be empty.
+- PlatformFeeRate must be between 0 and 1.
+- LaunchDate cannot occur after the date of an order using that channel.
+- ChannelStatus must be Active, Planned or Inactive.
+- FactOrders[SalesChannelID] must reference an existing sales channel.
+- PreferredChannel in DimCustomer represents customer preference and must not replace the transactional sales channel.
+- The current platform fee rate is stored within DimSalesChannel.
+- The historical platform fee amount charged on a completed sale must be preserved within FactSales.
+- 
+---
+
 # Appendix
 
 ## Related Documents
@@ -445,4 +498,5 @@ The initial synthetic dataset will use plausible supplier ratings. A future vers
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.1.0 | 14 July 2026 | Alyssa Ribeiro | Initial draft containing dimension definitions, including DimSalesChannel. |
 | v0.1.0 | 13 July 2026 | Alyssa Ribeiro | Initial draft containing dimension tables and field definitions. |

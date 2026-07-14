@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Business Financial Assumptions  
-**Version:** v0.1.1  
+**Version:** v0.1.2  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -139,6 +139,14 @@ The following costs are expected throughout business operations.
 > Inventory acquisition is treated separately from operating expenses. Product purchases, freight, import duties and other directly attributable landed costs will be recorded within the Purchases dataset.
 >
 > The Expenses dataset will contain only non-inventory operating costs such as marketing, software, storage, accounting and utilities.
+>
+>  **Sales Channel Fees**
+>
+>  Platform fees are treated as transaction-level variable selling costs and are directly attributable to individual customer orders.
+>
+> The current fee rate is maintained within the Sales Channel dimension, while the actual fee amount charged on each completed sale is preserved within the sales fact table.
+>
+> This approach prevents historical profitability from changing when platform fee rates are updated.
 
 ---
 
@@ -349,5 +357,6 @@ Future versions of this project may include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.1.2 | 14 July 2026 | Alyssa Ribeiro | Clarified the treatment of sales-channel platform fees. |
 | v0.1.1 | 13 July 2026 | Alyssa Ribeiro | Clarified the separation between inventory acquisition and operating expenses. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |

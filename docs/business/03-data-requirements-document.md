@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Data Requirements Document (DRD)  
-**Version:** v0.1.0  
+**Version:** v0.2.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -65,6 +65,7 @@ The Business Intelligence solution will require the following datasets.
 | Inventory | Inventory management |
 | Expenses | Business operating expenses |
 | Suppliers | Supplier information |
+| Sales Channels | Sales-channel attributes, ownership and platform fee rules |
 | Calendar | Date dimension |
 
 ---
@@ -264,6 +265,29 @@ Stores supplier information.
 
 ---
 
+## Sales Channels
+
+### Purpose
+
+Stores the sales channels through which customer orders are placed.
+
+One row represents one approved sales channel. The dataset centralises channel attributes and fee rules used for profitability analysis.
+
+### Required Fields
+
+| Field | Data Type | Required |
+|-------|-----------|----------|
+| SalesChannelID | Integer | Yes |
+| SalesChannelName | Text | Yes |
+| ChannelType | Text | Yes |
+| IsOwnedChannel | Boolean | Yes |
+| IsMarketplace | Boolean | Yes |
+| PlatformFeeRate | Decimal | Yes |
+| LaunchDate | Date | Yes |
+| ChannelStatus | Text | Yes |
+
+---
+
 ## Calendar
 
 ### Purpose
@@ -300,6 +324,7 @@ Establishing the correct level of granularity is essential to ensure accurate re
 | Inventory | One row per product | Each record represents the current inventory status of a product. |
 | Expenses | One row per expense transaction | Each record represents a single business expense. |
 | Suppliers | One row per supplier | Each record represents a supplier providing products to the business. |
+| Sales Channels | One row per sales channel | Each record represents one approved channel through which orders may be placed. |
 | Calendar | One row per calendar date | Each record represents a unique calendar day used for time intelligence calculations. |
 
 ---
@@ -337,6 +362,11 @@ The following business rules must always be respected.
 - ExchangeRateToGBP must be greater than zero.
 - TotalLandedCost cannot be negative.
 - Every purchase must reference an existing Product and Supplier.
+- SalesChannelID must be unique.
+- PlatformFeeRate must be between 0 and 1.
+- SalesChannelName cannot be empty.
+- ChannelStatus must be Active, Planned or Inactive.
+- Every order must reference an existing sales channel.
 - Inventory purchases must not also be recorded as operating expenses.
 - NetUnitPrice must equal ListUnitPrice minus UnitDiscountAmount.
 
@@ -369,6 +399,7 @@ The datasets will be connected using the following primary relationships.
 | Products | Inventory | ProductID |
 | Calendar | Orders | OrderDate |
 | Suppliers | Purchases | SupplierID |
+| Sales Channels | Orders | SalesChannelID |
 | Products | Purchases | ProductID |
 | Calendar | Purchases | PurchaseDate |
 
@@ -406,6 +437,7 @@ The following assumptions apply.
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |
 
 ---

@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Dataset Design Specification  
-**Version:** v0.1.0  
+**Version:** v0.3.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Draft
@@ -60,6 +60,7 @@ The project will contain eight primary datasets.
 | Orders | Fact | 6,000 |
 | Order Items / FactSales | Fact | 15,000–18,000 |
 | Purchases | Fact | 500–800 |
+| Sales Channels | Dimension | 3–5 |
 | Inventory Snapshot | Fact | 1,440 |
 | Expenses | Fact | 250 |
 
@@ -135,6 +136,29 @@ Stores supplier information.
 | Refresh | Monthly |
 | Primary Key | SupplierID |
 | Used By | Products, Expenses |
+
+---
+
+## SalesChannels.csv
+
+**Purpose**
+
+Stores approved sales channels and their commercial attributes.
+
+| Property | Value |
+|----------|-------|
+| Table Type | Dimension |
+| Granularity | One row per sales channel |
+| Expected Rows | 3–5 |
+| Refresh | When a channel or fee rule changes |
+| Primary Key | SalesChannelID |
+| Used By | FactOrders and channel-profitability analysis |
+
+### Notes
+
+The dimension stores the current platform fee rate and channel classification.
+
+Historical fee amounts charged on completed sales are preserved within `FactSales` so that past profitability does not change when platform rates are updated.
 
 ---
 
@@ -249,6 +273,7 @@ The datasets are connected through primary and foreign keys.
 | Calendar | Purchases | DateKey |
 | Products | Purchases | ProductID |
 | Suppliers | Purchases | SupplierID |
+| Sales Channels | Orders | SalesChannelID |
 
 Referential integrity should always be maintained.
 
@@ -269,6 +294,7 @@ Datasets follow a consistent naming convention.
 | Inventory Snapshot | InventorySnapshot.csv |
 | Expenses | Expenses.csv |
 | Purchases | Purchases.csv |
+| Sales Channels | SalesChannels.csv |
 
 ---
 
@@ -320,4 +346,6 @@ Future enhancements may include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.3.0 | 14 July 2026 | Alyssa Ribeiro | Added the Sales Channels dataset and channel-fee design. |
+| v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |
