@@ -5,7 +5,7 @@
 **Version:** v0.4.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
-**Status:** Draft
+**Status:** Completed
 
 ---
 

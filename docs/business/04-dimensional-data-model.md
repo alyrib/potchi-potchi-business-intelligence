@@ -2,10 +2,10 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Dimensional Data Model  
-**Version:** v0.3.0  
+**Version:** v0.4.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
-**Status:** Draft
+**Status:** Completed
 
 ---
 
@@ -88,7 +88,7 @@ flowchart TB
     subgraph Expenses["Expense Analysis"]
         FE[FactExpenses]
         FE --> DEC[DimExpenseCategory]
-        FE --> DS1[DimSupplier]
+        FE --> DV[DimVendor]
         FE --> DD4[DimDate]
     end
 
@@ -135,7 +135,6 @@ erDiagram
     DimProduct ||--o{ FactInventorySnapshot : "is recorded in"
 
     DimSupplier ||--o{ DimProduct : "supplies"
-    DimSupplier ||--o{ FactExpenses : "receives payments"
 
     DimSalesChannel ||--o{ FactOrders : "receives"
 
@@ -144,6 +143,9 @@ erDiagram
     DimDate ||--o{ FactPurchases : "filters"
     DimProduct ||--o{ FactPurchases : "is purchased in"
     DimSupplier ||--o{ FactPurchases : "supplies"
+
+    DimVendor ||--o{ FactExpenses : "receives payments"
+    DimExpenseCategory ||--o{ FactExpenses : "classifies"
 ```
 
 ### Relationship Conventions
@@ -308,21 +310,30 @@ Monthly snapshots preserve historical inventory levels while keeping the dataset
 
 ### Business Process
 
-Operating expenses.
+Non-inventory operating expenditure.
 
 ### Granularity
 
-**One row per expense transaction.**
+**One row per operating-expense transaction.**
 
 ### Measures
 
-- Expense Amount
+- Expense Amount in Original Currency
+- Expense Amount in GBP
 
 ### Foreign Keys
 
 - DateKey
 - ExpenseCategoryKey
-- SupplierKey
+- VendorKey
+
+### Degenerate Attributes
+
+- ExpenseDescription
+- PaymentMethod
+- ExpenseStatus
+
+FactExpenses excludes inventory purchases and directly attributable landed costs, which are stored within FactPurchases.
 
 ---
 
@@ -392,6 +403,26 @@ The dimension supports future analysis including:
 
 ---
 
+## DimVendor
+
+Stores descriptive attributes for service providers and non-inventory business payees.
+
+### Granularity
+
+One row per vendor.
+
+The dimension supports analysis of:
+
+- Operating expenditure by service provider
+- Vendor dependency
+- Currency exposure
+- Recurring service costs
+- Vendor status
+
+Vendors differ from suppliers because they provide operational services rather than products intended for resale.
+
+---
+
 ## DimSalesChannel
 
 Stores descriptive and commercial attributes for each approved sales channel.
@@ -424,17 +455,28 @@ The dimension supports analysis of:
 
 ## DimExpenseCategory
 
-Stores expense classifications.
+Stores standardised operating-expense classifications.
 
-### Examples
+### Granularity
 
-- Inventory Purchase
-- Storage
-- Marketing
-- Packaging
-- Website
-- Software
-- Accounting
+One row per expense category.
+
+The dimension supports analysis of:
+
+- Fixed versus variable expenses
+- Recurring versus non-recurring expenses
+- Discretionary versus essential expenditure
+- Expense trends by business function
+
+### Key Attributes
+
+- ExpenseCategoryKey
+- ExpenseCategoryID
+- ExpenseCategoryName
+- ExpenseType
+- IsFixed
+- IsRecurring
+- IsDiscretionary
 
 ---
 
@@ -499,7 +541,8 @@ DimSupplier         DimSalesChannel
 | DimSalesChannel | FactOrders | One-to-Many |
 | DimDate | FactPurchases | One-to-Many |
 | DimProduct | FactPurchases | One-to-Many |
-| DimSupplier | FactPurchases | One-to-Many |
+| DimVendor | FactExpenses | One-to-Many |
+| DimExpenseCategory | FactExpenses | One-to-Many |
 
 ---
 
@@ -572,6 +615,21 @@ Historical sales prices and the cost assigned at the time of sale remain within 
 
 ---
 
+### Separation of Suppliers and Vendors
+
+DimSupplier represents organisations that provide merchandise intended for resale.
+
+DimVendor represents organisations that provide operational services or receive non-inventory business payments.
+
+This separation prevents procurement analysis from being mixed with operating-expense analysis and preserves a clear business meaning for each dimension.
+
+Examples:
+
+- Product suppliers: authorised distributors, manufacturers and wholesalers
+- Operational vendors: Shopify, Meta, Canva, Shurgard and utility providers
+
+---
+
 # 11. Future Improvements
 
 Potential future enhancements include:
@@ -605,6 +663,7 @@ Potential future enhancements include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.4.0 | 14 July 2026 | Alyssa Ribeiro | Introduced DimVendor and expanded DimExpenseCategory to separate operational expenditure from merchandise procurement. |
 | v0.3.0 | 14 July 2026 | Alyssa Ribeiro | Expanded DimSalesChannel and introduced transaction-level platform fee tracking. |
 | v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
 | v0.1.0 | 13 July 2026 | Alyssa da Silva Ribeiro | Initial draft. |

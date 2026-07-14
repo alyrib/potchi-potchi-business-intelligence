@@ -1,3 +1,35 @@
+# 07. Data Dictionary
+
+**Project:** Potchi Potchi Business Intelligence  
+**Document:** Data Dictionary  
+**Version:** v0.2.0  
+**Author:** Alyssa da Silva Ribeiro  
+**Last Updated:** 14 July 2026  
+**Status:** Completed
+
+---
+
+## Table of Contents
+
+1. [Purpose](#1-purpose)
+2. [Naming Standards](#2-naming-standards)
+3. [Data Type Standards](#3-data-type-standards)
+4. [DimDate](#4-dimdate)
+5. [DimCustomer](#5-dimcustomer)
+6. [DimProduct](#6-dimproduct)
+7. [DimSupplier](#7-dimsupplier)
+8. [DimSalesChannel](#8-dimsaleschannel)
+9. [DimVendor](#13-dimvendor)
+10. [DimExpenseCategory](#14-dimexpensecategory)
+11. [FactOrders](#9-factorders)
+12. [FactSales](#10-factsales)
+13. [FactPurchases](#11-factpurchases)
+14. [FactInventorySnapshot](#12-factinventorysnapshot)
+15. [FactExpenses](#15-factexpenses)
+16. [Version Control](#16-version-control)
+
+---
+
 # 1. Purpose
 
 The purpose of this document is to define every field used throughout the Potchi Potchi Business Intelligence solution.
@@ -480,7 +512,87 @@ Amazon Marketplace
 
 ---
 
-# 9. FactOrders
+# 9. DimVendor
+
+## Description
+
+Stores descriptive attributes for operational service providers and non-inventory business payees.
+
+The table contains one row per vendor.
+
+Vendors differ from suppliers because they provide business services rather than merchandise intended for resale.
+
+Examples include Shopify, Meta, Canva, Shurgard and utility providers.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| VendorID | Integer | No | Unique vendor identifier. | 1 | Primary key and relationship with `FactExpenses` |
+| VendorName | Text | No | Vendor or service-provider name. | Shopify | Vendor-level expense analysis |
+| VendorCategory | Text | No | High-level vendor classification. | E-commerce Platform | Vendor segmentation |
+| Country | Text | No | Country in which the vendor operates or invoices Potchi Potchi. | United Kingdom | Geographic and currency-risk analysis |
+| DefaultCurrencyCode | Text | No | Default three-letter invoicing currency. | GBP | Currency analysis |
+| VendorStatus | Text | No | Current vendor status. | Active | Vendor filtering and operational analysis |
+
+## Business Rules
+
+- `VendorID` must be unique.
+- `VendorName` cannot be empty.
+- `DefaultCurrencyCode` must use a valid three-letter currency code.
+- `VendorStatus` must be `Active`, `On Hold` or `Inactive`.
+- Vendors must not include organisations that provide merchandise intended for resale.
+- Every expense must reference an existing vendor.
+- Vendor spending totals must be calculated from `FactExpenses`.
+
+---
+
+# 10. DimExpenseCategory
+
+## Description
+
+Stores standardised classifications for non-inventory operating expenses.
+
+The table contains one row per expense category.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| ExpenseCategoryID | Integer | No | Unique expense-category identifier. | 3 | Primary key and relationship with `FactExpenses` |
+| ExpenseCategoryName | Text | No | Standardised expense classification. | Marketing | Expense-category analysis |
+| ExpenseType | Text | No | High-level accounting or operational classification. | Operating Expense | Expense-type analysis |
+| IsFixed | Boolean | No | Indicates whether the expense is generally fixed. | False | Fixed versus variable cost analysis |
+| IsRecurring | Boolean | No | Indicates whether the expense normally repeats. | True | Recurring-cost analysis |
+| IsDiscretionary | Boolean | No | Indicates whether the expense can generally be reduced or postponed. | True | Cost-reduction and scenario analysis |
+
+## Initial Expense Categories
+
+Potential values include:
+
+```text
+Marketing
+Software
+Website and Domain
+Storage
+Packaging
+Accounting
+Insurance
+Utilities
+Professional Services
+```
+
+## Business Rules
+
+- `ExpenseCategoryID` must be unique.
+- `ExpenseCategoryName` cannot be empty.
+- Every expense must reference an existing expense category.
+- Inventory purchases must not be classified as operating expenses.
+- Platform fees must not be classified as operating expenses because they are transaction-level selling costs.
+
+---
+
+# 11. FactOrders
 
 ## Description
 
@@ -598,7 +710,7 @@ The following values should be calculated rather than stored directly in `FactOr
 
 ---
 
-# 10. FactSales
+# 12. FactSales
 
 ## Description
 
@@ -726,7 +838,7 @@ This separation ensures that historical channel profitability does not change wh
 
 ---
 
-# 11. FactPurchases
+# 13. FactPurchases
 
 ## Description
 
@@ -841,7 +953,7 @@ A separate purchase-order dimension is unnecessary because all relevant procurem
 
 ---
 
-# 12. FactInventorySnapshot
+# 14. FactInventorySnapshot
 
 ## Description
 
@@ -980,86 +1092,6 @@ International sales expansion must not automatically be interpreted as internati
 - Customer sales must be recorded within `FactSales`.
 - Damaged inventory must remain included in physical stock but excluded from available-to-sell calculations.
 - Storage location is excluded from version 1 because inventory is assumed to be held in one active location at a time.
-
----
-
-# 13. DimVendor
-
-## Description
-
-Stores descriptive attributes for operational service providers and non-inventory business payees.
-
-The table contains one row per vendor.
-
-Vendors differ from suppliers because they provide business services rather than merchandise intended for resale.
-
-Examples include Shopify, Meta, Canva, Shurgard and utility providers.
-
-## Fields
-
-| Field | Data Type | Nullable | Description | Example | Power BI Usage |
-|---|---|---|---|---|---|
-| VendorID | Integer | No | Unique vendor identifier. | 1 | Primary key and relationship with `FactExpenses` |
-| VendorName | Text | No | Vendor or service-provider name. | Shopify | Vendor-level expense analysis |
-| VendorCategory | Text | No | High-level vendor classification. | E-commerce Platform | Vendor segmentation |
-| Country | Text | No | Country in which the vendor operates or invoices Potchi Potchi. | United Kingdom | Geographic and currency-risk analysis |
-| DefaultCurrencyCode | Text | No | Default three-letter invoicing currency. | GBP | Currency analysis |
-| VendorStatus | Text | No | Current vendor status. | Active | Vendor filtering and operational analysis |
-
-## Business Rules
-
-- `VendorID` must be unique.
-- `VendorName` cannot be empty.
-- `DefaultCurrencyCode` must use a valid three-letter currency code.
-- `VendorStatus` must be `Active`, `On Hold` or `Inactive`.
-- Vendors must not include organisations that provide merchandise intended for resale.
-- Every expense must reference an existing vendor.
-- Vendor spending totals must be calculated from `FactExpenses`.
-
----
-
-# 14. DimExpenseCategory
-
-## Description
-
-Stores standardised classifications for non-inventory operating expenses.
-
-The table contains one row per expense category.
-
-## Fields
-
-| Field | Data Type | Nullable | Description | Example | Power BI Usage |
-|---|---|---|---|---|---|
-| ExpenseCategoryID | Integer | No | Unique expense-category identifier. | 3 | Primary key and relationship with `FactExpenses` |
-| ExpenseCategoryName | Text | No | Standardised expense classification. | Marketing | Expense-category analysis |
-| ExpenseType | Text | No | High-level accounting or operational classification. | Operating Expense | Expense-type analysis |
-| IsFixed | Boolean | No | Indicates whether the expense is generally fixed. | False | Fixed versus variable cost analysis |
-| IsRecurring | Boolean | No | Indicates whether the expense normally repeats. | True | Recurring-cost analysis |
-| IsDiscretionary | Boolean | No | Indicates whether the expense can generally be reduced or postponed. | True | Cost-reduction and scenario analysis |
-
-## Initial Expense Categories
-
-Potential values include:
-
-```text
-Marketing
-Software
-Website and Domain
-Storage
-Packaging
-Accounting
-Insurance
-Utilities
-Professional Services
-```
-
-## Business Rules
-
-- `ExpenseCategoryID` must be unique.
-- `ExpenseCategoryName` cannot be empty.
-- Every expense must reference an existing expense category.
-- Inventory purchases must not be classified as operating expenses.
-- Platform fees must not be classified as operating expenses because they are transaction-level selling costs.
 
 ---
 
@@ -1237,6 +1269,7 @@ These belong to `FactPurchases` or `FactSales`, depending on the business proces
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.2.0 | 14 July 2026 | Alyssa Ribeiro | Completed the initial Data Dictionary, including all dimensions, fact tables, business rules and field definitions. |
 | v0.1.0 | 14 July 2026 | Alyssa Ribeiro | Initial draft containing FactOrders definitions. |
 | v0.1.0 | 14 July 2026 | Alyssa Ribeiro | Initial draft containing dimension definitions, including DimSalesChannel. |
 | v0.1.0 | 13 July 2026 | Alyssa Ribeiro | Initial draft containing dimension tables and field definitions. |

@@ -152,8 +152,10 @@ potchi-potchi-business-intelligence
 | ✅ Market Research | Completed |
 | ✅ Business Requirements Document | Completed |
 | ✅ Data Requirements Document | Completed |
-| ✅ Data Modelling | Completed |
+| ✅ Dimensional Data Model | Completed |
 | ✅ Business Financial Assumptions | Completed |
+| ✅ Dataset Design Specification | Completed |
+| ✅ Data Dictionary | Completed |
 | 🟡 Dataset Creation | Pending |
 | ⬜ Power Query | Pending |
 | ⬜ Power BI Data Model | Pending |
@@ -171,16 +173,16 @@ potchi-potchi-business-intelligence
 |----------|---------|--------|-------------|
 | 01 - Market Research | v0.1.0 | ✅ Completed | Analyses the UK collectibles market, competitors, customer trends and business viability. |
 | 02 - Business Requirements Document (BRD) | v0.1.0 | ✅ Completed | Defines the business objectives, scope, stakeholders and functional requirements for the project. |
-| 03 - Data Requirements Document (DRD) | v0.3.0 | ✅ Completed | Identifies the datasets, data sources, quality requirements and business questions the solution must answer. |
-| 04 - Dimensional Data Model | v0.3.0 | ✅ Completed | Documents the analytical data model, including fact tables, dimensions, relationships and modelling decisions. |
-| 05 - Business Financial Assumptions | v0.1.2 | ✅ Completed | Defines the financial assumptions that drive the business simulation, including investment, operating costs, growth and expansion scenarios. |
+| 03 - Data Requirements Document (DRD) | v0.4.0 | ✅ Completed | Identifies the datasets, data sources, quality requirements and business questions the solution must answer. |
+| 04 - Dimensional Data Model | v0.4.0 | ✅ Completed | Documents the analytical data model, including fact tables, dimensions, relationships and modelling decisions. |
+| 05 - Business Financial Assumptions | v0.1.3 | ✅ Completed | Defines the financial assumptions that drive the business simulation, including investment, operating costs, growth and expansion scenarios. |
 
 ## Technical Documentation
 
 | Document | Version | Status | Description |
 |----------|---------|--------|-------------|
-| 06 - Dataset Design Specification | v0.3.0 | ✅ Completed | Defines the structure, purpose, expected volume and technical design of each dataset before implementation. |
-| 07 - Data Dictionary | Planned | v0.1.0 | 🟡 In Progress | Documents every field, data type, business definition and validation rule used throughout the project. |
+| 06 - Dataset Design Specification | v0.4.0 | ✅ Completed | Defines the structure, purpose, expected volume and technical design of each dataset before implementation. |
+| 07 - Data Dictionary | Planned | v0.2.0 | ✅ Completed | Documents every field, data type, business definition and validation rule used throughout the project. |
 | 08 - Power Query Transformations | Planned | ⏳ Pending | Documents all ETL steps, data cleaning and transformation logic implemented in Power Query. |
 | 09 - DAX Documentation | Planned | ⏳ Pending | Documents calculated columns, measures and business logic implemented using DAX. |
 | 10 - Dashboard Specification | Planned | ⏳ Pending | Defines the dashboard layout, KPIs, visualisations and user experience before implementation. |
