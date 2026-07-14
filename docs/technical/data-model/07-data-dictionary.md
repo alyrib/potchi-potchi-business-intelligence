@@ -840,6 +840,148 @@ A separate purchase-order dimension is unnecessary because all relevant procurem
 
 ---
 
+# 12. FactInventorySnapshot
+
+## Description
+
+Stores historical inventory positions for Potchi Potchi products.
+
+The table contains one row per product per inventory snapshot date.
+
+`FactInventorySnapshot` preserves the historical state of inventory, including physical stock, reserved units, damaged units, incoming stock, reorder thresholds and inventory cost.
+
+Unlike a current-stock table, inventory snapshots allow the business to analyse how stock levels changed over time without overwriting previous values.
+
+The initial implementation assumes that inventory is held in one active storage location at a time. Multi-location inventory remains outside the scope of version 1.
+
+## Granularity
+
+**One row per product per inventory snapshot date.**
+
+Monthly snapshots will normally be recorded on the final calendar day of each month.
+
+Additional snapshots may be recorded when a significant inventory event occurs, such as:
+
+- a product becoming out of stock;
+- a major restock;
+- a substantial stock adjustment;
+- a significant quantity of damaged inventory.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| InventorySnapshotID | Integer | No | Unique identifier for the inventory snapshot record. | 700001 | Primary key |
+| SnapshotDateKey | Integer | No | Date on which the inventory position was recorded, stored in `YYYYMMDD` format. | 20260731 | Relationship with `DimDate` and inventory trend analysis |
+| ProductID | Integer | No | Identifier of the product represented by the snapshot. | 2001 | Relationship with `DimProduct` |
+| UnitsInStock | Integer | No | Total physical quantity held in inventory at the snapshot date. | 24 | Stock-level and inventory-value analysis |
+| UnitsReserved | Integer | No | Quantity already allocated to customer orders but not yet dispatched. | 3 | Available-to-sell calculations |
+| UnitsDamaged | Integer | No | Quantity physically held but unavailable for sale because of damage. | 1 | Damaged-stock and supplier-quality analysis |
+| UnitsOnOrder | Integer | No | Quantity ordered from suppliers but not yet received. | 12 | Replenishment and incoming-stock analysis |
+| ReorderPoint | Integer | No | Sellable stock level at or below which replenishment should be considered. | 8 | Reorder alert calculations |
+| SafetyStock | Integer | No | Minimum stock quantity maintained to reduce stockout risk. | 5 | Safety-stock monitoring |
+| AverageUnitCost | Decimal | No | Average historical inventory cost per unit at the snapshot date. | 8.42 | Inventory valuation and profitability analysis |
+
+## Inventory Definitions
+
+The inventory fields represent different stock states.
+
+| Field | Meaning |
+|---|---|
+| `UnitsInStock` | Total physical quantity held by the business |
+| `UnitsReserved` | Units committed to orders but not yet dispatched |
+| `UnitsDamaged` | Units physically present but not available for sale |
+| `UnitsOnOrder` | Units purchased but not yet received |
+| `ReorderPoint` | Threshold used to trigger replenishment review |
+| `SafetyStock` | Minimum protective stock level |
+| `AverageUnitCost` | Average inventory cost assigned to one unit at the snapshot date |
+
+## Calculated Values
+
+The following values should be calculated rather than stored directly.
+
+| Calculated Value | Calculation | Purpose |
+|---|---|---|
+| Available to Sell | `UnitsInStock − UnitsReserved − UnitsDamaged` | Quantity currently available for customer orders |
+| Inventory Value | `UnitsInStock × AverageUnitCost` | Historical value of all physical inventory |
+| Sellable Inventory Value | `Available to Sell × AverageUnitCost` | Value of inventory available for sale |
+| Damaged Inventory Value | `UnitsDamaged × AverageUnitCost` | Financial impact of damaged stock |
+| Reorder Flag | `Available to Sell <= ReorderPoint` | Identifies products requiring replenishment review |
+| Safety Stock Breach | `Available to Sell < SafetyStock` | Identifies products below the minimum protective level |
+| Stockout Flag | `Available to Sell = 0` | Identifies products unavailable for sale |
+| Incoming Coverage | `UnitsOnOrder + Available to Sell` | Near-term expected stock availability |
+
+## Snapshot Frequency
+
+The initial implementation uses monthly inventory snapshots.
+
+Snapshots should normally be recorded on the final calendar day of each month.
+
+Additional event-based snapshots may be created when a product:
+
+- becomes unavailable for sale;
+- receives a significant restock;
+- experiences a material stock adjustment;
+- accumulates a significant quantity of damaged units.
+
+Monthly snapshots provide historical inventory visibility while keeping the dataset compact and suitable for Power BI reporting.
+
+## Historical Cost Treatment
+
+`AverageUnitCost` represents the historical average cost of inventory held on the snapshot date.
+
+The value may be derived from received purchasing transactions and the selected inventory valuation method.
+
+Current supplier prices, later exchange rates or future acquisition costs must not overwrite historical inventory snapshots.
+
+## Storage Location Scope
+
+The first version of the project assumes that Potchi Potchi uses one active storage location at a time.
+
+The expected operational progression is:
+
+```text
+Home Storage
+    ↓
+Shurgard Self Storage – Deptford
+```
+
+A storage-location field is not included because version 1 does not require simultaneous stock analysis across multiple locations.
+
+A future `DimStorageLocation` may be introduced if the business operates:
+
+- multiple storage units;
+- simultaneous home and external inventory;
+- warehouses in different regions;
+- international stock locations;
+- stock transfers between facilities.
+
+International sales expansion must not automatically be interpreted as international warehouse expansion.
+
+## Business Rules
+
+- `InventorySnapshotID` must be unique.
+- Each combination of `SnapshotDateKey` and `ProductID` must be unique.
+- Every snapshot must reference an existing product.
+- `SnapshotDateKey` is mandatory.
+- `UnitsInStock` cannot be negative.
+- `UnitsReserved` cannot be negative.
+- `UnitsDamaged` cannot be negative.
+- `UnitsOnOrder` cannot be negative.
+- `UnitsReserved + UnitsDamaged` cannot exceed `UnitsInStock`.
+- `ReorderPoint` cannot be negative.
+- `SafetyStock` cannot be negative.
+- `AverageUnitCost` cannot be negative.
+- Monthly snapshots should normally occur on the final calendar day of the month.
+- Historical snapshots must never be overwritten by current inventory values.
+- Current supplier prices must not replace historical `AverageUnitCost`.
+- Inventory purchases must be recorded within `FactPurchases`.
+- Customer sales must be recorded within `FactSales`.
+- Damaged inventory must remain included in physical stock but excluded from available-to-sell calculations.
+- Storage location is excluded from version 1 because inventory is assumed to be held in one active location at a time.
+
+---
+
 # Appendix
 
 ## Related Documents
