@@ -725,6 +725,121 @@ This separation ensures that historical channel profitability does not change wh
 
 ---
 
+# 11. FactPurchases
+
+## Description
+
+Stores historical inventory acquisition transactions from suppliers.
+
+The table contains one row per product purchased within a supplier purchase order.
+
+`FactPurchases` preserves the historical purchase cost, exchange rate, allocated landed costs and receiving information associated with each inventory acquisition.
+
+Unlike `FactSales`, which represents customer transactions, `FactPurchases` records procurement activities and supports inventory valuation, supplier analysis and profitability calculations.
+
+Purchase orders are treated as degenerate dimensions because all relevant purchasing attributes are stored directly within the fact table.
+
+## Granularity
+
+**One row per product purchased within a supplier purchase order.**
+
+A single purchase order may therefore contain multiple `FactPurchases` records.
+
+## Fields
+
+| Field | Data Type | Nullable | Description | Example | Power BI Usage |
+|---|---|---|---|---|---|
+| PurchaseLineID | Integer | No | Unique identifier for the purchase line. | 300001 | Primary key |
+| PurchaseOrderID | Text | No | Purchase order identifier. | PO-2026-001 | Procurement analysis and purchase grouping |
+| PurchaseDateKey | Integer | No | Purchase date stored in `YYYYMMDD` format. | 20260315 | Relationship with `DimDate` |
+| SupplierID | Integer | No | Supplier providing the inventory. | 4 | Relationship with `DimSupplier` |
+| ProductID | Integer | No | Product purchased from the supplier. | 2001 | Relationship with `DimProduct` |
+| QuantityPurchased | Integer | No | Number of units ordered from the supplier. | 120 | Procurement-volume analysis |
+| ReceivedQuantity | Integer | No | Number of units successfully received into inventory. | 118 | Supplier fulfilment analysis |
+| UnitCostOriginalCurrency | Decimal | No | Unit purchase cost in the supplier's original currency. | 80.00 | Historical purchasing analysis |
+| CurrencyCode | Text | No | Three-letter ISO currency code. | CNY | Currency analysis |
+| ExchangeRateToGBPAtPurchase | Decimal | No | Exchange rate applied when converting the purchase into GBP. | 0.107 | Historical currency conversion |
+| UnitCostGBP | Decimal | No | Historical purchase cost converted into GBP. | 8.56 | Inventory valuation |
+| AllocatedFreightCost | Decimal | No | Freight cost allocated to each purchased unit. | 0.45 | Landed-cost analysis |
+| ImportDutyAllocated | Decimal | No | Import duty allocated to each purchased unit. | 0.18 | Landed-cost analysis |
+| OtherLandedCostAllocated | Decimal | Yes | Other allocated acquisition costs such as insurance or customs brokerage. | 0.12 | Total landed-cost analysis |
+| PurchaseStatus | Text | No | Current purchase-order status. | Received | Procurement monitoring |
+
+## Procurement Cost Structure
+
+The complete landed cost of a purchased unit is calculated as:
+
+```text
+UnitCostGBP
++ AllocatedFreightCost
++ ImportDutyAllocated
++ OtherLandedCostAllocated
+```
+
+The total landed cost should be calculated rather than stored to avoid unnecessary redundancy.
+
+## Purchase Status Values
+
+Approved values may include:
+
+```text
+Ordered
+In Transit
+Partially Received
+Received
+Cancelled
+```
+
+## Calculated Values
+
+The following values should be calculated rather than stored.
+
+| Calculated Value | Calculation | Purpose |
+|---|---|---|
+| Total Purchase Cost | QuantityPurchased × UnitCostGBP | Procurement expenditure |
+| Total Freight Cost | QuantityPurchased × AllocatedFreightCost | Freight analysis |
+| Total Import Duty | QuantityPurchased × ImportDutyAllocated | Import-cost analysis |
+| Total Other Landed Costs | QuantityPurchased × OtherLandedCostAllocated | Procurement-cost analysis |
+| Total Landed Cost | QuantityPurchased × (UnitCostGBP + AllocatedFreightCost + ImportDutyAllocated + OtherLandedCostAllocated) | Inventory valuation |
+| Supplier Fill Rate | ReceivedQuantity ÷ QuantityPurchased | Supplier performance |
+
+## Historical Cost Treatment
+
+All monetary values represent historical purchasing information.
+
+Supplier price changes, exchange-rate fluctuations and future freight costs must never overwrite historical purchase records.
+
+This approach guarantees stable inventory valuation and accurate historical profitability.
+
+## Purchase Order Treatment
+
+`PurchaseOrderID` is treated as a **degenerate dimension**.
+
+A separate purchase-order dimension is unnecessary because all relevant procurement attributes are stored directly within `FactPurchases`.
+
+## Business Rules
+
+- `PurchaseLineID` must be unique.
+- Every purchase line must reference an existing supplier.
+- Every purchase line must reference an existing product.
+- `PurchaseDateKey` is mandatory.
+- `QuantityPurchased` must be greater than zero.
+- `ReceivedQuantity` cannot exceed `QuantityPurchased`.
+- `ReceivedQuantity` cannot be negative.
+- `UnitCostOriginalCurrency` cannot be negative.
+- `ExchangeRateToGBPAtPurchase` must be greater than zero.
+- `UnitCostGBP` cannot be negative.
+- `AllocatedFreightCost` cannot be negative.
+- `ImportDutyAllocated` cannot be negative.
+- `OtherLandedCostAllocated` cannot be negative.
+- `CurrencyCode` must use a valid three-letter ISO currency code.
+- `PurchaseStatus` must use an approved procurement status.
+- Inventory acquisition costs must not be recorded within `FactExpenses`.
+- Historical purchasing values must never be overwritten by current supplier prices.
+- Purchase orders are represented by `PurchaseOrderID` and must not require a separate dimension table.
+
+---
+
 # Appendix
 
 ## Related Documents
