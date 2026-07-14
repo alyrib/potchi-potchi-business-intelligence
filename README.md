@@ -204,6 +204,10 @@ Potential future enhancements include:
 - Supplier Performance Dashboard
 - Brazil Expansion Scenario Analysis
 - Financial Forecasting
+- Community Swap Club
+- Collector Profiles
+- Wishlist & Collection Tracker
+- Product Availability Alerts
 
 ---
 

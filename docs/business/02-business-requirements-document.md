@@ -334,6 +334,13 @@ These initiatives may become future Business Intelligence projects.
 - European Market Comparison
 - Executive Dashboard
 
+## Version 5
+
+- Community Swap Club
+- Collector Profiles
+- Wishlist & Collection Tracker
+- Product Availability Alerts
+
 ---
 
 # 14. Approval
