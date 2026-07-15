@@ -1,0 +1,1 @@
+JELLYCAT_PRODUCTS = []

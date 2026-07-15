@@ -1,0 +1,1 @@
+SANRIO_PRODUCTS = []

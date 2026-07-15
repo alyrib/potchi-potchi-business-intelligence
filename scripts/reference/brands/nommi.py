@@ -1,0 +1,1 @@
+NOMMI_PRODUCTS = []
