@@ -5,7 +5,12 @@ from __future__ import annotations
 import holidays
 import pandas as pd
 
-from config import END_DATE, START_DATE
+from config import (
+    CUSTOMER_COUNT,
+    END_DATE,
+    RANDOM_SEED,
+    START_DATE,
+)
 
 
 def _get_season(month: int) -> str:
@@ -652,3 +657,151 @@ def generate_dim_vendor() -> pd.DataFrame:
     ]
 
     return pd.DataFrame(data)
+
+
+def generate_dim_customer() -> pd.DataFrame:
+    """Generate the synthetic DimCustomer dataframe."""
+
+    from faker import Faker
+    import numpy as np
+
+    rng = np.random.default_rng(RANDOM_SEED + 200)
+    fake = Faker("en_GB")
+    Faker.seed(RANDOM_SEED + 200)
+
+    locations = [
+        ("London", "Greater London"),
+        ("Manchester", "North West England"),
+        ("Birmingham", "West Midlands"),
+        ("Leeds", "Yorkshire and the Humber"),
+        ("Glasgow", "Scotland"),
+        ("Liverpool", "North West England"),
+        ("Bristol", "South West England"),
+        ("Edinburgh", "Scotland"),
+        ("Cardiff", "Wales"),
+        ("Brighton", "South East England"),
+        ("Nottingham", "East Midlands"),
+        ("Newcastle upon Tyne", "North East England"),
+    ]
+
+    location_weights = np.array(
+        [0.30, 0.10, 0.09, 0.07, 0.06, 0.06, 0.06, 0.05, 0.05, 0.05, 0.05, 0.06]
+    )
+
+    acquisition_sources = [
+        "Instagram",
+        "TikTok",
+        "Organic Search",
+        "Google Ads",
+        "Referral",
+        "Friend Recommendation",
+    ]
+
+    acquisition_weights = [
+        0.28,
+        0.26,
+        0.18,
+        0.10,
+        0.08,
+        0.10,
+    ]
+
+    preferred_channels = [
+        "Website",
+        "Instagram",
+        "TikTok Shop",
+    ]
+
+    preferred_channel_weights = [
+        0.48,
+        0.14,
+        0.38,
+    ]
+
+    start_date = pd.Timestamp(START_DATE)
+    end_date = pd.Timestamp(END_DATE)
+
+    rows: list[dict[str, object]] = []
+
+    for customer_id in range(1001, 1001 + CUSTOMER_COUNT):
+        birth_date = pd.Timestamp(
+            fake.date_of_birth(
+                minimum_age=18,
+                maximum_age=65,
+            )
+        )
+
+        registration_date = pd.Timestamp(
+            rng.choice(
+                pd.date_range(
+                    start=start_date,
+                    end=end_date,
+                    freq="D",
+                )
+            )
+        )
+
+        age_at_end = end_date.year - birth_date.year - (
+            (end_date.month, end_date.day)
+            < (birth_date.month, birth_date.day)
+        )
+
+        if age_at_end <= 24:
+            age_group = "18–24"
+            generation = "Gen Z"
+        elif age_at_end <= 34:
+            age_group = "25–34"
+            generation = "Millennial"
+        elif age_at_end <= 44:
+            age_group = "35–44"
+            generation = "Millennial"
+        elif age_at_end <= 54:
+            age_group = "45–54"
+            generation = "Gen X"
+        elif age_at_end <= 64:
+            age_group = "55–64"
+            generation = "Gen X"
+        else:
+            age_group = "65+"
+            generation = "Baby Boomer"
+
+        city, region = locations[
+            rng.choice(
+                len(locations),
+                p=location_weights,
+            )
+        ]
+
+        loyalty_member = bool(rng.random() < 0.38)
+        marketing_opt_in = bool(rng.random() < 0.62)
+
+        rows.append(
+            {
+                "CustomerID": customer_id,
+                "FirstName": fake.first_name(),
+                "LastName": fake.last_name(),
+                "BirthDate": birth_date,
+                "AgeGroup": age_group,
+                "Generation": generation,
+                "City": city,
+                "Region": region,
+                "Country": "United Kingdom",
+                "RegistrationDate": registration_date,
+                "PreferredChannel": rng.choice(
+                    preferred_channels,
+                    p=preferred_channel_weights,
+                ),
+                "LoyaltyMember": loyalty_member,
+                "MarketingOptIn": marketing_opt_in,
+                "AcquisitionSource": rng.choice(
+                    acquisition_sources,
+                    p=acquisition_weights,
+                ),
+                "CustomerStatus": rng.choice(
+                    ["Active", "Inactive"],
+                    p=[0.88, 0.12],
+                ),
+            }
+        )
+
+    return pd.DataFrame(rows)
