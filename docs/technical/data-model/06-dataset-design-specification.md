@@ -2,7 +2,7 @@
 
 **Project:** Potchi Potchi Business Intelligence  
 **Document:** Dataset Design Specification  
-**Version:** v0.4.0  
+**Version:** v0.5.0  
 **Author:** Alyssa da Silva Ribeiro  
 **Last Updated:** 13 July 2026  
 **Status:** Completed
@@ -15,11 +15,12 @@
 2. Design Principles
 3. Dataset Overview
 4. Dataset Specifications
-5. Dataset Relationships
-6. Dataset Naming Convention
-7. Storage Structure
-8. Future Improvements
-9. Appendix
+5. Product Catalogue Reference Data
+6. Dataset Relationships
+7. Dataset Naming Convention
+8. Storage Structure
+9. Future Improvements
+10. Appendix
 
 ---
 
@@ -308,7 +309,30 @@ Inventory purchases and directly attributable landed costs must not be recorded 
 
 ---
 
-# 5. Dataset Relationships
+# 5. Product Catalogue Reference Data
+
+The synthetic product dimension is generated from a curated catalogue of real commercially available products within the designer collectibles market.
+
+The reference catalogue acts as the controlled source for all product attributes used during dataset generation.
+
+| Reference File | Purpose |
+|----------------|---------|
+| `data/reference/catalog_reference.csv` | Stores the curated catalogue of real products used to generate the `DimProduct` dataset. |
+
+The Python generator reads the reference catalogue and automatically assigns technical attributes such as:
+
+- ProductID
+- SupplierID
+- ProductStatus
+- Internal technical identifiers
+
+This approach separates business reference data from generation logic, making the project easier to maintain and expand over time.
+
+The reference catalogue contains only products that are commercially available during the project timeline and reflects the initial product offering of Potchi Potchi.
+
+---
+
+# 6. Dataset Relationships
 
 The datasets are connected through primary and foreign keys.
 
@@ -332,7 +356,7 @@ Referential integrity should always be maintained.
 
 ---
 
-# 6. Dataset Naming Convention
+# 7. Dataset Naming Convention
 
 Datasets follow a consistent naming convention.
 
@@ -351,7 +375,7 @@ Datasets follow a consistent naming convention.
 
 ---
 
-# 7. Storage Structure
+# 8. Storage Structure
 
 Datasets will be stored using CSV format.
 
@@ -366,7 +390,7 @@ Future versions may incorporate automated ETL pipelines.
 
 ---
 
-# 8. Future Improvements
+# 9. Future Improvements
 
 Future enhancements may include:
 
@@ -379,7 +403,7 @@ Future enhancements may include:
 
 ---
 
-# 9. Appendix
+# 10. Appendix
 
 ## Related Documents
 
@@ -399,6 +423,7 @@ Future enhancements may include:
 
 | Version | Date | Author | Description |
 |----------|------|--------|-------------|
+| v0.5.0 | 15 July 2026 | Alyssa Ribeiro | Added the Product Catalogue Reference Data section, documenting the reference-based product generation approach. |
 | v0.4.0 | 14 July 2026 | Alyssa Ribeiro | Added Vendors and Expense Categories datasets and revised the expense architecture. |
 | v0.3.0 | 14 July 2026 | Alyssa Ribeiro | Added the Sales Channels dataset and channel-fee design. |
 | v0.2.0 | 13 July 2026 | Alyssa Ribeiro | Added product purchasing fact table and separated product attributes, purchase costs and historical sales values. |
