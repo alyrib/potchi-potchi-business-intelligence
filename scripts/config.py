@@ -27,7 +27,7 @@ END_DATE = "2025-12-31"
 # ---------------------------------------------------------------------
 
 CUSTOMER_COUNT = 1_500
-PRODUCT_COUNT = 120
+PRODUCT_COUNT = 74
 SUPPLIER_COUNT = 12
 SALES_CHANNEL_COUNT = 3
 VENDOR_COUNT = 15

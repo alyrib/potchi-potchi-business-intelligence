@@ -417,3 +417,109 @@ def generate_dim_supplier() -> pd.DataFrame:
     ]
 
     return pd.DataFrame(data)
+
+
+def generate_dim_product(
+    master_catalog_path,
+    supplier_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Generate DimProduct from the controlled master catalogue."""
+
+    catalogue_df = pd.read_csv(master_catalog_path)
+
+    required_columns = [
+        "Brand",
+        "License",
+        "Character",
+        "Collection",
+        "ProductName",
+        "Category",
+        "SubCategory",
+        "Theme",
+        "ReleaseYear",
+        "MSRP",
+        "Material",
+        "RecommendedAge",
+        "IsBlindBox",
+        "IsLimitedEdition",
+        "IsExclusive",
+        "SourceURL",
+    ]
+
+    missing_columns = [
+        column
+        for column in required_columns
+        if column not in catalogue_df.columns
+    ]
+
+    if missing_columns:
+        raise ValueError(
+            "Master catalogue is missing required columns: "
+            + ", ".join(missing_columns)
+        )
+
+    if catalogue_df.empty:
+        raise ValueError("Master product catalogue cannot be empty.")
+
+    if catalogue_df["ProductName"].duplicated().any():
+        duplicated_products = catalogue_df.loc[
+            catalogue_df["ProductName"].duplicated(),
+            "ProductName",
+        ].tolist()
+
+        raise ValueError(
+            "Duplicate product names found: "
+            + ", ".join(duplicated_products)
+        )
+
+    df = catalogue_df.copy()
+
+    df.insert(
+        0,
+        "ProductID",
+        range(2001, 2001 + len(df)),
+    )
+
+    supplier_ids = supplier_df["SupplierID"].tolist()
+
+    # Assign suppliers cyclically to guarantee valid foreign keys
+    # and reasonable catalogue distribution.
+    df["SupplierID"] = [
+        supplier_ids[index % len(supplier_ids)]
+        for index in range(len(df))
+    ]
+
+    df["ProductStatus"] = "Active"
+
+    # Products released in 2025 remain active because the dataset
+    # covers the complete 2024–2025 operating period.
+    df.loc[
+        df["ReleaseYear"].notna()
+        & (df["ReleaseYear"] > 2025),
+        "ProductStatus",
+    ] = "Coming Soon"
+
+    df = df.drop(columns=["SourceURL"])
+
+    column_order = [
+        "ProductID",
+        "ProductName",
+        "Brand",
+        "License",
+        "Character",
+        "Collection",
+        "Category",
+        "SubCategory",
+        "Theme",
+        "SupplierID",
+        "ReleaseYear",
+        "MSRP",
+        "Material",
+        "RecommendedAge",
+        "IsBlindBox",
+        "ProductStatus",
+        "IsLimitedEdition",
+        "IsExclusive",
+    ]
+
+    return df[column_order]

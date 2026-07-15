@@ -8,6 +8,7 @@ from config import RAW_DATA_DIR
 from generators.dimensions import (
     generate_dim_date,
     generate_dim_expense_category,
+    generate_dim_product,
     generate_dim_sales_channel,
     generate_dim_supplier,
 )
@@ -20,6 +21,12 @@ def main() -> None:
     print("=" * 60)
 
     RAW_DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    master_catalog_path = (
+    RAW_DATA_DIR.parent
+    / "reference"
+    / "master_product_catalog.csv"
+    )
 
     print("\nGenerating DimDate...")
     dim_date = generate_dim_date()
@@ -81,6 +88,23 @@ def main() -> None:
     print(dim_supplier)
     print(f"\nRows generated: {len(dim_supplier):,}")
     print(f"Saved to: {supplier_output_path}")
+
+    print("\nGenerating DimProduct...")
+    dim_product = generate_dim_product(
+        master_catalog_path=master_catalog_path,
+        supplier_df=dim_supplier,
+    )
+
+    product_output_path = RAW_DATA_DIR / "DimProduct.csv"
+
+    dim_product.to_csv(
+        product_output_path,
+        index=False,
+    )
+
+    print(dim_product.head())
+    print(f"\nRows generated: {len(dim_product):,}")
+    print(f"Saved to: {product_output_path}")
 
     print("\nDone!")
 

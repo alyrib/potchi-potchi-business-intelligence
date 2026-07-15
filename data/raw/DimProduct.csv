@@ -1,0 +1,75 @@
+ProductID,ProductName,Brand,License,Character,Collection,Category,SubCategory,Theme,SupplierID,ReleaseYear,MSRP,Material,RecommendedAge,IsBlindBox,ProductStatus,IsLimitedEdition,IsExclusive
+2001,Disney Stitch Little Emotions Series Figures,POP MART,Disney,Stitch,Disney Stitch Little Emotions,Collectibles,Blind Box,Emotions,1,2025.0,17.99,PVC / ABS / Nylon,15+,True,Active,False,False
+2002,THE MONSTERS - Have a Seat Vinyl Plush Blind Box,POP MART,THE MONSTERS,Labubu,Have a Seat,Collectibles,Blind Box,Cozy,2,2024.0,17.99,PVC / Polyester / ABS,15+,True,Active,False,False
+2003,CRYBABY Crying Again Series Figures,POP MART,CRYBABY,CRYBABY,Crying Again,Collectibles,Blind Box,Emotions,3,2024.0,17.99,PVC / ABS,15+,True,Active,False,False
+2004,SKULLPANDA Winter Symphony Series Plush,POP MART,SKULLPANDA,SKULLPANDA,Winter Symphony,Collectibles,Blind Box,Winter,4,2024.0,17.99,PVC / ABS / Polyester,15+,True,Active,False,False
+2005,Amuseables Cinnamon Bun,Jellycat,Original,Cinnamon Bun,Amuseables Food and Drink,Collectibles,Plush,Dessert,5,,25.0,Polyester,All ages,False,Active,False,False
+2006,Amuseables Croissant,Jellycat,Original,Croissant,Amuseables Food and Drink,Collectibles,Plush,Bakery,6,,20.0,Polyester,All ages,False,Active,False,False
+2007,Amuseables Pain Au Chocolat,Jellycat,Original,Pain Au Chocolat,Amuseables Food and Drink,Collectibles,Plush,Bakery,7,,20.0,Polyester,All ages,False,Active,False,False
+2008,Amuseables Baguette,Jellycat,Original,Baguette,Amuseables Food and Drink,Collectibles,Plush,Bakery,8,,28.0,Polyester,All ages,False,Active,False,False
+2009,Amuseables Mia Macaron,Jellycat,Original,Mia Macaron,Amuseables Patisserie,Collectibles,Plush,Dessert,9,,20.0,Polyester,All ages,False,Active,False,False
+2010,Amuseables Peach,Jellycat,Original,Peach,Amuseables Fruit,Collectibles,Plush,Fruit,10,,23.0,Polyester,All ages,False,Active,False,False
+2011,Amuseables Horatio Pistachio,Jellycat,Original,Horatio Pistachio,Amuseables Food and Drink,Collectibles,Plush,Food,11,,20.0,Polyester,All ages,False,Active,False,False
+2012,Amuseables Graham Potato,Jellycat,Original,Graham Potato,Amuseables Food and Drink,Collectibles,Plush,Vegetable,12,,23.0,Polyester,All ages,False,Active,False,False
+2013,Amuseables Farfalle,Jellycat,Original,Farfalle,Amuseables Food and Drink,Collectibles,Plush,Pasta,1,,20.0,Polyester,All ages,False,Active,False,False
+2014,Amuseables Moon,Jellycat,Original,Moon,Amuseables Celestial,Collectibles,Plush,Celestial,2,,28.0,Polyester,All ages,False,Active,False,False
+2015,mofusand HIPPERS Blind Box,Mofusand,Mofusand,Mofusand,HIPPERS,Collectibles,Blind Box,Everyday Life,3,2024.0,17.99,ATBC-PVC,15+,True,Active,False,False
+2016,mofusand HIPPERS Vol. 2 Shrimp Meow Series Blind Box,Mofusand,Mofusand,Shrimp Meow,HIPPERS Vol. 2 Shrimp Meow Series,Collectibles,Blind Box,Seafood,4,2025.0,17.99,ATBC-PVC,15+,True,Active,False,False
+2017,mofusand Fruits Meow Figure Collection,Mofusand,Mofusand,Fruit Meow,Fruits Meow,Collectibles,Figure,Fruit,5,2025.0,29.99,PVC,15+,False,Active,False,False
+2018,mofusand x Sanrio Characters Cosplay Figure 2,Mofusand,Sanrio,Mofusand x Sanrio Characters,Sanrio Characters Cosplay Figure 2,Collectibles,Figure,Sanrio Collaboration,6,2024.0,29.99,PVC,15+,False,Active,False,False
+2019,mofusand x Sanrio Characters Cosplay Figure 3,Mofusand,Sanrio,Mofusand x Sanrio Characters,Sanrio Characters Cosplay Figure 3,Collectibles,Figure,Sanrio Collaboration,7,2025.0,29.99,PVC,15+,False,Active,False,False
+2020,mofusand Chubby Shark Meow Plush S,Mofusand,Mofusand,Shark Meow,Shark Meow,Collectibles,Plush,Ocean,8,,29.99,Polyester,3+,False,Active,False,False
+2021,mofusand Rolly Shrimp Meow Plush,Mofusand,Mofusand,Shrimp Meow,Shrimp Meow,Collectibles,Plush,Seafood,9,,34.99,Polyester / PE,3+,False,Active,False,False
+2022,mofusand Stationmaster Meow Plush S,Mofusand,Mofusand,Stationmaster Meow,Mofumofu Station,Collectibles,Plush,Travel,10,,29.99,Polyester,3+,False,Active,False,False
+2023,mofusand Angry Chili Meow Standing Plush,Mofusand,Mofusand,Chili Meow,Meows and Foods,Collectibles,Plush,Food,11,,29.99,Polyester / Nylon / PE,3+,False,Active,False,False
+2024,mofusand MERCI STRAWBERRY Plush Red Strawberry,Mofusand,Mofusand,Strawberry Meow,MERCI STRAWBERRY,Collectibles,Plush,Strawberry,12,,29.99,Polyester / Cotton / ABS,3+,False,Active,False,False
+2025,Baby Three Elf Series Plush Blind Box,Baby Three,Baby Three,Baby Three,Elf Series,Collectibles,Blind Box,Fantasy,1,,17.99,,,True,Active,False,False
+2026,Baby Three Billionaire Cat Plush Blind Box,Baby Three,Baby Three,Baby Three,Billionaire Cat,Collectibles,Blind Box,Luxury Cats,2,,17.99,,,True,Active,False,False
+2027,Baby Three De Lovely Plush Blind Box,Baby Three,Baby Three,Baby Three,De Lovely,Collectibles,Blind Box,Romance,3,,17.99,,,True,Active,False,False
+2028,Baby Three Twelve Zodiac V2 Plush Blind Box,Baby Three,Baby Three,Baby Three,Twelve Zodiac V2,Collectibles,Blind Box,Zodiac,4,,17.99,,,True,Active,False,False
+2029,Baby Three Where's Spring? Plush Blind Box,Baby Three,Baby Three,Baby Three,Where's Spring?,Collectibles,Blind Box,Spring,5,,17.99,,,True,Active,False,False
+2030,Baby Three Alice Rabbit Town Plush Blind Box,Baby Three,Baby Three,Baby Three,Alice Rabbit Town,Collectibles,Blind Box,Fairy Tale,6,,17.99,,,True,Active,False,False
+2031,Baby Three Mini Tiny Rabbit Plush Blind Box,Baby Three,Baby Three,Baby Three,Mini Tiny Rabbit,Collectibles,Blind Box,Rabbits,7,,17.99,,,True,Active,False,False
+2032,Baby Three Baby Dragon Plush Blind Box,Baby Three,Baby Three,Baby Three,Baby Dragon,Collectibles,Blind Box,Dragons,8,,17.99,,,True,Active,False,False
+2033,Baby Three Mini Lolita's Dream Plush Blind Box,Baby Three,Baby Three,Baby Three,Mini Lolita's Dream,Collectibles,Blind Box,Lolita Fashion,9,,17.99,,,True,Active,False,False
+2034,Baby Three Magic Mirror V2 Plush Blind Box,Baby Three,Baby Three,Baby Three,Magic Mirror V2,Collectibles,Blind Box,Magic,10,,17.99,,,True,Active,False,False
+2035,EMMA Secret Forest Coffee Shop Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Coffee Shop,Collectibles,Blind Box,Coffee Shop,11,,17.99,,,True,Active,False,False
+2036,EMMA Secret Forest Tea Party Collector's Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Tea Party Collector's Series,Collectibles,Blind Box,Tea Party,12,,17.99,,,True,Active,False,False
+2037,EMMA Secret Forest River of Time Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,River of Time,Collectibles,Blind Box,Time and Memory,1,,17.99,,,True,Active,False,False
+2038,EMMA Secret Forest Masked Ball Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Masked Ball,Collectibles,Blind Box,Masquerade,2,,17.99,,,True,Active,False,False
+2039,EMMA Secret Forest Blizzard Manor Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Blizzard Manor,Collectibles,Blind Box,Winter,3,,17.99,,,True,Active,False,False
+2040,EMMA Secret Forest Garden Dating Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Garden Dating,Collectibles,Blind Box,Garden Romance,4,,17.99,,,True,Active,False,False
+2041,EMMA Secret Forest Dim Lights Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Dim Lights,Collectibles,Blind Box,Lanterns,5,,17.99,PVC,14+,True,Active,False,False
+2042,EMMA Secret Forest Wedding Party Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Wedding Party,Collectibles,Blind Box,Wedding,6,,17.99,,,True,Active,False,False
+2043,EMMA Secret Forest Love Dopamine Series Blind Box,Lucky Emma,EMMA Secret Forest,Emma,Love Dopamine,Collectibles,Blind Box,Love and Colour,7,2025.0,17.99,,,True,Active,False,False
+2044,LOVELY EMMA Flavor Twist Series Blind Box,Lucky Emma,LOVELY EMMA,Emma,Flavor Twist,Collectibles,Blind Box,Food and Flavours,8,2025.0,17.99,,,True,Active,False,False
+2045,Nommi Interesting Fruits Plush Blind Box,Nommi,Nommi,Nommi,Interesting Fruits,Collectibles,Blind Box,Fruit,9,,17.99,Polyester Fur / ABS / Fibre Plush,15+,True,Active,False,False
+2046,Nommi Loveliness Never Ends Series Plush Blind Box,Nommi,Nommi,Nommi,Loveliness Never Ends,Collectibles,Blind Box,Love,10,,17.99,,,True,Active,False,False
+2047,Nommi Fantasy World Series Plush Keychain Blind Box,Nommi,Nommi,Nommi,Fantasy World,Collectibles,Blind Box,Fantasy,11,,17.99,,,True,Active,False,False
+2048,Nommi Weather Forecast Series Plush Doll Blind Box,Nommi,Nommi,Nommi,Weather Forecast,Collectibles,Blind Box,Weather,12,,17.99,,,True,Active,False,False
+2049,Nommi Puppy Diary Series Plush Blind Box,Nommi,Nommi,Nommi,Puppy Diary,Collectibles,Blind Box,Puppies,1,,17.99,,,True,Active,False,False
+2050,Nommi About the Childhood Series Plush Pendant Blind Box,Nommi,Nommi,Nommi,About the Childhood,Collectibles,Blind Box,Childhood,2,,17.99,,,True,Active,False,False
+2051,Nommi Pinky Energy Series Plush Doll Blind Box,Nommi,Nommi,Nommi,Pinky Energy,Collectibles,Blind Box,Pink Fantasy,3,,17.99,,,True,Active,False,False
+2052,Nommi x Heymi The Entwined Fate Series Plush Doll Blind Box,Nommi,Nommi x Heymi,Nommi,The Entwined Fate,Collectibles,Blind Box,Fate and Friendship,4,,17.99,,,True,Active,False,False
+2053,Nommi Baby Sweetheart Bunny Plush Keychain Blind Box,Nommi,Nommi,Nommi,Sweetheart Bunny,Collectibles,Blind Box,Bunnies,5,,17.99,,,True,Active,False,False
+2054,Nommi Mibao Fairytale Town Plush Doll Blind Box,Nommi,Nommi,Nommi,Mibao Fairytale Town,Collectibles,Blind Box,Fairy Tale,6,,17.99,,,True,Active,False,False
+2055,Rolife Nanci Museum of Fantasy Surprise Figure Blind Box,Rolife,Nanci,Nanci,Museum of Fantasy,Collectibles,Blind Box,Fantasy,7,,17.99,PVC,,True,Active,False,False
+2056,Rolife Nanci Chinese Poetry Surprise Figure Blind Box,Rolife,Nanci,Nanci,Chinese Poetry,Collectibles,Blind Box,Chinese Poetry,8,,17.99,PVC,,True,Active,False,False
+2057,Rolife Nanci Flower Stories Surprise Figure Blind Box,Rolife,Nanci,Nanci,Flower Stories,Collectibles,Blind Box,Flowers,9,,17.99,PVC,,True,Active,False,False
+2058,Rolife Nanci Sweet Time Surprise Figure Blind Box,Rolife,Nanci,Nanci,Sweet Time,Collectibles,Blind Box,Sweets,10,,17.99,,,True,Active,False,False
+2059,Rolife Nanci Best Wishes Surprise Figure Blind Box,Rolife,Nanci,Nanci,Best Wishes,Collectibles,Blind Box,Celebration,11,,17.99,,,True,Active,False,False
+2060,Rolife Baby Nanci Fruits Surprise Figure Blind Box,Rolife,Nanci,Nanci,Baby Nanci Fruits,Collectibles,Blind Box,Fruit,12,,17.99,,,True,Active,False,False
+2061,Rolife Nanci Tea Time Kitties Surprise Plush Blind Box,Rolife,Nanci,Nanci,Tea Time Kitties,Collectibles,Blind Box,Cats and Tea,1,,29.99,,,True,Active,False,False
+2062,Rolife Nanci Colorful Chocolate Cutie Bears Surprise Plush Blind Box,Rolife,Nanci,Nanci,Colorful Chocolate Cutie Bears,Collectibles,Blind Box,Chocolate Bears,2,,29.99,,,True,Active,False,False
+2063,Rolife Nanci Shining Bunny Surprise Plush Blind Box,Rolife,Nanci,Nanci,Shining Bunny,Collectibles,Blind Box,Bunnies,3,,29.99,,,True,Active,False,False
+2064,Rolife Nanci Fruit Mood Surprise Plush Pendant Blind Box,Rolife,Nanci,Nanci,Fruit Mood,Collectibles,Blind Box,Fruit,4,,29.99,,,True,Active,False,False
+2065,"Hello Kitty 6"" Small Classic Plush",Sanrio,Sanrio,Hello Kitty,Sanrio Original Series,Collectibles,Plush,Classic Kawaii,5,,24.99,Polyester,All ages,False,Active,False,False
+2066,"My Melody 6"" Small Classic Plush",Sanrio,Sanrio,My Melody,Sanrio Original Series,Collectibles,Plush,Pastel Kawaii,6,,24.99,Polyester,All ages,False,Active,False,False
+2067,"Kuromi 6"" Small Classic Plush",Sanrio,Sanrio,Kuromi,Sanrio Original Series,Collectibles,Plush,Gothic Kawaii,7,,24.99,Polyester,All ages,False,Active,False,False
+2068,"Cinnamoroll 6"" Small Classic Plush",Sanrio,Sanrio,Cinnamoroll,Sanrio Original Series,Collectibles,Plush,Clouds and Dreams,8,,24.99,Polyester,All ages,False,Active,False,False
+2069,"Pompompurin 6"" Small Classic Plush",Sanrio,Sanrio,Pompompurin,Sanrio Original Series,Collectibles,Plush,Cozy,9,,24.99,Polyester,All ages,False,Active,False,False
+2070,"Pochacco 6"" Small Classic Plush",Sanrio,Sanrio,Pochacco,Sanrio Original Series,Collectibles,Plush,Sporty Kawaii,10,,24.99,Polyester,All ages,False,Active,False,False
+2071,"Badtz-maru 6"" Small Classic Plush",Sanrio,Sanrio,Badtz-maru,Sanrio Original Series,Collectibles,Plush,Mischievous,11,,24.99,Polyester,All ages,False,Active,False,False
+2072,"Pekkle 6"" Small Classic Plush",Sanrio,Sanrio,Pekkle,Sanrio Original Series,Collectibles,Plush,Relaxed,12,,24.99,Polyester,All ages,False,Active,False,False
+2073,"Hangyodon 6"" Small Classic Plush",Sanrio,Sanrio,Hangyodon,Sanrio Original Series,Collectibles,Plush,Ocean,1,,24.99,Polyester,All ages,False,Active,False,False
+2074,"Cinnamoroll 9"" Plush",Sanrio,Sanrio,Cinnamoroll,Sanrio Academy Series,Collectibles,Plush,School,2,,34.99,Polyester,All ages,False,Active,False,False
