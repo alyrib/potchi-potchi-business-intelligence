@@ -156,8 +156,8 @@ potchi-potchi-business-intelligence
 | ✅ Business Financial Assumptions | Completed |
 | ✅ Dataset Design Specification | Completed |
 | ✅ Data Dictionary | Completed |
-| 🟡 Dataset Creation | Pending |
-| ⬜ Power Query | Pending |
+| ✅ Dataset Creation | Completed|
+| 🟡 Power Query | Pending |
 | ⬜ Power BI Data Model | Pending |
 | ⬜ DAX Measures | Pending |
 | ⬜ Dashboard Development | Pending |
