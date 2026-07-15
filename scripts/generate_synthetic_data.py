@@ -9,6 +9,7 @@ from generators.dimensions import (
     generate_dim_date,
     generate_dim_expense_category,
     generate_dim_sales_channel,
+    generate_dim_supplier,
 )
 
 
@@ -66,6 +67,20 @@ def main() -> None:
     print(dim_sales_channel)
     print(f"\nRows generated: {len(dim_sales_channel):,}")
     print(f"Saved to: {sales_channel_output_path}")
+
+    print("\nGenerating DimSupplier...")
+    dim_supplier = generate_dim_supplier()
+
+    supplier_output_path = RAW_DATA_DIR / "DimSupplier.csv"
+
+    dim_supplier.to_csv(
+        supplier_output_path,
+        index=False,
+    )
+
+    print(dim_supplier)
+    print(f"\nRows generated: {len(dim_supplier):,}")
+    print(f"Saved to: {supplier_output_path}")
 
     print("\nDone!")
 

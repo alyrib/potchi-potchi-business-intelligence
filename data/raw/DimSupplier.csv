@@ -1,0 +1,13 @@
+SupplierID,SupplierName,Country,CurrencyCode,SupplierType,LeadTimeDays,MinimumOrderValue,MinimumOrderQuantity,PrimaryShippingMethod,PaymentTerms,SupplierRating,IsAuthorised,SupplierStatus
+1,Kawaii Distribution UK,United Kingdom,GBP,Authorised Distributor,5,300.0,6,Domestic Courier,Net 30,4.8,True,Active
+2,Cute Collectibles Europe,Netherlands,EUR,Authorised Distributor,10,500.0,12,Road Freight,Net 30,4.7,True,Active
+3,Sakura Toy Imports,Japan,JPY,Wholesaler,28,900.0,24,Air Freight,Upfront,4.5,True,Active
+4,Mochi Merchandising,China,CNY,Manufacturer,35,1200.0,48,Air Freight,50% Deposit,4.3,True,Active
+5,Pastel Planet Wholesale,United Kingdom,GBP,Wholesaler,4,250.0,6,Domestic Courier,Net 14,4.4,True,Active
+6,Nordic Art Toy Supply,Germany,EUR,Authorised Distributor,12,600.0,12,Road Freight,Net 30,4.6,True,Active
+7,Moon Rabbit Trading,South Korea,KRW,Wholesaler,24,800.0,24,Air Freight,Upfront,4.2,True,Active
+8,Tiny Treasures UK,United Kingdom,GBP,Authorised Distributor,6,350.0,6,Domestic Courier,Net 30,4.9,True,Active
+9,Cloudberry Collectibles,France,EUR,Wholesaler,9,450.0,12,Road Freight,Net 14,4.1,True,Active
+10,Dream Capsule Trading,China,CNY,Manufacturer,40,1500.0,60,Sea Freight,50% Deposit,4.0,True,Active
+11,Little Star Imports,United States,USD,Wholesaler,18,700.0,18,Air Freight,Upfront,4.3,True,Active
+12,Cozy Shelf Distribution,United Kingdom,GBP,Wholesaler,7,300.0,6,Domestic Courier,Net 14,4.5,True,Active
