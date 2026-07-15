@@ -1,0 +1,16 @@
+VendorID,VendorName,VendorCategory,Country,DefaultCurrencyCode,VendorStatus
+1,Shopify,E-commerce Platform,Canada,GBP,Active
+2,Meta,Digital Advertising,United States,GBP,Active
+3,TikTok for Business,Digital Advertising,United Kingdom,GBP,Active
+4,Canva,Design Software,Australia,GBP,Active
+5,Microsoft,Business Software,United States,GBP,Active
+6,Shurgard Self Storage,Storage,United Kingdom,GBP,Active
+7,Royal Mail,Shipping Services,United Kingdom,GBP,Active
+8,Packhelp,Packaging Services,Poland,EUR,Active
+9,AXA Business Insurance,Insurance,United Kingdom,GBP,Active
+10,Xero,Accounting Software,New Zealand,GBP,Active
+11,Companies House,Government Services,United Kingdom,GBP,Active
+12,Google Workspace,Business Software,United States,GBP,Active
+13,Namecheap,Domain Services,United States,GBP,Active
+14,Octopus Energy,Utilities,United Kingdom,GBP,Active
+15,Independent Business Consultant,Professional Services,United Kingdom,GBP,Active

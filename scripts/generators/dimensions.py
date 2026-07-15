@@ -523,3 +523,132 @@ def generate_dim_product(
     ]
 
     return df[column_order]
+
+
+def generate_dim_vendor() -> pd.DataFrame:
+    """Generate the controlled DimVendor dataframe."""
+
+    data = [
+        {
+            "VendorID": 1,
+            "VendorName": "Shopify",
+            "VendorCategory": "E-commerce Platform",
+            "Country": "Canada",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 2,
+            "VendorName": "Meta",
+            "VendorCategory": "Digital Advertising",
+            "Country": "United States",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 3,
+            "VendorName": "TikTok for Business",
+            "VendorCategory": "Digital Advertising",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 4,
+            "VendorName": "Canva",
+            "VendorCategory": "Design Software",
+            "Country": "Australia",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 5,
+            "VendorName": "Microsoft",
+            "VendorCategory": "Business Software",
+            "Country": "United States",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 6,
+            "VendorName": "Shurgard Self Storage",
+            "VendorCategory": "Storage",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 7,
+            "VendorName": "Royal Mail",
+            "VendorCategory": "Shipping Services",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 8,
+            "VendorName": "Packhelp",
+            "VendorCategory": "Packaging Services",
+            "Country": "Poland",
+            "DefaultCurrencyCode": "EUR",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 9,
+            "VendorName": "AXA Business Insurance",
+            "VendorCategory": "Insurance",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 10,
+            "VendorName": "Xero",
+            "VendorCategory": "Accounting Software",
+            "Country": "New Zealand",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 11,
+            "VendorName": "Companies House",
+            "VendorCategory": "Government Services",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 12,
+            "VendorName": "Google Workspace",
+            "VendorCategory": "Business Software",
+            "Country": "United States",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 13,
+            "VendorName": "Namecheap",
+            "VendorCategory": "Domain Services",
+            "Country": "United States",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 14,
+            "VendorName": "Octopus Energy",
+            "VendorCategory": "Utilities",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+        {
+            "VendorID": 15,
+            "VendorName": "Independent Business Consultant",
+            "VendorCategory": "Professional Services",
+            "Country": "United Kingdom",
+            "DefaultCurrencyCode": "GBP",
+            "VendorStatus": "Active",
+        },
+    ]
+
+    return pd.DataFrame(data)
