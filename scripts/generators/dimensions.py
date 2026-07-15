@@ -105,3 +105,83 @@ def generate_dim_date() -> pd.DataFrame:
     ]
 
     return df[column_order]
+
+def generate_dim_expense_category() -> pd.DataFrame:
+    """Generate the controlled DimExpenseCategory dataframe."""
+
+    data = [
+        {
+            "ExpenseCategoryID": 1,
+            "ExpenseCategoryName": "Marketing",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": False,
+            "IsRecurring": False,
+            "IsDiscretionary": True,
+        },
+        {
+            "ExpenseCategoryID": 2,
+            "ExpenseCategoryName": "Software",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": True,
+            "IsRecurring": True,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 3,
+            "ExpenseCategoryName": "Website and Domain",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": True,
+            "IsRecurring": True,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 4,
+            "ExpenseCategoryName": "Storage",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": True,
+            "IsRecurring": True,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 5,
+            "ExpenseCategoryName": "Packaging",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": False,
+            "IsRecurring": False,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 6,
+            "ExpenseCategoryName": "Accounting",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": True,
+            "IsRecurring": True,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 7,
+            "ExpenseCategoryName": "Insurance",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": True,
+            "IsRecurring": True,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 8,
+            "ExpenseCategoryName": "Utilities",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": False,
+            "IsRecurring": True,
+            "IsDiscretionary": False,
+        },
+        {
+            "ExpenseCategoryID": 9,
+            "ExpenseCategoryName": "Professional Services",
+            "ExpenseType": "Operating Expense",
+            "IsFixed": False,
+            "IsRecurring": False,
+            "IsDiscretionary": True,
+        },
+    ]
+
+    return pd.DataFrame(data)

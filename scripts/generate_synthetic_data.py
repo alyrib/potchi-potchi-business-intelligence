@@ -5,7 +5,10 @@ Entry point for generating all project datasets.
 """
 
 from config import RAW_DATA_DIR
-from generators.dimensions import generate_dim_date
+from generators.dimensions import (
+    generate_dim_date,
+    generate_dim_expense_category,
+)
 
 
 def main() -> None:
@@ -29,6 +32,24 @@ def main() -> None:
     print(dim_date.head())
     print(f"\nRows generated: {len(dim_date):,}")
     print(f"Saved to: {output_path}")
+
+    print("\nGenerating DimExpenseCategory...")
+    dim_expense_category = generate_dim_expense_category()
+
+    expense_category_output_path = (
+        RAW_DATA_DIR / "DimExpenseCategory.csv"
+    )
+
+    dim_expense_category.to_csv(
+        expense_category_output_path,
+        index=False,
+    )
+
+    print(dim_expense_category)
+    print(
+        f"\nRows generated: {len(dim_expense_category):,}"
+    )
+    print(f"Saved to: {expense_category_output_path}")
 
     print("\nDone!")
 
