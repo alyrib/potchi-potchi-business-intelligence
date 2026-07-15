@@ -1,0 +1,4 @@
+SalesChannelID,SalesChannelName,ChannelType,IsOwnedChannel,IsMarketplace,PlatformFeeRate,LaunchDate,ChannelStatus
+1,Website,Owned E-commerce,True,False,0.0,2024-01-01,Active
+2,Instagram,Social Referral,True,False,0.0,2024-01-01,Active
+3,TikTok Shop,Social Commerce,False,True,0.05,2024-06-01,Active

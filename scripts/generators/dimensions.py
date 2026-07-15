@@ -185,3 +185,46 @@ def generate_dim_expense_category() -> pd.DataFrame:
     ]
 
     return pd.DataFrame(data)
+
+
+def generate_dim_sales_channel() -> pd.DataFrame:
+    """Generate the controlled DimSalesChannel dataframe."""
+
+    data = [
+        {
+            "SalesChannelID": 1,
+            "SalesChannelName": "Website",
+            "ChannelType": "Owned E-commerce",
+            "IsOwnedChannel": True,
+            "IsMarketplace": False,
+            "PlatformFeeRate": 0.00,
+            "LaunchDate": "2024-01-01",
+            "ChannelStatus": "Active",
+        },
+        {
+            "SalesChannelID": 2,
+            "SalesChannelName": "Instagram",
+            "ChannelType": "Social Referral",
+            "IsOwnedChannel": True,
+            "IsMarketplace": False,
+            "PlatformFeeRate": 0.00,
+            "LaunchDate": "2024-01-01",
+            "ChannelStatus": "Active",
+        },
+        {
+            "SalesChannelID": 3,
+            "SalesChannelName": "TikTok Shop",
+            "ChannelType": "Social Commerce",
+            "IsOwnedChannel": False,
+            "IsMarketplace": True,
+            "PlatformFeeRate": 0.05,
+            "LaunchDate": "2024-06-01",
+            "ChannelStatus": "Active",
+        },
+    ]
+
+    df = pd.DataFrame(data)
+
+    df["LaunchDate"] = pd.to_datetime(df["LaunchDate"])
+
+    return df

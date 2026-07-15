@@ -3,7 +3,7 @@ ExpenseCategoryID,ExpenseCategoryName,ExpenseType,IsFixed,IsRecurring,IsDiscreti
 2,Software,Operating Expense,True,True,False
 3,Website and Domain,Operating Expense,True,True,False
 4,Storage,Operating Expense,True,True,False
-5,Packaging,Operating Expense,False,False,False
+5,Packaging,Operating Expense,False,True,False
 6,Accounting,Operating Expense,True,True,False
 7,Insurance,Operating Expense,True,True,False
 8,Utilities,Operating Expense,False,True,False

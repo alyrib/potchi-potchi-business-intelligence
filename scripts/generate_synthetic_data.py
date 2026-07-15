@@ -8,6 +8,7 @@ from config import RAW_DATA_DIR
 from generators.dimensions import (
     generate_dim_date,
     generate_dim_expense_category,
+    generate_dim_sales_channel,
 )
 
 
@@ -50,6 +51,21 @@ def main() -> None:
         f"\nRows generated: {len(dim_expense_category):,}"
     )
     print(f"Saved to: {expense_category_output_path}")
+
+    print("\nGenerating DimSalesChannel...")
+    dim_sales_channel = generate_dim_sales_channel()
+
+    sales_channel_output_path = RAW_DATA_DIR / "DimSalesChannel.csv"
+
+    dim_sales_channel.to_csv(
+        sales_channel_output_path,
+        index=False,
+        date_format="%Y-%m-%d",
+    )
+
+    print(dim_sales_channel)
+    print(f"\nRows generated: {len(dim_sales_channel):,}")
+    print(f"Saved to: {sales_channel_output_path}")
 
     print("\nDone!")
 
