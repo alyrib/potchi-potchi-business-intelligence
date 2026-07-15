@@ -17,6 +17,7 @@ from generators.dimensions import (
 
 from generators.facts import (
     generate_fact_expenses,
+    generate_fact_inventory_snapshot,
     generate_fact_orders_and_sales,
     generate_fact_purchases,
 )
@@ -207,6 +208,31 @@ def main() -> None:
     print(fact_sales.head())
     print(f"\nSales lines generated: {len(fact_sales):,}")
     print(f"Saved to: {sales_output_path}")
+
+    print("\nGenerating FactInventorySnapshot...")
+
+    fact_inventory_snapshot = generate_fact_inventory_snapshot(
+        product_df=dim_product,
+        purchase_df=fact_purchases,
+        orders_df=fact_orders,
+        sales_df=fact_sales,
+    )
+
+    inventory_output_path = (
+        RAW_DATA_DIR / "FactInventorySnapshot.csv"
+    )
+
+    fact_inventory_snapshot.to_csv(
+        inventory_output_path,
+        index=False,
+    )
+
+    print(fact_inventory_snapshot.head())
+    print(
+        f"\nRows generated: "
+        f"{len(fact_inventory_snapshot):,}"
+    )
+    print(f"Saved to: {inventory_output_path}")
 
     print("\nDone!")
 

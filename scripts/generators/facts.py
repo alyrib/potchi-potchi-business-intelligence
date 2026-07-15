@@ -1207,3 +1207,357 @@ def generate_fact_orders_and_sales(
         )
 
     return fact_orders, fact_sales
+
+
+def generate_fact_inventory_snapshot(
+    product_df: pd.DataFrame,
+    purchase_df: pd.DataFrame,
+    orders_df: pd.DataFrame,
+    sales_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Generate monthly inventory snapshots from purchases and sales."""
+
+    rng = np.random.default_rng(RANDOM_SEED + 500)
+
+    products = product_df.copy()
+
+    purchases = purchase_df.copy()
+    purchases["PurchaseDate"] = pd.to_datetime(
+        purchases["PurchaseDateKey"].astype(str),
+        format="%Y%m%d",
+    )
+
+    purchases["OtherLandedCostAllocated"] = (
+        purchases["OtherLandedCostAllocated"].fillna(0.00)
+    )
+
+    purchases["LandedUnitCost"] = (
+        purchases["UnitCostGBP"]
+        + purchases["AllocatedFreightCost"]
+        + purchases["ImportDutyAllocated"]
+        + purchases["OtherLandedCostAllocated"]
+    )
+
+    orders = orders_df.copy()
+
+    orders["OrderDate"] = pd.to_datetime(
+        orders["OrderDateKey"].astype(str),
+        format="%Y%m%d",
+    )
+
+    orders["ShippedDate"] = pd.to_datetime(
+        orders["ShippedDateKey"]
+        .astype("Int64")
+        .astype(str),
+        format="%Y%m%d",
+        errors="coerce",
+    )
+
+    sales_with_orders = sales_df.merge(
+        orders[
+            [
+                "OrderID",
+                "OrderDate",
+                "ShippedDate",
+                "OrderStatus",
+            ]
+        ],
+        on="OrderID",
+        how="left",
+        validate="many_to_one",
+    )
+
+    # ---------------------------------------------------------------
+    # Inventory receipt events
+    # ---------------------------------------------------------------
+
+    received_purchases = purchases.loc[
+        purchases["ReceivedQuantity"] > 0
+    ].copy()
+
+    purchase_events: dict[
+        pd.Timestamp,
+        list[dict[str, object]],
+    ] = {}
+
+    for _, purchase in received_purchases.iterrows():
+        event_date = pd.Timestamp(purchase["PurchaseDate"])
+
+        purchase_events.setdefault(event_date, []).append(
+            {
+                "ProductID": int(purchase["ProductID"]),
+                "Quantity": int(purchase["ReceivedQuantity"]),
+                "UnitCost": float(purchase["LandedUnitCost"]),
+            }
+        )
+
+    # ---------------------------------------------------------------
+    # Inventory dispatch events
+    # ---------------------------------------------------------------
+
+    shipped_sales = sales_with_orders.loc[
+        sales_with_orders["ShippedDate"].notna()
+    ].copy()
+
+    shipment_events: dict[
+        pd.Timestamp,
+        list[dict[str, object]],
+    ] = {}
+
+    for _, sale in shipped_sales.iterrows():
+        event_date = pd.Timestamp(sale["ShippedDate"])
+
+        shipment_events.setdefault(event_date, []).append(
+            {
+                "ProductID": int(sale["ProductID"]),
+                "Quantity": int(sale["Quantity"]),
+                "UnitCost": float(sale["UnitCostAtSale"]),
+            }
+        )
+
+    purchase_event_dates = sorted(purchase_events)
+    shipment_event_dates = sorted(shipment_events)
+
+    next_purchase_index = 0
+    next_shipment_index = 0
+
+    inventory_quantity = {
+        int(product_id): 0
+        for product_id in products["ProductID"]
+    }
+
+    inventory_cost_balance = {
+        int(product_id): 0.00
+        for product_id in products["ProductID"]
+    }
+
+    last_known_unit_cost = {
+        int(product_id): 0.00
+        for product_id in products["ProductID"]
+    }
+
+    snapshot_dates = pd.date_range(
+        start=START_DATE,
+        end=END_DATE,
+        freq="ME",
+    )
+
+    reorder_points = {
+        "Blind Box": 12,
+        "Figure": 8,
+        "Plush": 6,
+    }
+
+    safety_stock_levels = {
+        "Blind Box": 6,
+        "Figure": 4,
+        "Plush": 3,
+    }
+
+    rows: list[dict[str, object]] = []
+    inventory_snapshot_id = 700001
+
+    for snapshot_date in snapshot_dates:
+        snapshot_date = pd.Timestamp(snapshot_date)
+
+        # Add inventory received up to the snapshot date.
+        while (
+            next_purchase_index < len(purchase_event_dates)
+            and purchase_event_dates[next_purchase_index]
+            <= snapshot_date
+        ):
+            event_date = purchase_event_dates[
+                next_purchase_index
+            ]
+
+            for event in purchase_events[event_date]:
+                product_id = int(event["ProductID"])
+                quantity = int(event["Quantity"])
+                unit_cost = float(event["UnitCost"])
+
+                inventory_quantity[product_id] += quantity
+                inventory_cost_balance[product_id] += (
+                    quantity * unit_cost
+                )
+                last_known_unit_cost[product_id] = unit_cost
+
+            next_purchase_index += 1
+
+        # Remove inventory dispatched up to the snapshot date.
+        while (
+            next_shipment_index < len(shipment_event_dates)
+            and shipment_event_dates[next_shipment_index]
+            <= snapshot_date
+        ):
+            event_date = shipment_event_dates[
+                next_shipment_index
+            ]
+
+            for event in shipment_events[event_date]:
+                product_id = int(event["ProductID"])
+                quantity = int(event["Quantity"])
+                unit_cost = float(event["UnitCost"])
+
+                inventory_quantity[product_id] = max(
+                    0,
+                    inventory_quantity[product_id] - quantity,
+                )
+
+                inventory_cost_balance[product_id] = max(
+                    0.00,
+                    inventory_cost_balance[product_id]
+                    - (quantity * unit_cost),
+                )
+
+            next_shipment_index += 1
+
+        # Orders placed but not dispatched at the snapshot date.
+        reserved_records = sales_with_orders.loc[
+            (sales_with_orders["OrderStatus"] != "Cancelled")
+            & (sales_with_orders["OrderDate"] <= snapshot_date)
+            & (
+                sales_with_orders["ShippedDate"].isna()
+                | (
+                    sales_with_orders["ShippedDate"]
+                    > snapshot_date
+                )
+            )
+        ]
+
+        reserved_by_product = (
+            reserved_records.groupby("ProductID")["Quantity"]
+            .sum()
+            .to_dict()
+        )
+
+        # Quantities ordered from suppliers but not yet received.
+        outstanding_purchases = purchases.loc[
+            (purchases["PurchaseDate"] <= snapshot_date)
+            & (
+                purchases["PurchaseStatus"].isin(
+                    [
+                        "Ordered",
+                        "In Transit",
+                        "Partially Received",
+                    ]
+                )
+            )
+        ].copy()
+
+        outstanding_purchases["OutstandingQuantity"] = (
+            outstanding_purchases["QuantityPurchased"]
+            - outstanding_purchases["ReceivedQuantity"]
+        ).clip(lower=0)
+
+        on_order_by_product = (
+            outstanding_purchases.groupby("ProductID")[
+                "OutstandingQuantity"
+            ]
+            .sum()
+            .to_dict()
+        )
+
+        for _, product in products.iterrows():
+            product_id = int(product["ProductID"])
+            units_in_stock = int(
+                inventory_quantity[product_id]
+            )
+
+            units_reserved = min(
+                int(reserved_by_product.get(product_id, 0)),
+                units_in_stock,
+            )
+
+            maximum_damageable_units = max(
+                0,
+                units_in_stock - units_reserved,
+            )
+
+            # Damage remains uncommon but possible.
+            units_damaged = int(
+                rng.binomial(
+                    n=maximum_damageable_units,
+                    p=0.008,
+                )
+            )
+
+            units_on_order = int(
+                on_order_by_product.get(product_id, 0)
+            )
+
+            if units_in_stock > 0:
+                average_unit_cost = round(
+                    inventory_cost_balance[product_id]
+                    / units_in_stock,
+                    2,
+                )
+            else:
+                average_unit_cost = round(
+                    last_known_unit_cost[product_id],
+                    2,
+                )
+
+            subcategory = str(product["SubCategory"])
+
+            rows.append(
+                {
+                    "InventorySnapshotID": (
+                        inventory_snapshot_id
+                    ),
+                    "SnapshotDateKey": int(
+                        snapshot_date.strftime("%Y%m%d")
+                    ),
+                    "ProductID": product_id,
+                    "UnitsInStock": units_in_stock,
+                    "UnitsReserved": units_reserved,
+                    "UnitsDamaged": units_damaged,
+                    "UnitsOnOrder": units_on_order,
+                    "ReorderPoint": reorder_points[
+                        subcategory
+                    ],
+                    "SafetyStock": safety_stock_levels[
+                        subcategory
+                    ],
+                    "AverageUnitCost": average_unit_cost,
+                }
+            )
+
+            inventory_snapshot_id += 1
+
+    fact_inventory_snapshot = pd.DataFrame(rows)
+
+    expected_rows = len(products) * len(snapshot_dates)
+
+    if len(fact_inventory_snapshot) != expected_rows:
+        raise ValueError(
+            "Unexpected inventory snapshot row count. "
+            f"Expected {expected_rows:,}, generated "
+            f"{len(fact_inventory_snapshot):,}."
+        )
+
+    duplicate_snapshot_rows = (
+        fact_inventory_snapshot.duplicated(
+            subset=["SnapshotDateKey", "ProductID"]
+        )
+    )
+
+    if duplicate_snapshot_rows.any():
+        raise ValueError(
+            "Duplicate ProductID and SnapshotDateKey "
+            "combinations were generated."
+        )
+
+    invalid_stock_rows = fact_inventory_snapshot.loc[
+        (
+            fact_inventory_snapshot["UnitsReserved"]
+            + fact_inventory_snapshot["UnitsDamaged"]
+        )
+        > fact_inventory_snapshot["UnitsInStock"]
+    ]
+
+    if not invalid_stock_rows.empty:
+        raise ValueError(
+            "Reserved and damaged units exceed physical stock."
+        )
+
+    return fact_inventory_snapshot
