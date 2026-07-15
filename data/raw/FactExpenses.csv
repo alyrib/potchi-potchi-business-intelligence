@@ -1,0 +1,251 @@
+ExpenseID,ExpenseDateKey,ExpenseCategoryID,VendorID,ExpenseDescription,ExpenseAmountOriginalCurrency,CurrencyCode,ExchangeRateToGBPAtPayment,ExpenseAmountGBP,PaymentMethod,ExpenseStatus
+100018,20240102,1,3,Marketing expense - TikTok for Business,249.87,GBP,1.0,249.87,Bank Transfer,Paid
+100153,20240111,3,13,Website and Domain expense - Namecheap,151.64,GBP,1.0,151.64,Direct Debit,Paid
+100010,20240112,4,6,Storage expense - Shurgard Self Storage,177.47,GBP,1.0,177.47,Direct Debit,Paid
+100128,20240112,6,10,Accounting expense - Xero,155.43,GBP,1.0,155.43,PayPal,Paid
+100246,20240115,9,11,Professional Services expense - Companies House,731.43,GBP,1.0,731.43,Business Credit Card,Paid
+100033,20240117,9,11,Professional Services expense - Companies House,535.78,GBP,1.0,535.78,PayPal,Paid
+100229,20240118,1,2,Marketing expense - Meta,100.16,GBP,1.0,100.16,Business Credit Card,Paid
+100249,20240119,2,5,Software expense - Microsoft,23.35,GBP,1.0,23.35,Business Debit Card,Paid
+100146,20240125,8,14,Utilities expense - Octopus Energy,29.71,GBP,1.0,29.71,Business Debit Card,Cancelled
+100126,20240130,1,3,Marketing expense - TikTok for Business,443.67,GBP,1.0,443.67,PayPal,Paid
+100125,20240131,1,2,Marketing expense - Meta,170.52,GBP,1.0,170.52,Business Credit Card,Paid
+100115,20240208,9,11,Professional Services expense - Companies House,78.21,GBP,1.0,78.21,Bank Transfer,Paid
+100009,20240209,7,9,Insurance expense - AXA Business Insurance,37.42,GBP,1.0,37.42,PayPal,Paid
+100055,20240209,9,15,Professional Services expense - Independent Business Consultant,354.73,GBP,1.0,354.73,Business Debit Card,Paid
+100064,20240210,2,5,Software expense - Microsoft,16.02,GBP,1.0,16.02,Business Debit Card,Paid
+100215,20240210,2,10,Software expense - Xero,22.1,GBP,1.0,22.1,PayPal,Paid
+100014,20240219,1,3,Marketing expense - TikTok for Business,338.08,GBP,1.0,338.08,Business Debit Card,Paid
+100015,20240219,3,1,Website and Domain expense - Shopify,98.38,GBP,1.0,98.38,Direct Debit,Paid
+100075,20240221,1,3,Marketing expense - TikTok for Business,166.72,GBP,1.0,166.72,Business Credit Card,Paid
+100105,20240221,2,12,Software expense - Google Workspace,39.98,GBP,1.0,39.98,Business Debit Card,Paid
+100235,20240225,3,13,Website and Domain expense - Namecheap,79.91,GBP,1.0,79.91,Bank Transfer,Paid
+100248,20240226,9,15,Professional Services expense - Independent Business Consultant,463.65,GBP,1.0,463.65,Bank Transfer,Paid
+100093,20240228,5,8,Packaging expense - Packhelp,70.91,EUR,0.86,60.98,Bank Transfer,Paid
+100035,20240303,1,3,Marketing expense - TikTok for Business,530.12,GBP,1.0,530.12,PayPal,Paid
+100023,20240304,5,8,Packaging expense - Packhelp,119.19,EUR,0.86,102.5,Business Credit Card,Paid
+100150,20240305,6,15,Accounting expense - Independent Business Consultant,40.28,GBP,1.0,40.28,Direct Debit,Paid
+100087,20240311,5,8,Packaging expense - Packhelp,228.12,EUR,0.86,196.18,Business Credit Card,Paid
+100028,20240314,2,4,Software expense - Canva,27.1,GBP,1.0,27.1,Business Debit Card,Paid
+100083,20240324,9,11,Professional Services expense - Companies House,372.4,GBP,1.0,372.4,Direct Debit,Paid
+100041,20240327,1,3,Marketing expense - TikTok for Business,68.18,GBP,1.0,68.18,Direct Debit,Paid
+100222,20240331,5,8,Packaging expense - Packhelp,257.7,EUR,0.86,221.62,Business Debit Card,Paid
+100163,20240402,6,10,Accounting expense - Xero,261.74,GBP,1.0,261.74,Business Credit Card,Paid
+100219,20240404,1,2,Marketing expense - Meta,576.36,GBP,1.0,576.36,Business Credit Card,Paid
+100137,20240406,1,3,Marketing expense - TikTok for Business,311.55,GBP,1.0,311.55,Bank Transfer,Paid
+100143,20240407,2,4,Software expense - Canva,88.91,GBP,1.0,88.91,PayPal,Paid
+100208,20240408,8,14,Utilities expense - Octopus Energy,48.93,GBP,1.0,48.93,Bank Transfer,Paid
+100026,20240409,2,10,Software expense - Xero,85.33,GBP,1.0,85.33,Bank Transfer,Paid
+100032,20240412,4,6,Storage expense - Shurgard Self Storage,137.62,GBP,1.0,137.62,Business Debit Card,Paid
+100043,20240412,7,9,Insurance expense - AXA Business Insurance,100.02,GBP,1.0,100.02,Business Debit Card,Paid
+100088,20240415,5,8,Packaging expense - Packhelp,467.23,EUR,0.86,401.82,Direct Debit,Paid
+100192,20240416,4,6,Storage expense - Shurgard Self Storage,149.05,GBP,1.0,149.05,Bank Transfer,Paid
+100020,20240417,1,2,Marketing expense - Meta,389.87,GBP,1.0,389.87,Bank Transfer,Paid
+100149,20240422,5,8,Packaging expense - Packhelp,475.66,EUR,0.86,409.07,PayPal,Paid
+100188,20240428,2,12,Software expense - Google Workspace,13.15,GBP,1.0,13.15,Bank Transfer,Paid
+100157,20240429,4,6,Storage expense - Shurgard Self Storage,159.4,GBP,1.0,159.4,PayPal,Paid
+100195,20240430,6,15,Accounting expense - Independent Business Consultant,298.38,GBP,1.0,298.38,Business Debit Card,Paid
+100132,20240502,1,3,Marketing expense - TikTok for Business,569.2,GBP,1.0,569.2,Direct Debit,Paid
+100124,20240505,2,4,Software expense - Canva,35.69,GBP,1.0,35.69,Business Debit Card,Paid
+100111,20240508,1,3,Marketing expense - TikTok for Business,78.05,GBP,1.0,78.05,PayPal,Paid
+100193,20240511,1,2,Marketing expense - Meta,458.03,GBP,1.0,458.03,PayPal,Paid
+100240,20240521,1,3,Marketing expense - TikTok for Business,180.77,GBP,1.0,180.77,PayPal,Paid
+100008,20240523,2,5,Software expense - Microsoft,15.91,GBP,1.0,15.91,Business Credit Card,Paid
+100170,20240529,7,9,Insurance expense - AXA Business Insurance,93.92,GBP,1.0,93.92,Business Debit Card,Paid
+100031,20240606,1,3,Marketing expense - TikTok for Business,486.61,GBP,1.0,486.61,Business Debit Card,Paid
+100224,20240606,5,8,Packaging expense - Packhelp,372.81,EUR,0.86,320.62,Bank Transfer,Paid
+100030,20240610,8,14,Utilities expense - Octopus Energy,23.36,GBP,1.0,23.36,Direct Debit,Paid
+100183,20240610,1,3,Marketing expense - TikTok for Business,363.87,GBP,1.0,363.87,Business Debit Card,Paid
+100186,20240611,8,14,Utilities expense - Octopus Energy,138.97,GBP,1.0,138.97,Bank Transfer,Paid
+100233,20240611,3,1,Website and Domain expense - Shopify,197.27,GBP,1.0,197.27,PayPal,Paid
+100179,20240613,1,2,Marketing expense - Meta,470.05,GBP,1.0,470.05,Business Debit Card,Paid
+100214,20240620,7,9,Insurance expense - AXA Business Insurance,38.04,GBP,1.0,38.04,Bank Transfer,Paid
+100004,20240623,5,8,Packaging expense - Packhelp,358.0,EUR,0.86,307.88,Business Debit Card,Paid
+100239,20240623,3,1,Website and Domain expense - Shopify,129.9,GBP,1.0,129.9,Business Debit Card,Paid
+100046,20240625,4,6,Storage expense - Shurgard Self Storage,257.23,GBP,1.0,257.23,Bank Transfer,Paid
+100176,20240709,6,10,Accounting expense - Xero,146.32,GBP,1.0,146.32,Bank Transfer,Paid
+100121,20240713,6,15,Accounting expense - Independent Business Consultant,195.75,GBP,1.0,195.75,PayPal,Cancelled
+100104,20240715,9,15,Professional Services expense - Independent Business Consultant,280.92,GBP,1.0,280.92,PayPal,Paid
+100078,20240716,3,13,Website and Domain expense - Namecheap,28.99,GBP,1.0,28.99,Direct Debit,Paid
+100034,20240719,1,3,Marketing expense - TikTok for Business,417.56,GBP,1.0,417.56,Business Credit Card,Paid
+100169,20240719,4,6,Storage expense - Shurgard Self Storage,141.99,GBP,1.0,141.99,Business Credit Card,Paid
+100108,20240725,6,15,Accounting expense - Independent Business Consultant,152.23,GBP,1.0,152.23,Bank Transfer,Paid
+100081,20240726,2,4,Software expense - Canva,25.46,GBP,1.0,25.46,Direct Debit,Paid
+100056,20240801,1,3,Marketing expense - TikTok for Business,540.59,GBP,1.0,540.59,PayPal,Paid
+100200,20240803,7,9,Insurance expense - AXA Business Insurance,112.31,GBP,1.0,112.31,Bank Transfer,Paid
+100002,20240806,4,6,Storage expense - Shurgard Self Storage,208.86,GBP,1.0,208.86,Direct Debit,Paid
+100022,20240808,7,9,Insurance expense - AXA Business Insurance,47.12,GBP,1.0,47.12,Direct Debit,Paid
+100067,20240824,3,1,Website and Domain expense - Shopify,93.66,GBP,1.0,93.66,Business Debit Card,Paid
+100223,20240824,2,5,Software expense - Microsoft,40.48,GBP,1.0,40.48,Business Credit Card,Paid
+100025,20240904,9,11,Professional Services expense - Companies House,668.57,GBP,1.0,668.57,Business Debit Card,Paid
+100086,20240910,1,3,Marketing expense - TikTok for Business,176.5,GBP,1.0,176.5,Bank Transfer,Paid
+100217,20240912,5,8,Packaging expense - Packhelp,278.73,EUR,0.86,239.71,Bank Transfer,Paid
+100202,20240930,5,8,Packaging expense - Packhelp,431.84,EUR,0.86,371.38,Direct Debit,Paid
+100204,20240930,7,9,Insurance expense - AXA Business Insurance,159.72,GBP,1.0,159.72,Bank Transfer,Paid
+100112,20241001,9,15,Professional Services expense - Independent Business Consultant,357.62,GBP,1.0,357.62,Business Credit Card,Paid
+100171,20241002,5,8,Packaging expense - Packhelp,80.77,EUR,0.86,69.46,Bank Transfer,Paid
+100231,20241008,5,8,Packaging expense - Packhelp,71.09,EUR,0.86,61.14,Bank Transfer,Paid
+100006,20241012,3,13,Website and Domain expense - Namecheap,127.25,GBP,1.0,127.25,PayPal,Paid
+100021,20241013,7,9,Insurance expense - AXA Business Insurance,109.23,GBP,1.0,109.23,Direct Debit,Paid
+100142,20241014,1,3,Marketing expense - TikTok for Business,620.68,GBP,1.0,620.68,PayPal,Paid
+100058,20241015,9,15,Professional Services expense - Independent Business Consultant,95.54,GBP,1.0,95.54,Bank Transfer,Paid
+100047,20241016,1,2,Marketing expense - Meta,344.92,GBP,1.0,344.92,Business Debit Card,Paid
+100184,20241022,5,8,Packaging expense - Packhelp,408.31,EUR,0.86,351.15,Direct Debit,Paid
+100101,20241026,2,12,Software expense - Google Workspace,11.59,GBP,1.0,11.59,Business Debit Card,Paid
+100135,20241029,1,3,Marketing expense - TikTok for Business,163.9,GBP,1.0,163.9,Business Debit Card,Paid
+100005,20241030,9,15,Professional Services expense - Independent Business Consultant,354.59,GBP,1.0,354.59,Business Credit Card,Paid
+100213,20241030,3,13,Website and Domain expense - Namecheap,41.4,GBP,1.0,41.4,Bank Transfer,Paid
+100050,20241105,6,15,Accounting expense - Independent Business Consultant,64.17,GBP,1.0,64.17,Bank Transfer,Paid
+100159,20241106,5,8,Packaging expense - Packhelp,389.27,EUR,0.86,334.77,Bank Transfer,Paid
+100071,20241108,5,8,Packaging expense - Packhelp,125.08,EUR,0.86,107.57,PayPal,Paid
+100060,20241110,6,10,Accounting expense - Xero,95.42,GBP,1.0,95.42,Business Credit Card,Paid
+100244,20241110,3,13,Website and Domain expense - Namecheap,219.91,GBP,1.0,219.91,Direct Debit,Paid
+100234,20241111,3,13,Website and Domain expense - Namecheap,116.5,GBP,1.0,116.5,Business Credit Card,Paid
+100230,20241112,1,3,Marketing expense - TikTok for Business,123.44,GBP,1.0,123.44,Business Credit Card,Paid
+100241,20241113,1,2,Marketing expense - Meta,636.77,GBP,1.0,636.77,PayPal,Paid
+100036,20241114,5,8,Packaging expense - Packhelp,326.34,EUR,0.86,280.65,Business Debit Card,Paid
+100197,20241115,1,3,Marketing expense - TikTok for Business,236.71,GBP,1.0,236.71,Bank Transfer,Paid
+100089,20241116,1,3,Marketing expense - TikTok for Business,579.94,GBP,1.0,579.94,Business Credit Card,Paid
+100024,20241122,4,6,Storage expense - Shurgard Self Storage,173.81,GBP,1.0,173.81,Bank Transfer,Paid
+100174,20241124,2,10,Software expense - Xero,88.96,GBP,1.0,88.96,Business Credit Card,Paid
+100175,20241128,6,10,Accounting expense - Xero,238.32,GBP,1.0,238.32,PayPal,Paid
+100160,20241129,8,14,Utilities expense - Octopus Energy,132.13,GBP,1.0,132.13,Bank Transfer,Paid
+100199,20241212,5,8,Packaging expense - Packhelp,215.81,EUR,0.86,185.6,Direct Debit,Paid
+100039,20241214,2,4,Software expense - Canva,82.16,GBP,1.0,82.16,PayPal,Paid
+100012,20241215,2,5,Software expense - Microsoft,41.91,GBP,1.0,41.91,Bank Transfer,Paid
+100098,20241220,1,3,Marketing expense - TikTok for Business,180.87,GBP,1.0,180.87,PayPal,Cancelled
+100173,20241222,8,14,Utilities expense - Octopus Energy,29.63,GBP,1.0,29.63,Direct Debit,Paid
+100211,20241223,6,10,Accounting expense - Xero,237.77,GBP,1.0,237.77,Business Credit Card,Cancelled
+100113,20241225,4,6,Storage expense - Shurgard Self Storage,124.83,GBP,1.0,124.83,Business Credit Card,Paid
+100096,20241230,1,2,Marketing expense - Meta,132.78,GBP,1.0,132.78,Business Credit Card,Paid
+100185,20250105,7,9,Insurance expense - AXA Business Insurance,173.05,GBP,1.0,173.05,Business Debit Card,Paid
+100131,20250121,7,9,Insurance expense - AXA Business Insurance,123.13,GBP,1.0,123.13,PayPal,Paid
+100178,20250202,4,6,Storage expense - Shurgard Self Storage,209.19,GBP,1.0,209.19,Bank Transfer,Paid
+100225,20250202,1,3,Marketing expense - TikTok for Business,255.72,GBP,1.0,255.72,Business Debit Card,Paid
+100191,20250204,2,5,Software expense - Microsoft,53.05,GBP,1.0,53.05,Bank Transfer,Paid
+100221,20250204,9,11,Professional Services expense - Companies House,313.31,GBP,1.0,313.31,Direct Debit,Paid
+100079,20250207,8,14,Utilities expense - Octopus Energy,103.75,GBP,1.0,103.75,PayPal,Paid
+100156,20250211,1,2,Marketing expense - Meta,298.25,GBP,1.0,298.25,Bank Transfer,Paid
+100117,20250213,4,6,Storage expense - Shurgard Self Storage,145.29,GBP,1.0,145.29,Direct Debit,Paid
+100123,20250215,3,13,Website and Domain expense - Namecheap,57.45,GBP,1.0,57.45,PayPal,Paid
+100068,20250217,4,6,Storage expense - Shurgard Self Storage,152.2,GBP,1.0,152.2,Bank Transfer,Cancelled
+100110,20250217,5,8,Packaging expense - Packhelp,486.86,EUR,0.86,418.7,Business Credit Card,Paid
+100238,20250217,8,14,Utilities expense - Octopus Energy,60.58,GBP,1.0,60.58,Business Credit Card,Paid
+100103,20250222,7,9,Insurance expense - AXA Business Insurance,160.0,GBP,1.0,160.0,PayPal,Paid
+100133,20250223,5,8,Packaging expense - Packhelp,279.07,EUR,0.86,240.0,PayPal,Paid
+100051,20250227,1,3,Marketing expense - TikTok for Business,430.59,GBP,1.0,430.59,Direct Debit,Paid
+100091,20250228,4,6,Storage expense - Shurgard Self Storage,126.29,GBP,1.0,126.29,Bank Transfer,Paid
+100090,20250306,2,12,Software expense - Google Workspace,68.31,GBP,1.0,68.31,Business Debit Card,Paid
+100207,20250307,8,14,Utilities expense - Octopus Energy,20.26,GBP,1.0,20.26,PayPal,Paid
+100106,20250309,1,2,Marketing expense - Meta,377.24,GBP,1.0,377.24,Business Credit Card,Paid
+100147,20250315,6,15,Accounting expense - Independent Business Consultant,279.93,GBP,1.0,279.93,PayPal,Paid
+100114,20250325,2,5,Software expense - Microsoft,73.85,GBP,1.0,73.85,Direct Debit,Paid
+100151,20250329,4,6,Storage expense - Shurgard Self Storage,216.49,GBP,1.0,216.49,Bank Transfer,Paid
+100180,20250329,8,14,Utilities expense - Octopus Energy,41.18,GBP,1.0,41.18,Direct Debit,Paid
+100189,20250329,2,12,Software expense - Google Workspace,49.9,GBP,1.0,49.9,Business Credit Card,Paid
+100164,20250405,2,4,Software expense - Canva,73.57,GBP,1.0,73.57,Bank Transfer,Paid
+100038,20250406,6,10,Accounting expense - Xero,188.79,GBP,1.0,188.79,Business Credit Card,Paid
+100138,20250406,8,14,Utilities expense - Octopus Energy,125.05,GBP,1.0,125.05,Business Debit Card,Paid
+100220,20250406,8,14,Utilities expense - Octopus Energy,60.69,GBP,1.0,60.69,PayPal,Paid
+100243,20250411,8,14,Utilities expense - Octopus Energy,68.14,GBP,1.0,68.14,PayPal,Paid
+100201,20250413,5,8,Packaging expense - Packhelp,120.66,EUR,0.86,103.77,Direct Debit,Paid
+100203,20250414,1,3,Marketing expense - TikTok for Business,196.95,GBP,1.0,196.95,Business Debit Card,Paid
+100040,20250416,5,8,Packaging expense - Packhelp,447.06,EUR,0.86,384.47,Business Debit Card,Paid
+100080,20250423,2,10,Software expense - Xero,14.97,GBP,1.0,14.97,PayPal,Paid
+100165,20250424,2,4,Software expense - Canva,26.27,GBP,1.0,26.27,Direct Debit,Paid
+100059,20250428,8,14,Utilities expense - Octopus Energy,22.52,GBP,1.0,22.52,Bank Transfer,Paid
+100052,20250429,1,2,Marketing expense - Meta,216.84,GBP,1.0,216.84,PayPal,Paid
+100094,20250430,1,2,Marketing expense - Meta,132.69,GBP,1.0,132.69,Business Credit Card,Paid
+100227,20250502,1,3,Marketing expense - TikTok for Business,214.72,GBP,1.0,214.72,Direct Debit,Paid
+100019,20250508,5,8,Packaging expense - Packhelp,269.78,EUR,0.86,232.01,Business Debit Card,Paid
+100070,20250508,5,8,Packaging expense - Packhelp,146.87,EUR,0.86,126.31,PayPal,Paid
+100237,20250520,1,3,Marketing expense - TikTok for Business,142.04,GBP,1.0,142.04,Business Credit Card,Paid
+100218,20250522,2,12,Software expense - Google Workspace,26.37,GBP,1.0,26.37,Direct Debit,Paid
+100250,20250522,9,15,Professional Services expense - Independent Business Consultant,637.89,GBP,1.0,637.89,Bank Transfer,Cancelled
+100226,20250523,3,13,Website and Domain expense - Namecheap,139.19,GBP,1.0,139.19,Direct Debit,Paid
+100027,20250605,1,3,Marketing expense - TikTok for Business,613.68,GBP,1.0,613.68,Direct Debit,Paid
+100065,20250605,3,13,Website and Domain expense - Namecheap,232.48,GBP,1.0,232.48,Direct Debit,Paid
+100011,20250610,9,15,Professional Services expense - Independent Business Consultant,733.65,GBP,1.0,733.65,Business Credit Card,Paid
+100054,20250612,5,8,Packaging expense - Packhelp,108.52,EUR,0.86,93.33,PayPal,Paid
+100140,20250615,9,15,Professional Services expense - Independent Business Consultant,691.24,GBP,1.0,691.24,PayPal,Paid
+100242,20250618,5,8,Packaging expense - Packhelp,410.3,EUR,0.86,352.86,PayPal,Paid
+100053,20250623,5,8,Packaging expense - Packhelp,243.78,EUR,0.86,209.65,PayPal,Paid
+100001,20250627,5,8,Packaging expense - Packhelp,102.27,EUR,0.86,87.95,Bank Transfer,Paid
+100228,20250629,2,10,Software expense - Xero,52.28,GBP,1.0,52.28,Direct Debit,Paid
+100072,20250701,1,2,Marketing expense - Meta,405.9,GBP,1.0,405.9,Business Debit Card,Cancelled
+100167,20250704,8,14,Utilities expense - Octopus Energy,33.8,GBP,1.0,33.8,PayPal,Paid
+100129,20250707,3,1,Website and Domain expense - Shopify,101.57,GBP,1.0,101.57,Bank Transfer,Paid
+100061,20250710,9,15,Professional Services expense - Independent Business Consultant,614.96,GBP,1.0,614.96,Business Credit Card,Paid
+100120,20250710,1,2,Marketing expense - Meta,260.18,GBP,1.0,260.18,Direct Debit,Paid
+100013,20250711,5,8,Packaging expense - Packhelp,216.57,EUR,0.86,186.25,Bank Transfer,Paid
+100122,20250711,4,6,Storage expense - Shurgard Self Storage,195.03,GBP,1.0,195.03,Direct Debit,Paid
+100247,20250711,3,13,Website and Domain expense - Namecheap,88.48,GBP,1.0,88.48,Business Debit Card,Paid
+100116,20250713,5,8,Packaging expense - Packhelp,446.55,EUR,0.86,384.03,PayPal,Paid
+100155,20250713,9,11,Professional Services expense - Companies House,212.82,GBP,1.0,212.82,Bank Transfer,Paid
+100166,20250714,1,2,Marketing expense - Meta,499.19,GBP,1.0,499.19,Business Credit Card,Paid
+100066,20250715,1,3,Marketing expense - TikTok for Business,66.22,GBP,1.0,66.22,PayPal,Paid
+100152,20250719,9,15,Professional Services expense - Independent Business Consultant,622.04,GBP,1.0,622.04,PayPal,Paid
+100216,20250720,5,8,Packaging expense - Packhelp,145.45,EUR,0.86,125.09,Bank Transfer,Paid
+100245,20250724,3,13,Website and Domain expense - Namecheap,217.7,GBP,1.0,217.7,Bank Transfer,Paid
+100095,20250727,3,1,Website and Domain expense - Shopify,184.26,GBP,1.0,184.26,Business Credit Card,Paid
+100134,20250727,6,15,Accounting expense - Independent Business Consultant,261.82,GBP,1.0,261.82,Business Credit Card,Paid
+100148,20250727,8,14,Utilities expense - Octopus Energy,87.72,GBP,1.0,87.72,Direct Debit,Paid
+100205,20250728,5,8,Packaging expense - Packhelp,424.81,EUR,0.86,365.34,PayPal,Paid
+100062,20250729,2,12,Software expense - Google Workspace,75.33,GBP,1.0,75.33,Business Debit Card,Paid
+100082,20250801,7,9,Insurance expense - AXA Business Insurance,142.85,GBP,1.0,142.85,Direct Debit,Paid
+100187,20250807,3,1,Website and Domain expense - Shopify,149.66,GBP,1.0,149.66,PayPal,Paid
+100194,20250807,5,8,Packaging expense - Packhelp,475.21,EUR,0.86,408.68,Bank Transfer,Paid
+100210,20250808,1,3,Marketing expense - TikTok for Business,380.14,GBP,1.0,380.14,Bank Transfer,Paid
+100003,20250809,2,5,Software expense - Microsoft,59.65,GBP,1.0,59.65,Business Credit Card,Paid
+100007,20250813,2,4,Software expense - Canva,64.37,GBP,1.0,64.37,Business Debit Card,Paid
+100037,20250821,3,13,Website and Domain expense - Namecheap,181.77,GBP,1.0,181.77,Bank Transfer,Paid
+100118,20250821,4,6,Storage expense - Shurgard Self Storage,215.01,GBP,1.0,215.01,Business Debit Card,Paid
+100198,20250826,1,2,Marketing expense - Meta,515.35,GBP,1.0,515.35,Direct Debit,Paid
+100154,20250827,8,14,Utilities expense - Octopus Energy,24.92,GBP,1.0,24.92,Business Debit Card,Paid
+100085,20250829,1,3,Marketing expense - TikTok for Business,573.13,GBP,1.0,573.13,Direct Debit,Paid
+100145,20250830,8,14,Utilities expense - Octopus Energy,44.21,GBP,1.0,44.21,Business Debit Card,Cancelled
+100162,20250830,6,10,Accounting expense - Xero,106.32,GBP,1.0,106.32,PayPal,Paid
+100074,20250831,8,14,Utilities expense - Octopus Energy,84.13,GBP,1.0,84.13,Bank Transfer,Paid
+100076,20250831,4,6,Storage expense - Shurgard Self Storage,204.31,GBP,1.0,204.31,Bank Transfer,Paid
+100177,20250903,9,15,Professional Services expense - Independent Business Consultant,252.19,GBP,1.0,252.19,PayPal,Paid
+100139,20250904,1,3,Marketing expense - TikTok for Business,330.82,GBP,1.0,330.82,Bank Transfer,Paid
+100232,20250908,2,4,Software expense - Canva,40.61,GBP,1.0,40.61,Direct Debit,Paid
+100158,20250909,4,6,Storage expense - Shurgard Self Storage,227.09,GBP,1.0,227.09,Bank Transfer,Paid
+100209,20250909,8,14,Utilities expense - Octopus Energy,115.1,GBP,1.0,115.1,Direct Debit,Paid
+100130,20250916,4,6,Storage expense - Shurgard Self Storage,199.04,GBP,1.0,199.04,PayPal,Paid
+100168,20250917,9,15,Professional Services expense - Independent Business Consultant,480.28,GBP,1.0,480.28,Business Credit Card,Paid
+100206,20250918,8,14,Utilities expense - Octopus Energy,130.15,GBP,1.0,130.15,Direct Debit,Paid
+100057,20250920,5,8,Packaging expense - Packhelp,474.07,EUR,0.86,407.7,PayPal,Paid
+100097,20250923,6,15,Accounting expense - Independent Business Consultant,227.52,GBP,1.0,227.52,Business Credit Card,Paid
+100172,20250925,4,6,Storage expense - Shurgard Self Storage,144.98,GBP,1.0,144.98,Business Debit Card,Paid
+100181,20250928,2,12,Software expense - Google Workspace,47.71,GBP,1.0,47.71,Business Debit Card,Paid
+100073,20250929,2,4,Software expense - Canva,16.86,GBP,1.0,16.86,PayPal,Paid
+100099,20251006,4,6,Storage expense - Shurgard Self Storage,236.22,GBP,1.0,236.22,Business Debit Card,Paid
+100236,20251009,5,8,Packaging expense - Packhelp,102.93,EUR,0.86,88.52,Bank Transfer,Paid
+100107,20251011,5,8,Packaging expense - Packhelp,355.84,EUR,0.86,306.02,PayPal,Paid
+100084,20251015,7,9,Insurance expense - AXA Business Insurance,137.93,GBP,1.0,137.93,Direct Debit,Cancelled
+100182,20251015,3,1,Website and Domain expense - Shopify,13.72,GBP,1.0,13.72,Business Debit Card,Paid
+100141,20251017,1,3,Marketing expense - TikTok for Business,320.58,GBP,1.0,320.58,Direct Debit,Paid
+100049,20251018,1,3,Marketing expense - TikTok for Business,514.77,GBP,1.0,514.77,Business Debit Card,Paid
+100092,20251024,6,10,Accounting expense - Xero,291.91,GBP,1.0,291.91,Business Debit Card,Paid
+100100,20251031,5,8,Packaging expense - Packhelp,240.41,EUR,0.86,206.75,PayPal,Paid
+100161,20251031,3,13,Website and Domain expense - Namecheap,142.98,GBP,1.0,142.98,Bank Transfer,Paid
+100119,20251101,2,12,Software expense - Google Workspace,57.08,GBP,1.0,57.08,Bank Transfer,Paid
+100109,20251104,6,15,Accounting expense - Independent Business Consultant,175.56,GBP,1.0,175.56,Direct Debit,Paid
+100016,20251116,9,15,Professional Services expense - Independent Business Consultant,266.74,GBP,1.0,266.74,PayPal,Paid
+100144,20251119,5,8,Packaging expense - Packhelp,124.74,EUR,0.86,107.28,PayPal,Paid
+100017,20251121,2,4,Software expense - Canva,30.28,GBP,1.0,30.28,Business Credit Card,Paid
+100136,20251121,1,3,Marketing expense - TikTok for Business,301.92,GBP,1.0,301.92,Business Debit Card,Paid
+100048,20251124,6,10,Accounting expense - Xero,147.9,GBP,1.0,147.9,Business Credit Card,Paid
+100069,20251127,3,13,Website and Domain expense - Namecheap,15.69,GBP,1.0,15.69,Business Debit Card,Paid
+100196,20251128,2,4,Software expense - Canva,87.48,GBP,1.0,87.48,Business Debit Card,Paid
+100063,20251201,4,6,Storage expense - Shurgard Self Storage,244.36,GBP,1.0,244.36,Bank Transfer,Paid
+100042,20251205,3,13,Website and Domain expense - Namecheap,222.14,GBP,1.0,222.14,Bank Transfer,Paid
+100127,20251205,6,10,Accounting expense - Xero,206.71,GBP,1.0,206.71,Business Credit Card,Paid
+100190,20251206,3,1,Website and Domain expense - Shopify,112.95,GBP,1.0,112.95,Bank Transfer,Paid
+100045,20251209,7,9,Insurance expense - AXA Business Insurance,43.68,GBP,1.0,43.68,Business Credit Card,Paid
+100212,20251211,8,14,Utilities expense - Octopus Energy,101.61,GBP,1.0,101.61,Business Credit Card,Paid
+100077,20251215,5,8,Packaging expense - Packhelp,188.17,EUR,0.86,161.83,PayPal,Paid
+100029,20251217,3,1,Website and Domain expense - Shopify,65.72,GBP,1.0,65.72,PayPal,Planned
+100044,20251222,2,10,Software expense - Xero,89.64,GBP,1.0,89.64,Business Credit Card,Cancelled
+100102,20251225,2,4,Software expense - Canva,91.02,GBP,1.0,91.02,Business Credit Card,Paid

@@ -7,6 +7,7 @@ import pandas as pd
 
 from config import (
     END_DATE,
+    EXPENSE_COUNT,
     PURCHASE_LINE_COUNT,
     RANDOM_SEED,
     START_DATE,
@@ -295,3 +296,145 @@ def generate_fact_purchases(
         purchase_order_number += 1
 
     return pd.DataFrame(rows)
+
+
+def generate_fact_expenses(
+    vendor_df: pd.DataFrame,
+    expense_category_df: pd.DataFrame,
+) -> pd.DataFrame:
+    """Generate synthetic non-inventory operating expense transactions."""
+
+    rng = np.random.default_rng(RANDOM_SEED + 300)
+
+    vendor_lookup = vendor_df.set_index("VendorID").to_dict("index")
+    category_lookup = expense_category_df.set_index(
+        "ExpenseCategoryID"
+    ).to_dict("index")
+
+    category_vendor_map = {
+        "Marketing": [2, 3],
+        "Software": [4, 5, 10, 12],
+        "Website and Domain": [1, 13],
+        "Storage": [6],
+        "Packaging": [8],
+        "Accounting": [10, 15],
+        "Insurance": [9],
+        "Utilities": [14],
+        "Professional Services": [11, 15],
+    }
+
+    amount_ranges_gbp = {
+        "Marketing": (40.00, 650.00),
+        "Software": (10.00, 95.00),
+        "Website and Domain": (8.00, 240.00),
+        "Storage": (120.00, 260.00),
+        "Packaging": (35.00, 420.00),
+        "Accounting": (35.00, 300.00),
+        "Insurance": (25.00, 180.00),
+        "Utilities": (20.00, 140.00),
+        "Professional Services": (60.00, 750.00),
+    }
+
+    payment_methods = [
+        "Business Debit Card",
+        "Business Credit Card",
+        "Bank Transfer",
+        "PayPal",
+        "Direct Debit",
+    ]
+
+    all_dates = pd.date_range(
+        start=START_DATE,
+        end=END_DATE,
+        freq="D",
+    )
+
+    category_ids = expense_category_df[
+        "ExpenseCategoryID"
+    ].to_numpy()
+
+    category_weights = np.array(
+        [0.20, 0.16, 0.08, 0.10, 0.18, 0.07, 0.05, 0.07, 0.09],
+        dtype=float,
+    )
+
+    rows: list[dict[str, object]] = []
+
+    for expense_id in range(100001, 100001 + EXPENSE_COUNT):
+        expense_category_id = int(
+            rng.choice(category_ids, p=category_weights)
+        )
+
+        category = category_lookup[expense_category_id]
+        category_name = category["ExpenseCategoryName"]
+
+        vendor_id = int(
+            rng.choice(category_vendor_map[category_name])
+        )
+        vendor = vendor_lookup[vendor_id]
+
+        expense_date = pd.Timestamp(rng.choice(all_dates))
+
+        minimum_amount, maximum_amount = amount_ranges_gbp[
+            category_name
+        ]
+
+        expense_amount_gbp = round(
+            rng.uniform(minimum_amount, maximum_amount),
+            2,
+        )
+
+        currency_code = vendor["DefaultCurrencyCode"]
+
+        exchange_rates = {
+            "GBP": 1.0000,
+            "EUR": 0.8600,
+            "USD": 0.7900,
+        }
+
+        exchange_rate = exchange_rates[currency_code]
+
+        expense_amount_original_currency = round(
+            expense_amount_gbp / exchange_rate,
+            2,
+        )
+
+        if expense_date > pd.Timestamp(END_DATE) - pd.Timedelta(
+            days=20
+        ):
+            expense_status = rng.choice(
+                ["Planned", "Approved", "Paid", "Cancelled"],
+                p=[0.15, 0.20, 0.60, 0.05],
+            )
+        else:
+            expense_status = rng.choice(
+                ["Paid", "Cancelled"],
+                p=[0.97, 0.03],
+            )
+
+        rows.append(
+            {
+                "ExpenseID": expense_id,
+                "ExpenseDateKey": int(
+                    expense_date.strftime("%Y%m%d")
+                ),
+                "ExpenseCategoryID": expense_category_id,
+                "VendorID": vendor_id,
+                "ExpenseDescription": (
+                    f"{category_name} expense - "
+                    f"{vendor['VendorName']}"
+                ),
+                "ExpenseAmountOriginalCurrency": (
+                    expense_amount_original_currency
+                ),
+                "CurrencyCode": currency_code,
+                "ExchangeRateToGBPAtPayment": exchange_rate,
+                "ExpenseAmountGBP": expense_amount_gbp,
+                "PaymentMethod": rng.choice(payment_methods),
+                "ExpenseStatus": expense_status,
+            }
+        )
+
+    return pd.DataFrame(rows).sort_values(
+        by=["ExpenseDateKey", "ExpenseID"]
+    ).reset_index(drop=True)

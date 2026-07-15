@@ -14,7 +14,11 @@ from generators.dimensions import (
     generate_dim_vendor,
     generate_dim_customer,
 )
-from generators.facts import generate_fact_purchases
+
+from generators.facts import (
+    generate_fact_expenses,
+    generate_fact_purchases,
+)
 
 
 def main() -> None:
@@ -154,6 +158,23 @@ def main() -> None:
     print(fact_purchases.head())
     print(f"\nRows generated: {len(fact_purchases):,}")
     print(f"Saved to: {purchases_output_path}")
+
+    print("\nGenerating FactExpenses...")
+    fact_expenses = generate_fact_expenses(
+        vendor_df=dim_vendor,
+        expense_category_df=dim_expense_category,
+    )
+
+    expenses_output_path = RAW_DATA_DIR / "FactExpenses.csv"
+
+    fact_expenses.to_csv(
+        expenses_output_path,
+        index=False,
+    )
+
+    print(fact_expenses.head())
+    print(f"\nRows generated: {len(fact_expenses):,}")
+    print(f"Saved to: {expenses_output_path}")
 
     print("\nDone!")
 
