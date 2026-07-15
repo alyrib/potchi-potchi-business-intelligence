@@ -147,7 +147,7 @@ def generate_dim_expense_category() -> pd.DataFrame:
             "ExpenseCategoryName": "Packaging",
             "ExpenseType": "Operating Expense",
             "IsFixed": False,
-            "IsRecurring": False,
+            "IsRecurring": True,
             "IsDiscretionary": False,
         },
         {
