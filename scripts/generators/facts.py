@@ -8,9 +8,15 @@ import pandas as pd
 from config import (
     END_DATE,
     EXPENSE_COUNT,
+    MONTHLY_SEASONALITY,
+    ORDER_COUNT,
     PURCHASE_LINE_COUNT,
     RANDOM_SEED,
     START_DATE,
+    TARGET_SALES_LINE_COUNT_MAX,
+    TARGET_SALES_LINE_COUNT_MIN,
+    YEAR_2024_ORDER_SHARE,
+    YEAR_2025_ORDER_SHARE,
 )
 
 
@@ -438,3 +444,766 @@ def generate_fact_expenses(
     return pd.DataFrame(rows).sort_values(
         by=["ExpenseDateKey", "ExpenseID"]
     ).reset_index(drop=True)
+
+
+def _generate_order_dates(
+    rng: np.random.Generator,
+    purchase_df: pd.DataFrame,
+) -> pd.DatetimeIndex:
+    """Generate chronological order dates with growth and seasonality."""
+
+    received_purchases = purchase_df.loc[
+        purchase_df["ReceivedQuantity"] > 0
+    ]
+
+    if received_purchases.empty:
+        raise ValueError(
+            "FactOrders cannot be generated without received inventory."
+        )
+
+    first_inventory_date = pd.to_datetime(
+        str(received_purchases["PurchaseDateKey"].min()),
+        format="%Y%m%d",
+    )
+
+    date_range = pd.date_range(
+        start=max(pd.Timestamp(START_DATE), first_inventory_date),
+        end=END_DATE,
+        freq="D",
+    )
+
+    weights = np.array(
+        [
+            MONTHLY_SEASONALITY[date.month]
+            * (
+                YEAR_2024_ORDER_SHARE
+                if date.year == 2024
+                else YEAR_2025_ORDER_SHARE
+            )
+            for date in date_range
+        ],
+        dtype=float,
+    )
+
+    weights /= weights.sum()
+
+    selected_dates = rng.choice(
+        date_range.to_numpy(),
+        size=ORDER_COUNT,
+        replace=True,
+        p=weights,
+    )
+
+    return pd.DatetimeIndex(selected_dates).sort_values()
+
+
+def _create_product_performance_weights(
+    rng: np.random.Generator,
+    product_df: pd.DataFrame,
+) -> dict[int, float]:
+    """Create internal sales weights without exporting them to DimProduct."""
+
+    performance_categories = rng.choice(
+        ["Top Seller", "Standard", "Slow Moving"],
+        size=len(product_df),
+        p=[0.15, 0.65, 0.20],
+    )
+
+    weight_map = {
+        "Top Seller": 4.0,
+        "Standard": 1.5,
+        "Slow Moving": 0.45,
+    }
+
+    return {
+        int(product_id): weight_map[performance]
+        for product_id, performance in zip(
+            product_df["ProductID"],
+            performance_categories,
+        )
+    }
+
+
+def _theme_seasonality_multiplier(
+    theme: str,
+    order_date: pd.Timestamp,
+) -> float:
+    """Return a seasonal demand multiplier for a product theme."""
+
+    theme_lower = str(theme).lower()
+    month = order_date.month
+
+    if month in (3, 4) and any(
+        word in theme_lower
+        for word in ["spring", "flower", "garden", "strawberry"]
+    ):
+        return 2.0
+
+    if month in (6, 7, 8) and any(
+        word in theme_lower
+        for word in ["ocean", "seafood", "fruit", "travel"]
+    ):
+        return 1.7
+
+    if month == 10 and any(
+        word in theme_lower
+        for word in ["magic", "fantasy", "gothic", "masquerade"]
+    ):
+        return 2.1
+
+    if month in (11, 12) and any(
+        word in theme_lower
+        for word in [
+            "winter",
+            "cozy",
+            "dessert",
+            "bakery",
+            "celebration",
+            "love",
+            "celestial",
+        ]
+    ):
+        return 1.8
+
+    return 1.0
+
+
+def _product_discount_rate(
+    rng: np.random.Generator,
+    order_date: pd.Timestamp,
+) -> float:
+    """Return a plausible product-level promotional discount rate."""
+
+    # Black Friday period
+    if (
+        order_date.month == 11
+        and 20 <= order_date.day <= 30
+    ):
+        return float(
+            rng.choice(
+                [0.10, 0.15, 0.20, 0.25],
+                p=[0.25, 0.35, 0.30, 0.10],
+            )
+        )
+
+    # Christmas campaign
+    if order_date.month == 12 and order_date.day <= 20:
+        return float(
+            rng.choice(
+                [0.00, 0.05, 0.10, 0.15],
+                p=[0.45, 0.25, 0.20, 0.10],
+            )
+        )
+
+    # Normal trading period
+    return float(
+        rng.choice(
+            [0.00, 0.05, 0.10],
+            p=[0.82, 0.13, 0.05],
+        )
+    )
+
+
+def _shipping_details(
+    rng: np.random.Generator,
+    merchandise_total: float,
+) -> tuple[str, float, float]:
+    """Return shipping method, customer charge and business cost."""
+
+    shipping_method = str(
+        rng.choice(
+            [
+                "Royal Mail Tracked 24",
+                "Royal Mail Tracked 48",
+                "DPD Next Day",
+                "Evri Standard",
+            ],
+            p=[0.25, 0.45, 0.10, 0.20],
+        )
+    )
+
+    shipping_cost_ranges = {
+        "Royal Mail Tracked 24": (4.20, 5.20),
+        "Royal Mail Tracked 48": (3.40, 4.40),
+        "DPD Next Day": (6.20, 8.20),
+        "Evri Standard": (2.80, 3.80),
+    }
+
+    minimum_cost, maximum_cost = shipping_cost_ranges[
+        shipping_method
+    ]
+
+    shipping_cost = round(
+        rng.uniform(minimum_cost, maximum_cost),
+        2,
+    )
+
+    if merchandise_total >= 45.00:
+        shipping_revenue = 0.00
+    elif shipping_method == "DPD Next Day":
+        shipping_revenue = 6.99
+    else:
+        shipping_revenue = 3.99
+
+    return (
+        shipping_method,
+        shipping_revenue,
+        shipping_cost,
+    )
+
+
+def generate_fact_orders_and_sales(
+    customer_df: pd.DataFrame,
+    product_df: pd.DataFrame,
+    sales_channel_df: pd.DataFrame,
+    purchase_df: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Generate coherent FactOrders and FactSales datasets."""
+
+    rng = np.random.default_rng(RANDOM_SEED + 400)
+
+    customers = customer_df.copy()
+    customers["RegistrationDate"] = pd.to_datetime(
+        customers["RegistrationDate"]
+    )
+
+    channels = sales_channel_df.copy()
+    channels["LaunchDate"] = pd.to_datetime(
+        channels["LaunchDate"]
+    )
+
+    products = product_df.copy()
+    product_lookup = products.set_index(
+        "ProductID"
+    ).to_dict("index")
+
+    product_performance_weights = (
+        _create_product_performance_weights(
+            rng=rng,
+            product_df=products,
+        )
+    )
+
+    purchases = purchase_df.copy()
+    purchases["PurchaseDate"] = pd.to_datetime(
+        purchases["PurchaseDateKey"].astype(str),
+        format="%Y%m%d",
+    )
+
+    purchases["OtherLandedCostAllocated"] = (
+        purchases["OtherLandedCostAllocated"].fillna(0.00)
+    )
+
+    purchases["LandedUnitCost"] = (
+        purchases["UnitCostGBP"]
+        + purchases["AllocatedFreightCost"]
+        + purchases["ImportDutyAllocated"]
+        + purchases["OtherLandedCostAllocated"]
+    )
+
+    received_purchases = purchases.loc[
+        purchases["ReceivedQuantity"] > 0
+    ].sort_values(
+        by=["PurchaseDate", "PurchaseLineID"]
+    )
+
+    purchase_events: dict[
+        pd.Timestamp,
+        list[dict[str, object]],
+    ] = {}
+
+    for _, purchase in received_purchases.iterrows():
+        purchase_date = pd.Timestamp(
+            purchase["PurchaseDate"]
+        )
+
+        purchase_events.setdefault(
+            purchase_date,
+            [],
+        ).append(
+            {
+                "ProductID": int(purchase["ProductID"]),
+                "Quantity": int(
+                    purchase["ReceivedQuantity"]
+                ),
+                "LandedUnitCost": float(
+                    purchase["LandedUnitCost"]
+                ),
+            }
+        )
+
+    order_dates = _generate_order_dates(
+        rng=rng,
+        purchase_df=purchase_df,
+    )
+
+    inventory_quantity: dict[int, int] = {
+        int(product_id): 0
+        for product_id in products["ProductID"]
+    }
+
+    inventory_total_cost: dict[int, float] = {
+        int(product_id): 0.00
+        for product_id in products["ProductID"]
+    }
+
+    sorted_purchase_dates = sorted(purchase_events)
+    next_purchase_index = 0
+
+    order_rows: list[dict[str, object]] = []
+    sales_rows: list[dict[str, object]] = []
+
+    order_id = 500001
+    order_item_id = 900001
+
+    payment_methods = [
+        "Visa",
+        "Mastercard",
+        "PayPal",
+        "Apple Pay",
+        "Google Pay",
+    ]
+
+    for order_date in order_dates:
+        order_date = pd.Timestamp(order_date)
+
+        # Add all inventory received on or before the order date.
+        while (
+            next_purchase_index < len(sorted_purchase_dates)
+            and sorted_purchase_dates[next_purchase_index]
+            <= order_date
+        ):
+            receipt_date = sorted_purchase_dates[
+                next_purchase_index
+            ]
+
+            for receipt in purchase_events[receipt_date]:
+                product_id = int(receipt["ProductID"])
+                received_quantity = int(receipt["Quantity"])
+                landed_cost = float(
+                    receipt["LandedUnitCost"]
+                )
+
+                inventory_quantity[product_id] += (
+                    received_quantity
+                )
+                inventory_total_cost[product_id] += (
+                    received_quantity * landed_cost
+                )
+
+            next_purchase_index += 1
+
+        eligible_customers = customers.loc[
+            customers["RegistrationDate"] <= order_date
+        ]
+
+        if eligible_customers.empty:
+            continue
+
+        customer = eligible_customers.iloc[
+            int(rng.integers(0, len(eligible_customers)))
+        ]
+
+        eligible_channels = channels.loc[
+            (channels["LaunchDate"] <= order_date)
+            & (channels["ChannelStatus"] == "Active")
+        ].copy()
+
+        if eligible_channels.empty:
+            continue
+
+        channel_weights = []
+
+        for _, channel_row in eligible_channels.iterrows():
+            channel_name = channel_row["SalesChannelName"]
+
+            if channel_name == customer["PreferredChannel"]:
+                channel_weights.append(2.5)
+            elif channel_name == "Website":
+                channel_weights.append(1.5)
+            else:
+                channel_weights.append(1.0)
+
+        channel_weights_array = np.array(
+            channel_weights,
+            dtype=float,
+        )
+        channel_weights_array /= channel_weights_array.sum()
+
+        selected_channel_position = int(
+            rng.choice(
+                len(eligible_channels),
+                p=channel_weights_array,
+            )
+        )
+
+        channel = eligible_channels.iloc[
+            selected_channel_position
+        ]
+
+        # Small proportion of abandoned/cancelled orders.
+        is_cancelled = bool(rng.random() < 0.02)
+
+        desired_line_count = int(
+            rng.choice(
+                [1, 2, 3, 4],
+                p=[0.05, 0.30, 0.40, 0.25],
+            )
+        )
+
+        order_sales_rows: list[dict[str, object]] = []
+        selected_product_ids: set[int] = set()
+
+        if not is_cancelled:
+            for _ in range(desired_line_count):
+                available_product_ids = [
+                    product_id
+                    for product_id, quantity
+                    in inventory_quantity.items()
+                    if quantity > 0
+                    and product_id
+                    not in selected_product_ids
+                ]
+
+                if not available_product_ids:
+                    break
+
+                product_weights = []
+
+                for product_id in available_product_ids:
+                    product = product_lookup[product_id]
+
+                    weight = product_performance_weights[
+                        product_id
+                    ]
+
+                    weight *= _theme_seasonality_multiplier(
+                        theme=product["Theme"],
+                        order_date=order_date,
+                    )
+
+                    release_year = product["ReleaseYear"]
+
+                    if (
+                        pd.notna(release_year)
+                        and int(release_year)
+                        > order_date.year
+                    ):
+                        weight = 0.00
+
+                    product_weights.append(weight)
+
+                weights_array = np.array(
+                    product_weights,
+                    dtype=float,
+                )
+
+                if weights_array.sum() <= 0:
+                    break
+
+                weights_array /= weights_array.sum()
+
+                product_id = int(
+                    rng.choice(
+                        available_product_ids,
+                        p=weights_array,
+                    )
+                )
+
+                selected_product_ids.add(product_id)
+                product = product_lookup[product_id]
+
+                maximum_quantity = min(
+                    inventory_quantity[product_id],
+                    3,
+                )
+
+                quantity = int(
+                    rng.choice(
+                        range(1, maximum_quantity + 1),
+                        p=(
+                            [1.0]
+                            if maximum_quantity == 1
+                            else (
+                                [0.82, 0.18]
+                                if maximum_quantity == 2
+                                else [0.78, 0.17, 0.05]
+                            )
+                        ),
+                    )
+                )
+
+                average_unit_cost = (
+                    inventory_total_cost[product_id]
+                    / inventory_quantity[product_id]
+                )
+
+                unit_retail_price = round(
+                    float(product["MSRP"])
+                    * rng.uniform(0.97, 1.05),
+                    2,
+                )
+
+                discount_rate = _product_discount_rate(
+                    rng=rng,
+                    order_date=order_date,
+                )
+
+                unit_discount_amount = round(
+                    unit_retail_price * discount_rate,
+                    2,
+                )
+
+                net_unit_price = round(
+                    unit_retail_price
+                    - unit_discount_amount,
+                    2,
+                )
+
+                line_net_sales = round(
+                    quantity * net_unit_price,
+                    2,
+                )
+
+                platform_fee_amount = round(
+                    line_net_sales
+                    * float(channel["PlatformFeeRate"]),
+                    2,
+                )
+
+                # UK catalogue prices are treated as VAT-inclusive.
+                vat_amount = round(
+                    line_net_sales * (20 / 120),
+                    2,
+                )
+
+                order_sales_rows.append(
+                    {
+                        "OrderItemID": order_item_id,
+                        "OrderID": order_id,
+                        "ProductID": product_id,
+                        "Quantity": quantity,
+                        "UnitRetailPrice": unit_retail_price,
+                        "UnitDiscountAmount": (
+                            unit_discount_amount
+                        ),
+                        "NetUnitPrice": net_unit_price,
+                        "UnitCostAtSale": round(
+                            average_unit_cost,
+                            2,
+                        ),
+                        "PlatformFeeAmount": (
+                            platform_fee_amount
+                        ),
+                        "VATAmount": vat_amount,
+                    }
+                )
+
+                inventory_quantity[product_id] -= quantity
+                inventory_total_cost[product_id] -= (
+                    average_unit_cost * quantity
+                )
+
+                inventory_total_cost[product_id] = max(
+                    inventory_total_cost[product_id],
+                    0.00,
+                )
+
+                order_item_id += 1
+
+        if not order_sales_rows and not is_cancelled:
+            # No inventory was available for this generated order.
+            continue
+
+        merchandise_total = round(
+            sum(
+                row["Quantity"] * row["NetUnitPrice"]
+                for row in order_sales_rows
+            ),
+            2,
+        )
+
+        discount_code = None
+        order_discount_amount = 0.00
+
+        if not is_cancelled:
+            promotion_roll = rng.random()
+
+            if (
+                customer["LoyaltyMember"]
+                and promotion_roll < 0.08
+            ):
+                discount_code = "LOYALTY5"
+                order_discount_amount = min(
+                    5.00,
+                    merchandise_total,
+                )
+            elif promotion_roll < 0.13:
+                discount_code = "WELCOME5"
+                order_discount_amount = min(
+                    5.00,
+                    merchandise_total,
+                )
+            elif (
+                order_date.month == 11
+                and 20 <= order_date.day <= 30
+                and promotion_roll < 0.25
+            ):
+                discount_code = "BLACKFRIDAY10"
+                order_discount_amount = round(
+                    merchandise_total * 0.10,
+                    2,
+                )
+
+        if is_cancelled:
+            order_status = "Cancelled"
+            shipped_date = pd.NaT
+            delivered_date = pd.NaT
+            shipping_method = "Royal Mail Tracked 48"
+            shipping_revenue = 0.00
+            shipping_cost = 0.00
+        else:
+            days_before_end = (
+                pd.Timestamp(END_DATE) - order_date
+            ).days
+
+            if days_before_end <= 2:
+                order_status = str(
+                    rng.choice(
+                        ["Pending", "Processing"],
+                        p=[0.35, 0.65],
+                    )
+                )
+                shipped_date = pd.NaT
+                delivered_date = pd.NaT
+            elif days_before_end <= 6:
+                order_status = str(
+                    rng.choice(
+                        ["Processing", "Shipped", "Delivered"],
+                        p=[0.20, 0.55, 0.25],
+                    )
+                )
+            else:
+                order_status = str(
+                    rng.choice(
+                        ["Delivered", "Shipped", "Processing"],
+                        p=[0.95, 0.04, 0.01],
+                    )
+                )
+
+            shipping_method, shipping_revenue, shipping_cost = (
+                _shipping_details(
+                    rng=rng,
+                    merchandise_total=merchandise_total,
+                )
+            )
+
+            processing_days = int(rng.integers(1, 4))
+            delivery_days = int(rng.integers(1, 6))
+
+            if order_status in ("Shipped", "Delivered"):
+                shipped_date = (
+                    order_date
+                    + pd.Timedelta(days=processing_days)
+                )
+            else:
+                shipped_date = pd.NaT
+
+            if order_status == "Delivered":
+                delivered_date = (
+                    shipped_date
+                    + pd.Timedelta(days=delivery_days)
+                )
+            else:
+                delivered_date = pd.NaT
+
+            if (
+                pd.notna(shipped_date)
+                and shipped_date > pd.Timestamp(END_DATE)
+            ):
+                shipped_date = pd.NaT
+                delivered_date = pd.NaT
+                order_status = "Processing"
+
+            if (
+                pd.notna(delivered_date)
+                and delivered_date > pd.Timestamp(END_DATE)
+            ):
+                delivered_date = pd.NaT
+                order_status = "Shipped"
+
+        order_rows.append(
+            {
+                "OrderID": order_id,
+                "CustomerID": int(customer["CustomerID"]),
+                "OrderDateKey": int(
+                    order_date.strftime("%Y%m%d")
+                ),
+                "ShippedDateKey": (
+                    int(shipped_date.strftime("%Y%m%d"))
+                    if pd.notna(shipped_date)
+                    else None
+                ),
+                "DeliveredDateKey": (
+                    int(delivered_date.strftime("%Y%m%d"))
+                    if pd.notna(delivered_date)
+                    else None
+                ),
+                "SalesChannelID": int(
+                    channel["SalesChannelID"]
+                ),
+                "OrderStatus": order_status,
+                "PaymentMethod": str(
+                    rng.choice(payment_methods)
+                ),
+                "ShippingMethod": shipping_method,
+                "DiscountCode": discount_code,
+                "OrderDiscountAmount": round(
+                    order_discount_amount,
+                    2,
+                ),
+                "ShippingRevenue": shipping_revenue,
+                "ShippingCost": shipping_cost,
+                "GiftWrapping": bool(
+                    not is_cancelled
+                    and rng.random() < 0.12
+                ),
+                "OrderCurrency": "GBP",
+            }
+        )
+
+        sales_rows.extend(order_sales_rows)
+        order_id += 1
+
+    fact_orders = pd.DataFrame(order_rows)
+    fact_sales = pd.DataFrame(sales_rows)
+
+    if fact_orders.empty:
+        raise ValueError("FactOrders generation produced no records.")
+
+    if fact_sales.empty:
+        raise ValueError("FactSales generation produced no records.")
+
+    if not fact_sales["OrderID"].isin(
+        fact_orders["OrderID"]
+    ).all():
+        raise ValueError(
+            "FactSales contains OrderID values not found in FactOrders."
+        )
+
+    sales_line_count = len(fact_sales)
+
+    if not (
+        TARGET_SALES_LINE_COUNT_MIN
+        <= sales_line_count
+        <= TARGET_SALES_LINE_COUNT_MAX
+    ):
+        print(
+            "\nWarning: FactSales generated "
+            f"{sales_line_count:,} rows. "
+            "The documented target is "
+            f"{TARGET_SALES_LINE_COUNT_MIN:,}–"
+            f"{TARGET_SALES_LINE_COUNT_MAX:,}."
+        )
+
+    return fact_orders, fact_sales

@@ -17,6 +17,7 @@ from generators.dimensions import (
 
 from generators.facts import (
     generate_fact_expenses,
+    generate_fact_orders_and_sales,
     generate_fact_purchases,
 )
 
@@ -175,6 +176,37 @@ def main() -> None:
     print(fact_expenses.head())
     print(f"\nRows generated: {len(fact_expenses):,}")
     print(f"Saved to: {expenses_output_path}")
+
+    print("\nGenerating FactOrders and FactSales...")
+
+    fact_orders, fact_sales = generate_fact_orders_and_sales(
+        customer_df=dim_customer,
+        product_df=dim_product,
+        sales_channel_df=dim_sales_channel,
+        purchase_df=fact_purchases,
+    )
+
+    orders_output_path = RAW_DATA_DIR / "FactOrders.csv"
+    sales_output_path = RAW_DATA_DIR / "FactSales.csv"
+
+    fact_orders.to_csv(
+        orders_output_path,
+        index=False,
+    )
+
+    fact_sales.to_csv(
+        sales_output_path,
+        index=False,
+    )
+
+    print(fact_orders.head())
+    print(f"\nOrders generated: {len(fact_orders):,}")
+    print(f"Saved to: {orders_output_path}")
+
+    print()
+    print(fact_sales.head())
+    print(f"\nSales lines generated: {len(fact_sales):,}")
+    print(f"Saved to: {sales_output_path}")
 
     print("\nDone!")
 
