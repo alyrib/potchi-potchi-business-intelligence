@@ -145,6 +145,25 @@ potchi-potchi-business-intelligence
 
 ---
 
+# Semantic Model
+
+The Potchi Potchi data warehouse follows a dimensional modelling approach based on a star schema.
+
+The model is composed of:
+
+| Component | Quantity |
+|-----------|---------:|
+| Dimension Tables | 7 |
+| Role-playing Date Dimensions | 6 |
+| Fact Tables | 5 |
+| Canonical Calendar | 1 |
+
+### Power BI Semantic Model
+
+![Power BI Semantic Model](assets/images/powerbi-semantic-model.drawio.png)
+
+---
+
 # Project Roadmap
 
 | Phase | Status |
