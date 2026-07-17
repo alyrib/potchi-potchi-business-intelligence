@@ -145,6 +145,18 @@ potchi-potchi-business-intelligence
 
 ---
 
+# Assets
+
+This folder contains visual assets used throughout the Potchi Potchi Business Intelligence project.
+
+## Image Attribution
+
+Some illustrations, mascots, icons and decorative elements were generated with the assistance of generative AI and subsequently selected, curated and integrated into the dashboard design.
+
+These assets are used exclusively for educational and portfolio purposes.
+
+---
+
 # Semantic Model
 
 The Potchi Potchi data warehouse follows a dimensional modelling approach based on a star schema.
