@@ -253,7 +253,7 @@ potchi-potchi-business-intelligence
 │
 ├── README.md
 ├──requirements.text
-├──LICENSE.text
+├──LICENSE
 │
 ├── assets/
 │   ├── icons/
@@ -268,7 +268,7 @@ potchi-potchi-business-intelligence
 │      ├── 02-business-requirements-document.md
 │      ├── 03-data-requirements-document.md
 │      ├── 04-dimensional-data-model.md
-│      └── 05-business-final-assumptions.md
+│      └── 05-business-financial-assumptions.md
 │   ├── technical/
 │       ├── dashboard/
 │           └── 09-business-insights-report.md
@@ -407,16 +407,10 @@ The model is composed of:
 |----------|---------|--------|-------------|
 | 06 - Dataset Design Specification | v0.5.0 | ✅ Completed | Defines the structure, purpose, expected volume and technical design of each dataset before implementation. |
 | 07 - Data Dictionary | v0.2.0 | ✅ Completed | Documents every field, data type, business definition and validation rule used throughout the project. |
-| 08 - Power BI Model | v0.1.0 | ✅ Completed |  |
-| 09 - Business Insights Report | v0.2.0 | ✅ Completed | Presents the executive analysis of all Power BI dashboards, including key findings, business insights, strategic recommendations and the final assessment of the project's business question.
+| 08 - Power BI Model | v0.1.0 | ✅ Completed | Documents the Power BI semantic model, including table relationships, star schema design, role-playing dimensions and modelling decisions. |
+| 09 - Business Insights Report | v0.2.0 | ✅ Completed | Presents the executive analysis of all Power BI dashboards, including key findings, business insights, strategic recommendations and the final assessment of the project's business question. |
 | 10 - Power Query Transformations | v0.1.0 | ✅ Completed | Documents the ETL workflow, data preparation steps, transformation logic and validation processes implemented in Power Query before loading data into the Power BI semantic model. |
 | 11 - DAX Documentation | v0.1.0 | ✅ Completed | Documents calculated columns, measures and business logic implemented using DAX. |
-
----
-
-# Dashboard Preview
-
-See Dashboard Highlights above.
 
 ---
 
