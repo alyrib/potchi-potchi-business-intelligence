@@ -357,12 +357,11 @@ These initiatives may become future Business Intelligence projects.
 
 | Document | Version | Status |
 |----------|---------|--------|
-| 00 - Document Template | 1.0 | Completed |
-| 01 - Market Research | 1.0 | Completed |
-| 02 - Business Requirements Document | 1.0 | Draft |
-| 03 - Data Requirements Document | Planned | Planned |
-| 04 - Data Dictionary | Planned | Planned |
-| 05 - Dashboard Specification | Planned | Planned |
+| 00 - Document Template | Completed |
+| 01 - Market Research | Completed |
+| 02 - Business Requirements Document | Completed |
+| 03 - Data Requirements Document | Completed |
+| 04 - Data Dictionary | Completed |
 
 ---
 

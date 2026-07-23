@@ -420,3 +420,11 @@ However, the available data does not yet support immediate expansion into Brazil
 In conclusion, the Business Intelligence solution successfully answers the project's primary business question while also identifying future analytical opportunities to support the company's long-term growth strategy.
 
 Rather than providing a single "yes" or "no" answer, the dashboards offer decision-makers the evidence required to support informed, data-driven strategic planning.
+
+---
+
+## Revision History
+
+| Version | Date | Author | Description |
+|---------|------|--------|-------------|
+| v0.2.0 | 23 July 2026 | Alyssa da Silva Ribeiro | Initial draft created. |

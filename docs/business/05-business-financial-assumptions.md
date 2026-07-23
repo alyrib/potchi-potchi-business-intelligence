@@ -357,12 +357,12 @@ Future versions of this project may include:
 
 | Document | Version | Status |
 |----------|---------|--------|
-| 01 - Market Research | v0.1.0 | Completed |
-| 02 - Business Requirements Document | v0.1.0 | Completed |
-| 03 - Data Requirements Document | v0.1.0 | Completed |
-| 04 - Dimensional Data Model | v0.1.0 | Completed |
-| 05 - Business Financial Assumptions | v0.1.0 | Draft |
-| 06 - Dataset Design Specification | Planned | Planned |
+| 01 - Market Research | Completed |
+| 02 - Business Requirements Document | Completed |
+| 03 - Data Requirements Document | Completed |
+| 04 - Dimensional Data Model | Completed |
+| 05 - Business Financial Assumptions | Completed |
+| 06 - Dataset Design Specification | Completed |
 
 ---
 
